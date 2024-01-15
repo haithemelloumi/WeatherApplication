@@ -1,6 +1,7 @@
-package com.helloumi.weatherapplication.ui.feature.cities
+package com.helloumi.weatherapplication.ui.feature.addcity
 
 import android.content.Context
+import android.widget.TextView
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,21 +16,21 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.helloumi.weatherapplication.R
 import com.helloumi.weatherapplication.ui.feature.composable.WeatherToolbar
-import com.helloumi.weatherapplication.ui.feature.navigation.WeatherNavigation
 import com.helloumi.weatherapplication.ui.theme.Dimens
 import com.helloumi.weatherapplication.ui.theme.Purple40
 import com.helloumi.weatherapplication.ui.theme.WeatherApplicationTheme
 
 @Composable
-fun Cities(
-    navController: NavHostController
-) {
+fun AddCity(navController: NavHostController) {
 
     //LazyList scroll position
     val scrollState = rememberLazyListState()
@@ -49,15 +50,24 @@ fun Cities(
 
     Box {
         WeatherToolbar(
-            toolbarText = context.getString(R.string.cities_toolbar),
-            onBackClick = { },
-            isArrowBackVisible = false
+            toolbarText = context.getString(R.string.add_city_toolbar),
+            onBackClick = { navController.popBackStack() },
+            isArrowBackVisible = true
         )
         Column(
             modifier = Modifier
                 .fillMaxSize()  // Add fill max size
                 .verticalScroll(rememberScrollState())
         ) {
+            // Spacer to fill up the available space
+            Spacer(modifier = Modifier.weight(1f))
+
+            AndroidView(
+                factory = { context -> FragmentContainerView(context) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = Dimens.STACK_MD, vertical = Dimens.STACK_MD)
+            )
 
             // Spacer to fill up the available space
             Spacer(modifier = Modifier.weight(1f))
@@ -66,7 +76,7 @@ fun Cities(
                 .fillMaxWidth()
                 .padding(horizontal = Dimens.STACK_MD, vertical = Dimens.STACK_MD),
                 onClick = {
-                    navController.navigate(WeatherNavigation.AddCity.destination)
+                    //your onclick code here
                 }) {
                 Text(text = context.getString(R.string.add_city_button))
             }
@@ -76,8 +86,8 @@ fun Cities(
 
 @Preview(showBackground = true)
 @Composable
-fun CitiesPreview(navController: NavHostController) {
+fun AddCityPreview(navController: NavHostController) {
     WeatherApplicationTheme {
-        Cities(navController)
+        AddCity(navController)
     }
 }
