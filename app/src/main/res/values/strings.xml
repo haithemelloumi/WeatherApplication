@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">WeatherApplication</string>
+
     <string name="cities_toolbar">CITIES LIST</string>
     <string name="add_city_button">Add city</string>
+
+    <string name="add_city_toolbar">ADD CITY</string>
+
 </resources>

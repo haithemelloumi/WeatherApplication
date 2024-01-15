@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.helloumi.weatherapplication.ui.feature.addcity.AddCity
 import com.helloumi.weatherapplication.ui.feature.cities.Cities
 import com.helloumi.weatherapplication.ui.feature.navigation.WeatherNavigation
 import com.helloumi.weatherapplication.ui.theme.WeatherApplicationTheme
@@ -32,11 +33,11 @@ class MainActivity : ComponentActivity() {
                 ) {
 
                     composable(WeatherNavigation.Cities.destination) {
-                        Cities()
+                        Cities(navController)
                     }
 
                     composable(WeatherNavigation.AddCity.destination) {
-                        // TODO
+                        AddCity(navController)
                     }
 
                     composable(WeatherNavigation.WeatherAndForecast.destination) {
