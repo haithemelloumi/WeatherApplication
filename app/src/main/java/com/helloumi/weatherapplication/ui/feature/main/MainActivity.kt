@@ -8,10 +8,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.helloumi.weatherapplication.ui.feature.addcity.AddCity
 import com.helloumi.weatherapplication.ui.feature.cities.Cities
 import com.helloumi.weatherapplication.ui.feature.navigation.WeatherNavigation
 import com.helloumi.weatherapplication.ui.theme.WeatherApplicationTheme
+
 
 class MainActivity : ComponentActivity() {
 
@@ -19,7 +19,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             WeatherApplicationTheme {
                 navController = rememberNavController()
@@ -36,10 +35,6 @@ class MainActivity : ComponentActivity() {
                         Cities(navController)
                     }
 
-                    composable(WeatherNavigation.AddCity.destination) {
-                        AddCity(navController)
-                    }
-
                     composable(WeatherNavigation.WeatherAndForecast.destination) {
                         // TODO
                     }
@@ -50,8 +45,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
-
                 }*/
             }
         }

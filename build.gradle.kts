@@ -10,6 +10,10 @@ val composeLiveDataVersion by extra { "1.3.3" }
 val coilVersion by extra { "2.4.0" }
 val accompanistVersion by extra { "0.30.1" }
 val composeVersion by extra { "1.4.3" }
+val androidMaterialVersion by extra { "1.11.0" }
 val navigationComposeVersion by extra { "2.5.3" }
 val activityCompose by extra { "1.7.2" }
 val viewModelScope by extra { "2.6.2" }
+
+val placesVersion by extra { "3.3.0" }
+

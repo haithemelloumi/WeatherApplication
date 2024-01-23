@@ -27,6 +27,7 @@ import com.helloumi.weatherapplication.ui.theme.Opacity.OPAQUE
 import com.helloumi.weatherapplication.ui.theme.Purple40
 import com.helloumi.weatherapplication.ui.theme.Radius
 import com.helloumi.weatherapplication.ui.theme.TRANSPARENT
+import com.helloumi.weatherapplication.ui.theme.WHITE
 
 
 private const val COLOR_ANIMATION_DURATION = 250
@@ -81,7 +82,8 @@ fun WeatherToolbar(
                 centerHorizontallyTo(parent)
                 top.linkTo(buttonGarage.top)
                 bottom.linkTo(buttonGarage.bottom)
-            }
+            },
+            color = WHITE,
         )
     }
 }
