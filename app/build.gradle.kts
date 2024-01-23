@@ -22,12 +22,17 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "API_KEY", "\"AIzaSyD5q5UN4OGdXW2TUkCBYYiXArV1SmSSK9Y\"")
+        }
+
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "API_KEY", "\"AIzaSyD5q5UN4OGdXW2TUkCBYYiXArV1SmSSK9Y\"")
         }
     }
     compileOptions {
@@ -48,6 +53,9 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    // Add binding
+    buildFeatures.viewBinding = true
 }
 
 val material3Version: String by rootProject.extra
@@ -56,19 +64,13 @@ val composeLiveDataVersion: String by rootProject.extra
 val coilVersion: String by rootProject.extra
 val accompanistVersion: String by rootProject.extra
 val composeVersion: String by rootProject.extra
+val androidMaterialVersion: String by rootProject.extra
 val navigationComposeVersion: String by rootProject.extra
 val activityCompose: String by rootProject.extra
 val viewModelScope: String by rootProject.extra
+val placesVersion: String by rootProject.extra
 
 dependencies {
-
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-    implementation("androidx.activity:activity-compose:1.8.2")
-    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
 
     //------------------------------------- Jetpack Compose -------------------------------------//
 
@@ -92,6 +94,7 @@ dependencies {
 
     //Android Studio Preview support
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
+    implementation("com.google.android.material:material:$androidMaterialVersion")
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
 
     //UI Tests
@@ -109,6 +112,9 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$viewModelScope")
 
     //-------------------------------------------------------------------------------------------//
+
+    //places
+    implementation("com.google.android.libraries.places:places:$placesVersion")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
