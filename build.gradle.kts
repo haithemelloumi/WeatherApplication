@@ -2,6 +2,8 @@
 plugins {
     id("com.android.application") version "8.1.2" apply false
     id("org.jetbrains.kotlin.android") version "1.8.10" apply false
+    // dagger hilt
+    id("com.google.dagger.hilt.android") version "2.47" apply false
 }
 
 val material3Version by extra { "1.1.2" }
@@ -17,3 +19,9 @@ val viewModelScope by extra { "2.6.2" }
 
 val placesVersion by extra { "3.3.0" }
 
+val hiltVersion by extra { "2.47" }
+
+val roomVersion by extra { "2.6.1" }
+
+val moshiVersion by extra { "1.14.0"}
+val retrofitVersion by extra { "2.8.1"}
