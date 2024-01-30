@@ -15,7 +15,7 @@ interface BaseDao<T> {
      * @return inserted data id.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(data: T): Long
+    suspend fun insertElement(data: T): Long
 
     /**
      * Inserts data in the database.
@@ -25,7 +25,7 @@ interface BaseDao<T> {
      * @return inserted data id list.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(data: List<T>): List<Long>
+    suspend fun insertList(data: List<T>): List<Long>
 
     /**
      * Updates data in the database.
@@ -45,5 +45,5 @@ interface BaseDao<T> {
      * @return number of deleted occurrence.
      */
     @Delete
-    suspend fun delete(data: T): Int
+    fun delete(data: T): Int
 }

@@ -1,22 +1,22 @@
 package com.helloumi.weatherapplication.data.datasource
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
-import com.helloumi.weatherapplication.data.entity.CitiesForSearchEntity
+import com.helloumi.weatherapplication.data.entity.CityForSearchEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface CitiesForSearchDao : BaseDao<CitiesForSearchEntity> {
+interface CitiesForSearchDao : BaseDao<CityForSearchEntity> {
 
-    @Query("SELECT * FROM CitiesForSearch")
-    fun getCities(): LiveData<List<CitiesForSearchEntity>>
+    @Query("SELECT * FROM CityForSearch")
+    fun getCities(): Flow<List<CityForSearchEntity>>
 
-    @Query("SELECT * FROM CitiesForSearch WHERE fullName like '%' || :city || '%'|| '%' ORDER BY fullName DESC")
-    fun getCityByName(city: String? = ""): LiveData<List<CitiesForSearchEntity>>
+    @Query("SELECT * FROM CityForSearch WHERE fullName like '%' || :city || '%'|| '%' ORDER BY fullName DESC")
+    fun getCityByName(city: String? = ""): Flow<List<CityForSearchEntity>>
 
-    @Query("DELETE FROM CitiesForSearch")
+    @Query("DELETE FROM CityForSearch")
     suspend fun deleteCities()
 
-    @Query("Select count(*) from CitiesForSearch")
+    @Query("Select count(*) from CityForSearch")
     suspend fun getCount(): Int
 }
