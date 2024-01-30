@@ -1,6 +1,7 @@
 package com.helloumi.weatherapplication.ui.feature.cities
 
 import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,20 +13,26 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.helloumi.weatherapplication.R
+import com.helloumi.weatherapplication.ui.feature.addcity.AddCityActivity
 import com.helloumi.weatherapplication.ui.feature.composable.WeatherToolbar
+import com.helloumi.weatherapplication.ui.feature.navigation.WeatherNavigation
 import com.helloumi.weatherapplication.ui.theme.Dimens
 import com.helloumi.weatherapplication.ui.theme.Purple40
 import com.helloumi.weatherapplication.ui.theme.WeatherApplicationTheme
 
 @Composable
-fun Cities() {
+fun Cities(
+    navController: NavHostController
+) {
 
     //LazyList scroll position
     val scrollState = rememberLazyListState()
@@ -58,11 +65,17 @@ fun Cities() {
             // Spacer to fill up the available space
             Spacer(modifier = Modifier.weight(1f))
 
+            val context: Context = LocalContext.current
+
             Button(modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = Dimens.STACK_MD, vertical = Dimens.STACK_MD),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Purple40,
+                ),
                 onClick = {
-                    //your onclick code here
+                    val myIntent = Intent(context, AddCityActivity::class.java)
+                    context.startActivity(myIntent)
                 }) {
                 Text(text = context.getString(R.string.add_city_button))
             }
@@ -72,8 +85,8 @@ fun Cities() {
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun CitiesPreview(navController: NavHostController) {
     WeatherApplicationTheme {
-        Cities()
+        Cities(navController)
     }
 }

@@ -1,6 +1,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    // dagger hilt
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -22,12 +25,17 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "API_KEY", "\"AIzaSyD5q5UN4OGdXW2TUkCBYYiXArV1SmSSK9Y\"")
+        }
+
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "API_KEY", "\"AIzaSyD5q5UN4OGdXW2TUkCBYYiXArV1SmSSK9Y\"")
         }
     }
     compileOptions {
@@ -48,27 +56,36 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    // Add binding
+    buildFeatures.viewBinding = true
 }
 
 val material3Version: String by rootProject.extra
 val composeConstraintLayoutVersion: String by rootProject.extra
-val composeLiveDataVersion: String by rootProject.extra
 val coilVersion: String by rootProject.extra
 val accompanistVersion: String by rootProject.extra
 val composeVersion: String by rootProject.extra
+val androidMaterialVersion: String by rootProject.extra
 val navigationComposeVersion: String by rootProject.extra
 val activityCompose: String by rootProject.extra
 val viewModelScope: String by rootProject.extra
+val placesVersion: String by rootProject.extra
+val hiltVersion: String by rootProject.extra
+val roomVersion: String by rootProject.extra
+val moshiVersion: String by rootProject.extra
+val retrofitVersion: String by rootProject.extra
+
+val junitVersion: String by rootProject.extra
+val androidJunitVersion: String by rootProject.extra
+val kotlinTestJunitVersion: String by rootProject.extra
+val kotlinCoroutineTestVersion: String by rootProject.extra
+val mockitoVersion: String by rootProject.extra
+val mockitoCoreVersion: String by rootProject.extra
+val mockkVersion: String by rootProject.extra
+val espressoVersion: String by rootProject.extra
 
 dependencies {
-
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-    implementation("androidx.activity:activity-compose:1.8.2")
-    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
 
     //------------------------------------- Jetpack Compose -------------------------------------//
 
@@ -77,9 +94,6 @@ dependencies {
 
     //ConstraintLayout for Compose
     implementation("androidx.constraintlayout:constraintlayout-compose:$composeConstraintLayoutVersion")
-
-    //Live data compatibility
-    implementation("androidx.compose.runtime:runtime-livedata:$composeLiveDataVersion")
 
     //Coil (Compose extension lib --> AsyncImage = load image from url)
     implementation("io.coil-kt:coil-compose:$coilVersion")
@@ -92,6 +106,7 @@ dependencies {
 
     //Android Studio Preview support
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
+    implementation("com.google.android.material:material:$androidMaterialVersion")
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
 
     //UI Tests
@@ -110,11 +125,46 @@ dependencies {
 
     //-------------------------------------------------------------------------------------------//
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    //places
+    implementation("com.google.android.libraries.places:places:$placesVersion")
+
+    // dagger Hilt
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    kapt("com.google.dagger:hilt-compiler:$hiltVersion")
+
+    //Room
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-rxjava2:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    androidTestImplementation("androidx.room:room-testing:$roomVersion")
+
+    //json
+    implementation("com.squareup.moshi:moshi:$moshiVersion")
+    implementation("com.squareup.moshi:moshi-adapters:$moshiVersion")
+    implementation("com.squareup.moshi:moshi-kotlin:$moshiVersion")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
+    implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
+
+    //testing
+    testImplementation("junit:junit:$junitVersion")
+    androidTestImplementation("androidx.test.ext:junit:$androidJunitVersion")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinTestJunitVersion")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutineTestVersion")
+    testImplementation("org.mockito:mockito-inline:$mockitoVersion")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoVersion")
+    androidTestImplementation("org.mockito:mockito-android:$mockitoVersion")
+    androidTestImplementation("org.mockito:mockito-core:$mockitoCoreVersion")
+    testImplementation("io.mockk:mockk:$mockkVersion")
+    androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
 }

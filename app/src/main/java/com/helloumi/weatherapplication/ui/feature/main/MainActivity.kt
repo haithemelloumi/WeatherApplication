@@ -12,13 +12,13 @@ import com.helloumi.weatherapplication.ui.feature.cities.Cities
 import com.helloumi.weatherapplication.ui.feature.navigation.WeatherNavigation
 import com.helloumi.weatherapplication.ui.theme.WeatherApplicationTheme
 
+
 class MainActivity : ComponentActivity() {
 
     private lateinit var navController: NavHostController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             WeatherApplicationTheme {
                 navController = rememberNavController()
@@ -32,11 +32,7 @@ class MainActivity : ComponentActivity() {
                 ) {
 
                     composable(WeatherNavigation.Cities.destination) {
-                        Cities()
-                    }
-
-                    composable(WeatherNavigation.AddCity.destination) {
-                        // TODO
+                        Cities(navController)
                     }
 
                     composable(WeatherNavigation.WeatherAndForecast.destination) {
@@ -49,8 +45,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
-
                 }*/
             }
         }
