@@ -3,8 +3,8 @@ package com.helloumi.weatherapplication.data.entity
 import androidx.room.*
 import com.helloumi.weatherapplication.domain.model.HitsItem
 
-@Entity(tableName = "CitiesForSearch")
-data class CitiesForSearchEntity(
+@Entity(tableName = "CityForSearch")
+data class CityForSearchEntity(
     @ColumnInfo(name = "administrative")
     val administrative: String?,
     @ColumnInfo(name = "Country")

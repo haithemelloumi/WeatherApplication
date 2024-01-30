@@ -8,7 +8,6 @@ plugins {
 
 val material3Version by extra { "1.1.2" }
 val composeConstraintLayoutVersion by extra { "1.0.1" }
-val composeLiveDataVersion by extra { "1.3.3" }
 val coilVersion by extra { "2.4.0" }
 val accompanistVersion by extra { "0.30.1" }
 val composeVersion by extra { "1.4.3" }
@@ -23,5 +22,14 @@ val hiltVersion by extra { "2.47" }
 
 val roomVersion by extra { "2.6.1" }
 
-val moshiVersion by extra { "1.14.0"}
-val retrofitVersion by extra { "2.8.1"}
+val moshiVersion by extra { "1.14.0" }
+val retrofitVersion by extra { "2.8.1" }
+
+val junitVersion by extra { "4.13.2" }
+val androidJunitVersion by extra { "4.13.2" }
+val kotlinTestJunitVersion by extra { "1.8.22" }
+val kotlinCoroutineTestVersion by extra { "1.7.3" }
+val mockitoVersion by extra { "5.2.0" }
+val mockitoCoreVersion by extra { "5.7.0" }
+val mockkVersion by extra { "1.13.8" }
+val espressoVersion by extra { "3.5.1" }

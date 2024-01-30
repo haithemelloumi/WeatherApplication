@@ -1,4 +1,4 @@
-package com.helloumi.weatherapplication.ui.feature.main
+package com.helloumi.weatherapplication
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
