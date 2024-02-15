@@ -57,6 +57,15 @@ android {
         }
     }
 
+    // ADDED FOR USE MOCKK IN UI TEST AND MUST REMOVE LATER
+    testOptions {
+        packagingOptions {
+            jniLibs {
+                useLegacyPackaging = true
+            }
+        }
+    }
+
     // Add binding
     buildFeatures.viewBinding = true
 }
@@ -76,14 +85,14 @@ val roomVersion: String by rootProject.extra
 val moshiVersion: String by rootProject.extra
 val retrofitVersion: String by rootProject.extra
 
-val junitVersion: String by rootProject.extra
-val androidJunitVersion: String by rootProject.extra
-val kotlinTestJunitVersion: String by rootProject.extra
+val junitKtxVersion: String by rootProject.extra
 val kotlinCoroutineTestVersion: String by rootProject.extra
 val mockitoVersion: String by rootProject.extra
 val mockitoCoreVersion: String by rootProject.extra
-val mockkVersion: String by rootProject.extra
 val espressoVersion: String by rootProject.extra
+val kotlinTestJunitVersion: String by rootProject.extra
+val mockkVersion: String by rootProject.extra
+val mockkAndroidVersion: String by rootProject.extra
 
 dependencies {
 
@@ -148,20 +157,24 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
 
     //testing
-    testImplementation("junit:junit:$junitVersion")
-    androidTestImplementation("androidx.test.ext:junit:$androidJunitVersion")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinTestJunitVersion")
+    //testImplementation("junit:junit:4.13")
+    //androidTestImplementation("androidx.test.ext:junit:1.1.3")
+    implementation("androidx.test.ext:junit-ktx:$junitKtxVersion")
+    androidTestImplementation("androidx.test.ext:junit-ktx:$junitKtxVersion")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutineTestVersion")
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutineTestVersion")
     testImplementation("org.mockito:mockito-inline:$mockitoVersion")
     testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoVersion")
     androidTestImplementation("org.mockito:mockito-android:$mockitoVersion")
     androidTestImplementation("org.mockito:mockito-core:$mockitoCoreVersion")
+    androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion") {
+        exclude(group = "com.android.support")
+        exclude(module = "support-annotations")
+    }
+    //and/or
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinTestJunitVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
-    androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    androidTestImplementation("io.mockk:mockk-android:$mockkAndroidVersion")
 }
 
 // Allow references to generated code

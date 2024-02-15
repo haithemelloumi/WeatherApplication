@@ -9,9 +9,9 @@ interface CitiesForSearchRepository {
     /**
      * Gets all cities.
      *
-     * @return the [CityForSearchEntity] [Flow] [List].
+     * @return the [CityForSearchDomain] [Flow] [List].
      */
-    fun getAllCities(): Flow<List<CityForSearchEntity>>
+    fun getAllCities(): Flow<List<CityForSearchDomain>>
 
     /**
      * Gets city by name.

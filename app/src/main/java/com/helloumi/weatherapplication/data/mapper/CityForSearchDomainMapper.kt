@@ -20,4 +20,13 @@ class CityForSearchDomainMapper @Inject constructor() {
             )
         }
     }
+
+    fun toCitiesDomain(cities: List<CityForSearchEntity>): List<CityForSearchDomain> {
+        return cities.map { cityEntity ->
+            CityForSearchDomain(
+                id = cityEntity.id,
+                name = cityEntity.name ?: "",
+            )
+        }
+    }
 }
