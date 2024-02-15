@@ -1,4 +1,4 @@
-package com.helloumi.weatherapplication.ui.feature.composable
+package com.helloumi.weatherapplication.ui.feature.common
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
@@ -36,7 +36,8 @@ private const val COLOR_ANIMATION_DURATION = 250
 fun WeatherToolbar(
     toolbarText: String,
     onBackClick: () -> Unit,
-    isArrowBackVisible: Boolean = false
+    isArrowBackVisible: Boolean = false,
+    modifier: Modifier
 ) {
 
     val colorState by animateColorAsState(
@@ -49,7 +50,7 @@ fun WeatherToolbar(
     )
 
     ConstraintLayout(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .zIndex(1f)
             .background(color = colorState)
@@ -90,9 +91,10 @@ fun WeatherToolbar(
 
 @Preview
 @Composable
-fun PreviewCarPageToolbar() {
+fun PreviewCarPageToolbar(modifier: Modifier) {
     WeatherToolbar(
         toolbarText = "toolbarText",
-        onBackClick = {}
+        onBackClick = {},
+        modifier= modifier
     )
 }

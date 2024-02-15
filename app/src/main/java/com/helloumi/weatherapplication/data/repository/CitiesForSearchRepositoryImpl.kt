@@ -6,6 +6,7 @@ import com.helloumi.weatherapplication.data.datasource.CitiesForSearchDao
 import com.helloumi.weatherapplication.data.entity.CityForSearchEntity
 import com.helloumi.weatherapplication.domain.model.CityForSearchDomain
 import com.helloumi.weatherapplication.domain.repository.CitiesForSearchRepository
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 @OpenForTesting
@@ -14,7 +15,9 @@ class CitiesForSearchRepositoryImpl @Inject constructor(
     private val cityForSearchDomainMapper: CityForSearchDomainMapper
 ) : CitiesForSearchRepository {
 
-    override fun getAllCities() = citiesForSearchDao.getCities()
+    override fun getAllCities() = citiesForSearchDao.getCities().map {
+        cityForSearchDomainMapper.toCitiesDomain(it)
+    }
 
     override fun getCityByName(cityName: String?) = citiesForSearchDao.getCityByName(cityName)
 
