@@ -12,6 +12,7 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.verify
+import kotlin.test.assertEquals
 
 class CitiesForSearchRepositoryImplTest {
 
@@ -31,7 +32,7 @@ class CitiesForSearchRepositoryImplTest {
     }
 
     @Test
-    fun `WHEN call insertCity THEN ensure result`() = runTest {
+    fun `WHEN call insertCity THEN verify mapper and dao and assert result`() = runTest {
         // GIVEN
         val cityEntity = CityForSearchEntity(
             cityId = "cityId",
@@ -41,14 +42,17 @@ class CitiesForSearchRepositoryImplTest {
             id = "cityId",
             name = "cityName"
         )
+        val resultInsert: Long = 7
 
         Mockito.`when`(cityForSearchDomainMapper.toCityEntity(cityDomain)).thenReturn(cityEntity)
+        Mockito.`when`(citiesForSearchDao.insertElement(cityEntity)).thenReturn(resultInsert)
 
         // WHEN
-        citiesForSearchRepositoryImpl.insertCity(cityDomain)
+        val result = citiesForSearchRepositoryImpl.insertCity(cityDomain)
 
         // THEN
         verify(cityForSearchDomainMapper).toCityEntity(cityDomain)
         verify(citiesForSearchDao).insertElement(cityEntity)
+        assertEquals(resultInsert, result)
     }
 }

@@ -26,4 +26,6 @@ object Dimens {
     val INLINE_XXXL = 64.dp
     val INLINE_XXXXL = 72.dp
     val INLINE_XXXXXL = 96.dp
+
+    val ITEM_HEIGHT = 50.dp
 }

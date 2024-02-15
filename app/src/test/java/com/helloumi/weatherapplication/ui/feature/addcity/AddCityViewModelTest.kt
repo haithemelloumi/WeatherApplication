@@ -23,7 +23,7 @@ class AddCityViewModelTest {
     }
 
     @Test
-    fun `WHEN call addCity THEN ensure result`() = runTest {
+    fun `WHEN call addCity THEN verify useCase`() = runTest {
         // GIVEN
         val cityId = "cityId"
         val cityName = "cityName"
