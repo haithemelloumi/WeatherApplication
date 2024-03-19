@@ -14,7 +14,7 @@ import com.helloumi.weatherapplication.domain.model.CityForSearchDomain
 import com.helloumi.weatherapplication.domain.usecases.GetCitiesUseCase
 import com.helloumi.weatherapplication.ui.feature.cities.AddCityButton
 import com.helloumi.weatherapplication.ui.feature.cities.Cities
-import com.helloumi.weatherapplication.ui.feature.cities.CitiesViewModel
+import com.helloumi.weatherapplication.ui.feature.main.WeatherViewModel
 import com.helloumi.weatherapplication.ui.theme.Dimens
 import com.helloumi.weatherapplication.ui.theme.WeatherApplicationTheme
 import io.mockk.MockKAnnotations
@@ -34,12 +34,12 @@ class CitiesKtTest {
     @RelaxedMockK
     private lateinit var getCitiesUseCase: GetCitiesUseCase
 
-    private lateinit var citiesViewModel: CitiesViewModel
+    private lateinit var weatherViewModel: WeatherViewModel
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this, relaxUnitFun = true)
-        citiesViewModel = CitiesViewModel(getCitiesUseCase)
+        weatherViewModel = WeatherViewModel(getCitiesUseCase)
     }
 
     @Test
