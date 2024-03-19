@@ -21,7 +21,7 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/add_city"
+            android:text="@string/add_city_title"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_title" />
     </androidx.appcompat.widget.Toolbar>
@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/spacing_medium"
-        android:text="@string/add_city"
+        android:text="@string/add_city_button"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

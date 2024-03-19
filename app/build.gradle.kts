@@ -4,6 +4,7 @@ plugins {
     // dagger hilt
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id ("kotlin-parcelize")
 }
 
 android {
@@ -84,6 +85,7 @@ val hiltVersion: String by rootProject.extra
 val roomVersion: String by rootProject.extra
 val moshiVersion: String by rootProject.extra
 val retrofitVersion: String by rootProject.extra
+val threeTenAbpVersion: String by rootProject.extra
 
 val junitKtxVersion: String by rootProject.extra
 val kotlinCoroutineTestVersion: String by rootProject.extra
@@ -155,6 +157,10 @@ dependencies {
     implementation("com.squareup.moshi:moshi-kotlin:$moshiVersion")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
     implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
+
+
+    // ThreeTenAbp
+    implementation("com.jakewharton.threetenabp:threetenabp:$threeTenAbpVersion")
 
     //testing
     //testImplementation("junit:junit:4.13")

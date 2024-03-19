@@ -1,6 +1,7 @@
 package com.helloumi.weatherapplication.ui.theme
 
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 object Dimens {
     //STACK (VERTICAL)
@@ -27,5 +28,26 @@ object Dimens {
     val INLINE_XXXXL = 72.dp
     val INLINE_XXXXXL = 96.dp
 
+    // Text size
+    val TEXT_SIZE_BIG = 15.sp
+    val TEXT_SIZE_MEDIUM = 13.sp
+    val TEXT_SIZE_SMALL = 11.sp
+    val TEXT_SIZE_TINY = 10.sp
+    val TEXT_SIZE_VERY_TINY = 8.sp
+    val TEXT_SIZE_TITLE = 19.sp
+    val TEXT_SIZE_VERY_BIG = 24.sp
+    val TEXT_SIZE_EXTREMELY_BIG = 72.sp
+    val TEXT_SIZE_HEADLINE = 17.sp
+
+    val ROUNDED_SHAPE_MEDIUM = 16.dp
+
+    val DAILY_ITEM_SIZE = 120.dp
+    val DAILY_ITEM_ICON_SIZE = 48.dp
+
+    val FORECAST_ITEM_HEIGHT = 200.dp
+    val FORECAST_ITEM_WIDTH = 150.dp
+    val FORECAST_ITEM_ICON_SIZE = 64.dp
+
     val ITEM_HEIGHT = 50.dp
+    val CURRENT_WEATHER_HEIGHT = 150.dp
 }
