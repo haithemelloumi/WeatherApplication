@@ -31,10 +31,12 @@ import com.helloumi.weatherapplication.R
 import com.helloumi.weatherapplication.domain.model.CityForSearchDomain
 import com.helloumi.weatherapplication.ui.feature.addcity.AddCityActivity
 import com.helloumi.weatherapplication.ui.feature.common.WeatherToolbar
+import com.helloumi.weatherapplication.ui.feature.main.MainActivity.Companion.CITY_KEY
+import com.helloumi.weatherapplication.ui.feature.navigation.WeatherNavigation
 import com.helloumi.weatherapplication.ui.theme.Dimens
 import com.helloumi.weatherapplication.ui.theme.Dimens.ITEM_HEIGHT
-import com.helloumi.weatherapplication.ui.theme.Purple40
-import com.helloumi.weatherapplication.ui.theme.PurpleGrey40
+import com.helloumi.weatherapplication.ui.theme.PURPLE_40
+import com.helloumi.weatherapplication.ui.theme.PURPLE_GREY_40
 import com.helloumi.weatherapplication.ui.theme.Radius
 import com.helloumi.weatherapplication.ui.theme.WeatherApplicationTheme
 
@@ -53,7 +55,7 @@ fun Cities(
 
     val isDarkTheme = isSystemInDarkTheme()
     systemUiController.setStatusBarColor(
-        color = Purple40,
+        color = PURPLE_40,
         darkIcons =
         if (isDarkTheme) false
         else scrollState.firstVisibleItemScrollOffset != 0
@@ -69,7 +71,8 @@ fun Cities(
             val (toolbar, list, button) = createRefs()
 
             WeatherToolbar(
-                toolbarText = context.getString(R.string.cities_toolbar),
+                toolbarText = context.getString(R.string.cities_title),
+                scrollState.firstVisibleItemScrollOffset,
                 onBackClick = { },
                 isArrowBackVisible = false,
                 modifier = Modifier
@@ -91,11 +94,9 @@ fun Cities(
             ) {
                 citiesUiState.forEach { city ->
                     Button(
-                        onClick = {
-                            // TODO
-                        },
+                        onClick = { onClickCity(navController, city) },
                         shape = RoundedCornerShape(Radius.EXTRA_LARGE),
-                        colors = ButtonDefaults.buttonColors(containerColor = PurpleGrey40)
+                        colors = ButtonDefaults.buttonColors(containerColor = PURPLE_GREY_40)
                     ) {
                         Text(
                             text = city.name,
@@ -130,11 +131,24 @@ fun AddCityButton(
     context: Context,
     onClick: () -> Unit
 ) {
-    Button(modifier = modifier,
-        colors = ButtonDefaults.buttonColors(containerColor = Purple40),
-        onClick = onClick) {
+    Button(
+        modifier = modifier,
+        colors = ButtonDefaults.buttonColors(containerColor = PURPLE_40),
+        onClick = onClick
+    ) {
         Text(text = context.getString(R.string.add_city_button))
     }
+}
+
+private fun onClickCity(
+    navController: NavHostController,
+    city: CityForSearchDomain
+) {
+    navController.currentBackStackEntry?.savedStateHandle?.set(
+        key = CITY_KEY,
+        value = city
+    )
+    navController.navigate(WeatherNavigation.WeatherAndForecast.destination)
 }
 
 private fun onClickButton(context: Context) {

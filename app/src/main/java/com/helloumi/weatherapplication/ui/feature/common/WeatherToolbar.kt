@@ -21,10 +21,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.helloumi.weatherapplication.R
+import com.helloumi.weatherapplication.ui.theme.BLACK
 import com.helloumi.weatherapplication.ui.theme.Dimens
 import com.helloumi.weatherapplication.ui.theme.Opacity
 import com.helloumi.weatherapplication.ui.theme.Opacity.OPAQUE
-import com.helloumi.weatherapplication.ui.theme.Purple40
+import com.helloumi.weatherapplication.ui.theme.PURPLE_40
 import com.helloumi.weatherapplication.ui.theme.Radius
 import com.helloumi.weatherapplication.ui.theme.TRANSPARENT
 import com.helloumi.weatherapplication.ui.theme.WHITE
@@ -35,13 +36,14 @@ private const val COLOR_ANIMATION_DURATION = 250
 @Composable
 fun WeatherToolbar(
     toolbarText: String,
+    scrollOffset: Int,
     onBackClick: () -> Unit,
     isArrowBackVisible: Boolean = false,
     modifier: Modifier
 ) {
 
     val colorState by animateColorAsState(
-        targetValue = Purple40,
+        targetValue = PURPLE_40,
         animationSpec = tween(
             durationMillis = COLOR_ANIMATION_DURATION,
             easing = LinearEasing
@@ -58,6 +60,10 @@ fun WeatherToolbar(
         val (buttonGarage, textModel) = createRefs()
         Icon(
             painter = painterResource(id = R.drawable.ic_arrow_back),
+            tint = if (isPageTop(scrollOffset))
+                WHITE
+            else
+                BLACK,
             contentDescription = null,
             modifier = Modifier
                 .constrainAs(buttonGarage) {
@@ -91,10 +97,13 @@ fun WeatherToolbar(
 
 @Preview
 @Composable
-fun PreviewCarPageToolbar(modifier: Modifier) {
+fun PreviewCarPageToolbar(modifier: Modifier, scrollOffset: Int) {
     WeatherToolbar(
         toolbarText = "toolbarText",
+        scrollOffset,
         onBackClick = {},
-        modifier= modifier
+        modifier = modifier
     )
 }
+
+private fun isPageTop(scrollOffset: Int) = scrollOffset == 0

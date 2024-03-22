@@ -25,6 +25,8 @@ val roomVersion by extra { "2.6.1" }
 val moshiVersion by extra { "1.14.0" }
 val retrofitVersion by extra { "2.8.1" }
 
+val threeTenAbpVersion by extra { "1.3.1" }
+
 val junitKtxVersion by extra { "1.1.5" }
 val kotlinCoroutineTestVersion by extra { "1.7.3" }
 val mockitoVersion by extra { "5.2.0" }
