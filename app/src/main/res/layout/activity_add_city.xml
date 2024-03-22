@@ -19,11 +19,12 @@
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/add_city_title"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_title" />
+            android:paddingStart="110dp"
+            android:textSize="@dimen/text_toolbar_size"
+            android:textColor="@color/white" />
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.fragment.app.FragmentContainerView

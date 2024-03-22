@@ -11,7 +11,7 @@
     <string name="add_city_success" formatted="false">City Added with success.</string>
 
     <!-- Weather and forecast -->
-    <string name="weather_title" formatted="false">Weather and Forecast</string>
+    <string name="weather_title" formatted="false">WEATHER AND FORECAST</string>
     <string name="next_5_days" formatted="false">Next 5 Days</string>
     <string name="feels_like" formatted="false">Feels Like</string>
     <string name="visibility" formatted="false">Visibility</string>
