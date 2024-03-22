@@ -1,7 +1,6 @@
 package com.helloumi.weatherapplication.ui.feature.main
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -15,8 +14,10 @@ import com.helloumi.weatherapplication.domain.usecases.GetCurrentWeatherUseCase
 import com.helloumi.weatherapplication.domain.usecases.GetForecastUseCase
 import com.helloumi.weatherapplication.ui.feature.weatherforecast.model.WeatherForecastUiModel
 import com.helloumi.weatherapplication.utils.extensions.DateUtils
+import com.helloumi.weatherapplication.utils.network.NetworkMonitor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,11 +27,14 @@ class WeatherViewModel @Inject constructor(
     private val getCitiesUseCase: GetCitiesUseCase,
     private val getCurrentWeatherUseCase: GetCurrentWeatherUseCase,
     private val getForecastUseCase: GetForecastUseCase,
-    private val dateUtils: DateUtils
+    private val dateUtils: DateUtils,
+    networkMonitor: NetworkMonitor
 ) : ViewModel() {
 
     private val _citiesUiState: MutableState<List<CityForSearchDomain>> = mutableStateOf(listOf())
     val citiesUiState: MutableState<List<CityForSearchDomain>> get() = _citiesUiState
+
+    val isOnline: Flow<Boolean> = networkMonitor.isOnline
 
     private val _currentWeatherUiState: MutableState<CurrentWeatherResult> =
         mutableStateOf(CurrentWeatherResult.Loading)
@@ -39,6 +43,7 @@ class WeatherViewModel @Inject constructor(
     private val _forecastResponseUiState: MutableState<ForecastResult> =
         mutableStateOf(ForecastResult.Loading)
     val forecastResponseUiState: MutableState<ForecastResult> get() = _forecastResponseUiState
+
     fun getCities() {
         viewModelScope.launch(Dispatchers.IO) {
             getCitiesUseCase.execute().collectLatest { cities ->

@@ -20,6 +20,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -39,10 +40,12 @@ import com.helloumi.weatherapplication.ui.theme.PURPLE_40
 import com.helloumi.weatherapplication.ui.theme.PURPLE_GREY_40
 import com.helloumi.weatherapplication.ui.theme.Radius
 import com.helloumi.weatherapplication.ui.theme.WeatherApplicationTheme
+import com.helloumi.weatherapplication.utils.extensions.displayToast
 
 @SuppressLint("FrequentlyChangedStateReadInComposition")
 @Composable
 fun Cities(
+    isInternetAvailable: MutableState<Boolean>,
     navController: NavHostController,
     citiesUiState: List<CityForSearchDomain>
 ) {
@@ -94,7 +97,7 @@ fun Cities(
             ) {
                 citiesUiState.forEach { city ->
                     Button(
-                        onClick = { onClickCity(navController, city) },
+                        onClick = { onClickCity(context, isInternetAvailable, navController, city) },
                         shape = RoundedCornerShape(Radius.EXTRA_LARGE),
                         colors = ButtonDefaults.buttonColors(containerColor = PURPLE_GREY_40)
                     ) {
@@ -141,14 +144,20 @@ fun AddCityButton(
 }
 
 private fun onClickCity(
+    context: Context,
+    isInternetAvailable: MutableState<Boolean>,
     navController: NavHostController,
     city: CityForSearchDomain
 ) {
-    navController.currentBackStackEntry?.savedStateHandle?.set(
-        key = CITY_KEY,
-        value = city
-    )
-    navController.navigate(WeatherNavigation.WeatherAndForecast.destination)
+    if (isInternetAvailable.value) {
+        navController.currentBackStackEntry?.savedStateHandle?.set(
+            key = CITY_KEY,
+            value = city
+        )
+        navController.navigate(WeatherNavigation.WeatherAndForecast.destination)
+    } else {
+        context.displayToast(R.string.weather_no_connection)
+    }
 }
 
 private fun onClickButton(context: Context) {
@@ -160,10 +169,11 @@ private fun onClickButton(context: Context) {
 @Preview(showBackground = true)
 @Composable
 fun CitiesPreview(
+    isInternetAvailable: MutableState<Boolean>,
     navController: NavHostController,
     citiesUiState: List<CityForSearchDomain>
 ) {
     WeatherApplicationTheme {
-        Cities(navController, citiesUiState)
+        Cities(isInternetAvailable, navController, citiesUiState)
     }
 }
