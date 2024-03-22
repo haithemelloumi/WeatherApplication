@@ -2,6 +2,7 @@ package com.helloumi.weatherapplication.ui.feature.navigation
 
 import android.content.Context
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -14,6 +15,7 @@ import com.helloumi.weatherapplication.ui.feature.weatherforecast.DisplayWeather
 @Composable
 fun SetupNavGraph(
     context: Context,
+    isInternetAvailable: MutableState<Boolean>,
     navController: NavHostController,
     weatherViewModel: WeatherViewModel,
 ) {
@@ -23,7 +25,7 @@ fun SetupNavGraph(
         startDestination = WeatherNavigation.Cities.destination
     ) {
         composable(WeatherNavigation.Cities.destination) {
-            Cities(navController, weatherViewModel.citiesUiState.value)
+            Cities(isInternetAvailable, navController, weatherViewModel.citiesUiState.value)
         }
         composable(WeatherNavigation.WeatherAndForecast.destination) {
             val city =
@@ -33,7 +35,6 @@ fun SetupNavGraph(
             if (city != null) {
                 weatherViewModel.getWeather(city.name)
                 weatherViewModel.getForecast(city.name)
-
                 DisplayWeatherAndForecast(
                     navController,
                     weatherViewModel.getUiModel(context, city.name),
