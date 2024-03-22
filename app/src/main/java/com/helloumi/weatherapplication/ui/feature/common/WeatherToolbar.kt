@@ -91,6 +91,7 @@ fun WeatherToolbar(
                 bottom.linkTo(buttonGarage.bottom)
             },
             color = WHITE,
+            fontSize = Dimens.TEXT_SIZE_BIG
         )
     }
 }
