@@ -36,6 +36,8 @@ import com.helloumi.weatherapplication.ui.feature.main.MainActivity.Companion.CI
 import com.helloumi.weatherapplication.ui.feature.navigation.WeatherNavigation
 import com.helloumi.weatherapplication.ui.theme.Dimens
 import com.helloumi.weatherapplication.ui.theme.Dimens.ITEM_HEIGHT
+import com.helloumi.weatherapplication.ui.theme.Dimens.STACK_MD
+import com.helloumi.weatherapplication.ui.theme.Dimens.STACK_XXL
 import com.helloumi.weatherapplication.ui.theme.PURPLE_40
 import com.helloumi.weatherapplication.ui.theme.PURPLE_GREY_40
 import com.helloumi.weatherapplication.ui.theme.Radius
@@ -128,7 +130,8 @@ fun Cities(
                         bottom.linkTo(parent.bottom)
                     }
                     .fillMaxWidth()
-                    .padding(horizontal = Dimens.STACK_MD, vertical = Dimens.STACK_MD),
+                    .padding(bottom = STACK_XXL)
+                    .padding(horizontal = STACK_MD),
                 context
             ) { onClickButton(context) }
         }
