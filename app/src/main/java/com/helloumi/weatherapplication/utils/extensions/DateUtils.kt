@@ -8,7 +8,7 @@ import javax.inject.Inject
 class DateUtils @Inject constructor() {
     fun todayDate(): String {
         val calendar = Calendar.getInstance().time
-        val df = SimpleDateFormat("EEEE, MMMM d", Locale.getDefault())
+        val df = SimpleDateFormat("EEEE, d MMMM", Locale.getDefault())
         return df.format(calendar)
     }
 }

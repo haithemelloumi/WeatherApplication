@@ -141,6 +141,7 @@ fun DisplayWeatherAndForecast(
                         DisplayServerMessage(uiModel.serverUnreachableLabel)
                     }
                 }
+                Spacer(modifier = Modifier.size(STACK_SM))
                 /////////////////////// END FORECAST /////////////////////
             }
 

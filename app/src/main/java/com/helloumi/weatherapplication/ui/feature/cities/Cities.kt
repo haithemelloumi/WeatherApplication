@@ -97,7 +97,14 @@ fun Cities(
             ) {
                 citiesUiState.forEach { city ->
                     Button(
-                        onClick = { onClickCity(context, isInternetAvailable, navController, city) },
+                        onClick = {
+                            onClickCity(
+                                context,
+                                isInternetAvailable,
+                                navController,
+                                city
+                            )
+                        },
                         shape = RoundedCornerShape(Radius.EXTRA_LARGE),
                         colors = ButtonDefaults.buttonColors(containerColor = PURPLE_GREY_40)
                     ) {
