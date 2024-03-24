@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -25,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.helloumi.weatherapplication.R
@@ -36,8 +35,6 @@ import com.helloumi.weatherapplication.ui.feature.main.MainActivity.Companion.CI
 import com.helloumi.weatherapplication.ui.feature.navigation.WeatherNavigation
 import com.helloumi.weatherapplication.ui.theme.Dimens
 import com.helloumi.weatherapplication.ui.theme.Dimens.ITEM_HEIGHT
-import com.helloumi.weatherapplication.ui.theme.Dimens.STACK_MD
-import com.helloumi.weatherapplication.ui.theme.Dimens.STACK_XXL
 import com.helloumi.weatherapplication.ui.theme.PURPLE_40
 import com.helloumi.weatherapplication.ui.theme.PURPLE_GREY_40
 import com.helloumi.weatherapplication.ui.theme.Radius
@@ -68,74 +65,60 @@ fun Cities(
 
     val context: Context = LocalContext.current
 
-    Box {
+    Column(
+        Modifier.fillMaxHeight(),
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
 
-        ConstraintLayout(
+        WeatherToolbar(
+            toolbarText = context.getString(R.string.cities_title),
+            scrollState.firstVisibleItemScrollOffset,
+            onBackClick = { },
+            isArrowBackVisible = false,
             modifier = Modifier.fillMaxWidth()
+        )
+
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                // fill screen
+                .weight(1f, false)
+                .padding(horizontal = Dimens.STACK_MD, vertical = Dimens.STACK_SM)
         ) {
-            val (toolbar, list, button) = createRefs()
-
-            WeatherToolbar(
-                toolbarText = context.getString(R.string.cities_title),
-                scrollState.firstVisibleItemScrollOffset,
-                onBackClick = { },
-                isArrowBackVisible = false,
-                modifier = Modifier
-                    .constrainAs(toolbar) {
-                        top.linkTo(parent.top)
-                        bottom.linkTo(list.top)
-                    }
-            )
-
-            Column(
-                modifier = Modifier
-                    .constrainAs(list) {
-                        top.linkTo(toolbar.bottom)
-                        bottom.linkTo(button.top)
-                    }
-                    .fillMaxHeight(0.8f)
-                    .verticalScroll(rememberScrollState())
-                    .padding(horizontal = Dimens.STACK_MD, vertical = Dimens.STACK_MD)
-            ) {
-                citiesUiState.forEach { city ->
-                    Button(
-                        onClick = {
-                            onClickCity(
-                                context,
-                                isInternetAvailable,
-                                navController,
-                                city
-                            )
-                        },
-                        shape = RoundedCornerShape(Radius.EXTRA_LARGE),
-                        colors = ButtonDefaults.buttonColors(containerColor = PURPLE_GREY_40)
-                    ) {
-                        Text(
-                            text = city.name,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(ITEM_HEIGHT)
-                                // Center Text Vertically
-                                .wrapContentHeight(align = Alignment.CenterVertically),
+            citiesUiState.forEach { city ->
+                Button(
+                    onClick = {
+                        onClickCity(
+                            context,
+                            isInternetAvailable,
+                            navController,
+                            city
                         )
-                    }
-                    Spacer(modifier = Modifier.height(Dimens.STACK_XS))
+                    },
+                    shape = RoundedCornerShape(Radius.EXTRA_LARGE),
+                    colors = ButtonDefaults.buttonColors(containerColor = PURPLE_GREY_40)
+                ) {
+                    Text(
+                        text = city.name,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(ITEM_HEIGHT)
+                            // Center Text Vertically
+                            .wrapContentHeight(align = Alignment.CenterVertically),
+                    )
                 }
+                Spacer(modifier = Modifier.height(Dimens.STACK_XS))
             }
-
-            AddCityButton(
-                Modifier
-                    .constrainAs(button) {
-                        top.linkTo(list.bottom)
-                        bottom.linkTo(parent.bottom)
-                    }
-                    .fillMaxWidth()
-                    .padding(bottom = STACK_XXL)
-                    .padding(horizontal = STACK_MD),
-                context
-            ) { onClickButton(context) }
         }
+
+        AddCityButton(
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = Dimens.STACK_MD, vertical = Dimens.STACK_SM),
+            context
+        ) { onClickButton(context) }
     }
+
 }
 
 @Composable
