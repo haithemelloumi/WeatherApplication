@@ -26,8 +26,7 @@ import com.helloumi.weatherapplication.ui.theme.Dimens
 
 @Composable
 fun DisplayDailyItems(
-    uiModel: WeatherForecastUiModel,
-    currentWeatherValue: CurrentWeatherResult.Success
+    uiModel: WeatherForecastUiModel, currentWeatherValue: CurrentWeatherResult.Success
 ) {
     Column(modifier = Modifier.horizontalScroll(rememberScrollState())) {
         Row(
@@ -37,30 +36,41 @@ fun DisplayDailyItems(
         ) {
             DailyItem(
                 R.drawable.temperature,
-                currentWeatherValue.currentWeatherResponse.main?.feelsLike.toString(),
+                if (currentWeatherValue.currentWeatherResponse.main != null) currentWeatherValue.currentWeatherResponse.main.feelsLike.toString()
+                else uiModel.noDataLabel,
                 uiModel.feelsLikeLabel
             )
             Spacer(modifier = Modifier.size(Dimens.STACK_SM))
+
             DailyItem(
                 R.drawable.visibility,
-                currentWeatherValue.currentWeatherResponse.visibility.toString(),
+                if (currentWeatherValue.currentWeatherResponse.visibility != null) currentWeatherValue.currentWeatherResponse.visibility.toString()
+                else uiModel.noDataLabel,
                 uiModel.visibilityLabel
             )
             Spacer(modifier = Modifier.size(Dimens.STACK_SM))
-            currentWeatherValue.currentWeatherResponse.main?.getHumidityString()
-                ?.let {
-                    DailyItem(R.drawable.humidity, it, uiModel.humidityLabel)
-                }
+
+            DailyItem(
+                R.drawable.humidity,
+                currentWeatherValue.currentWeatherResponse.main?.getHumidityString()
+                    ?: uiModel.noDataLabel,
+                uiModel.humidityLabel
+            )
             Spacer(modifier = Modifier.size(Dimens.STACK_SM))
+
             DailyItem(
                 R.drawable.win_speed,
-                currentWeatherValue.currentWeatherResponse.wind?.speed.toString(),
+                currentWeatherValue.currentWeatherResponse.wind?.speed?.toString()
+                    ?: uiModel.noDataLabel,
                 uiModel.windSpeed
             )
             Spacer(modifier = Modifier.size(Dimens.STACK_SM))
+
             DailyItem(
                 R.drawable.air_pressure,
-                currentWeatherValue.currentWeatherResponse.main?.pressure.toString(),
+                if (currentWeatherValue.currentWeatherResponse.main != null)
+                    currentWeatherValue.currentWeatherResponse.main.pressure.toString()
+                else uiModel.noDataLabel,
                 uiModel.airPressureLabel
             )
         }

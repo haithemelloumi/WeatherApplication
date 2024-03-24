@@ -95,7 +95,7 @@ fun DisplayWeatherAndForecast(
                 when (val currentWeatherValue = currentWeather.value) {
                     is CurrentWeatherResult.Success -> {
 
-                        DisplayWeather(context, currentWeatherValue)
+                        DisplayWeather(context, currentWeatherValue, uiModel.noDataLabel)
 
                         Spacer(modifier = Modifier.size(STACK_SM))
 
@@ -115,10 +115,10 @@ fun DisplayWeatherAndForecast(
                         CircularProgressIndicatorLoader()
                     }
                     is CurrentWeatherResult.ServerError -> {
-                        DisplayServerMessage(uiModel.serverErrorLabel)
+                        DisplayErrorMessage(uiModel.serverErrorLabel)
                     }
                     is CurrentWeatherResult.ServerUnavailable -> {
-                        DisplayServerMessage(uiModel.serverUnreachableLabel)
+                        DisplayErrorMessage(uiModel.serverUnreachableLabel)
                     }
                 }
 
@@ -129,16 +129,16 @@ fun DisplayWeatherAndForecast(
                 Spacer(modifier = Modifier.size(STACK_SM))
                 when (val forecastResultValue = forecastResult.value) {
                     is ForecastResult.Success -> {
-                        DisplayForecast(context, forecastResultValue)
+                        DisplayForecast(context, forecastResultValue, uiModel.noDataLabel)
                     }
                     is ForecastResult.Loading -> {
                         CircularProgressIndicatorLoader()
                     }
                     is ForecastResult.ServerError -> {
-                        DisplayServerMessage(uiModel.serverErrorLabel)
+                        DisplayErrorMessage(uiModel.serverErrorLabel)
                     }
                     is ForecastResult.ServerUnavailable -> {
-                        DisplayServerMessage(uiModel.serverUnreachableLabel)
+                        DisplayErrorMessage(uiModel.serverUnreachableLabel)
                     }
                 }
                 Spacer(modifier = Modifier.size(STACK_SM))
@@ -152,7 +152,7 @@ fun DisplayWeatherAndForecast(
 }
 
 @Composable
-private fun DisplayServerMessage(message: String) {
+fun DisplayErrorMessage(message: String) {
     Text(
         text = message,
         modifier = Modifier.padding(start = INLINE_SM, top = STACK_MD),

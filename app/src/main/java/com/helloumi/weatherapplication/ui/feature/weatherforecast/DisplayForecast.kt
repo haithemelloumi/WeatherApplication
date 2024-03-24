@@ -33,7 +33,11 @@ import com.helloumi.weatherapplication.ui.theme.Dimens
 import com.helloumi.weatherapplication.utils.extensions.resIdByName
 
 @Composable
-fun DisplayForecast(context: Context, forecastResultValue: ForecastResult.Success) {
+fun DisplayForecast(
+    context: Context,
+    forecastResultValue: ForecastResult.Success,
+    noDataLabel: String
+) {
     if (forecastResultValue.forecastResponse.list?.isNotEmpty() == true) {
         Column(modifier = Modifier.horizontalScroll(rememberScrollState())) {
             Row(
@@ -47,6 +51,8 @@ fun DisplayForecast(context: Context, forecastResultValue: ForecastResult.Succes
                 }
             }
         }
+    } else {
+        DisplayErrorMessage(noDataLabel)
     }
 }
 
