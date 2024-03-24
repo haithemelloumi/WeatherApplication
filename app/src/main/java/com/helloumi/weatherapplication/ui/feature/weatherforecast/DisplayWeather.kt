@@ -24,8 +24,11 @@ import com.helloumi.weatherapplication.ui.theme.WHITE
 import com.helloumi.weatherapplication.utils.extensions.resIdByName
 
 @Composable
-fun DisplayWeather(context: Context, currentWeatherValue: CurrentWeatherResult.Success) {
-
+fun DisplayWeather(
+    context: Context,
+    currentWeatherValue: CurrentWeatherResult.Success,
+    noDataLabel: String
+) {
 
     Card(
         modifier = Modifier
@@ -52,33 +55,23 @@ fun DisplayWeather(context: Context, currentWeatherValue: CurrentWeatherResult.S
                 ),
                 contentDescription = null,
             )
-            currentWeatherValue.currentWeatherResponse.main?.let {
-                Text(
-                    text = it.getTempString(),
-                    modifier = Modifier.align(Alignment.CenterVertically),
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = Dimens.TEXT_SIZE_EXTREMELY_BIG,
-                        color = WHITE
-                    )
-                )
-            }
 
             Text(
-                text = "°C",
-                modifier = Modifier.padding(top = Dimens.STACK_XXL),
+                text = if (currentWeatherValue.currentWeatherResponse.main != null)
+                    currentWeatherValue.currentWeatherResponse.main.getTempString()
+                else noDataLabel,
+                modifier = Modifier.align(Alignment.CenterVertically),
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
-                    fontSize = Dimens.TEXT_SIZE_VERY_BIG,
+                    fontSize = Dimens.TEXT_SIZE_EXTREMELY_BIG,
                     color = WHITE
                 )
             )
-            currentWeatherValue.currentWeatherResponse.weather?.get(0)?.description?.let {
+
+            if (currentWeatherValue.currentWeatherResponse.main != null) {
                 Text(
-                    text = it,
-                    modifier = Modifier
-                        .padding(start = Dimens.STACK_SM, end = Dimens.STACK_XS)
-                        .align(Alignment.CenterVertically),
+                    text = "°C",
+                    modifier = Modifier.padding(top = Dimens.STACK_XXL),
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
                         fontSize = Dimens.TEXT_SIZE_VERY_BIG,
@@ -86,6 +79,19 @@ fun DisplayWeather(context: Context, currentWeatherValue: CurrentWeatherResult.S
                     )
                 )
             }
+
+            Text(
+                text = currentWeatherValue.currentWeatherResponse.weather?.get(0)?.description
+                    ?: noDataLabel,
+                modifier = Modifier
+                    .padding(start = Dimens.STACK_SM, end = Dimens.STACK_XS)
+                    .align(Alignment.CenterVertically),
+                style = TextStyle(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = Dimens.TEXT_SIZE_VERY_BIG,
+                    color = WHITE
+                )
+            )
 
         }
 
