@@ -82,7 +82,7 @@ fun Cities(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
                 // fill screen
-                .weight(1f, false)
+                .weight(1f)
                 .padding(horizontal = Dimens.STACK_MD, vertical = Dimens.STACK_SM)
         ) {
             citiesUiState.forEach { city ->
