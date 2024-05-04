@@ -2,7 +2,6 @@ package com.helloumi.todayweatherforecast.ui.feature.cities
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -30,7 +29,6 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.helloumi.todayweatherforecast.R
 import com.helloumi.todayweatherforecast.domain.model.CityForSearchDomain
-import com.helloumi.todayweatherforecast.ui.feature.addcity.AddCityActivity
 import com.helloumi.todayweatherforecast.ui.feature.common.WeatherToolbar
 import com.helloumi.todayweatherforecast.ui.feature.main.MainActivity.Companion.CITY_KEY
 import com.helloumi.todayweatherforecast.ui.feature.navigation.WeatherNavigation
@@ -47,7 +45,8 @@ import com.helloumi.todayweatherforecast.utils.extensions.displayToast
 fun Cities(
     isInternetAvailable: MutableState<Boolean>,
     navController: NavHostController,
-    citiesUiState: List<CityForSearchDomain>
+    citiesUiState: List<CityForSearchDomain>,
+    onClickAddCityButton: () -> Unit
 ) {
 
     //LazyList scroll position
@@ -115,7 +114,9 @@ fun Cities(
                 .fillMaxWidth()
                 .padding(horizontal = Dimens.STACK_MD, vertical = Dimens.STACK_SM),
             context
-        ) { onClickButton(context) }
+        ) {
+            onClickAddCityButton()
+        }
     }
 
 }
@@ -152,11 +153,6 @@ private fun onClickCity(
     }
 }
 
-private fun onClickButton(context: Context) {
-    val myIntent = Intent(context, AddCityActivity::class.java)
-    context.startActivity(myIntent)
-}
-
 @SuppressLint("UnrememberedMutableState")
 @Preview(showBackground = true)
 @Composable
@@ -169,6 +165,6 @@ fun CitiesPreview() {
         CityForSearchDomain("id3", "name3")
     )
     TodayWeatherForecastTheme {
-        Cities(isInternetAvailable, navController, cities)
+        Cities(isInternetAvailable, navController, cities) {}
     }
 }
