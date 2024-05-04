@@ -4,7 +4,7 @@ plugins {
     // dagger hilt
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
-    id ("kotlin-parcelize")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -27,7 +27,7 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "API_KEY", "\"AIzaSyD5q5UN4OGdXW2TUkCBYYiXArV1SmSSK9Y\"")
+            buildConfigField("String", "API_KEY", "\"AIzaSyBNl636qcbsCEwWm4ybTgmbYSaUhPlahFM\"")
         }
 
         release {
@@ -80,6 +80,7 @@ val androidMaterialVersion: String by rootProject.extra
 val navigationComposeVersion: String by rootProject.extra
 val activityCompose: String by rootProject.extra
 val viewModelScope: String by rootProject.extra
+val hiltComposeVersion: String by rootProject.extra
 val placesVersion: String by rootProject.extra
 val hiltVersion: String by rootProject.extra
 val roomVersion: String by rootProject.extra
@@ -133,6 +134,7 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:$navigationComposeVersion")
     implementation("androidx.activity:activity-compose:$activityCompose")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$viewModelScope")
+    implementation("androidx.hilt:hilt-navigation-compose:$hiltComposeVersion")
 
     //-------------------------------------------------------------------------------------------//
 

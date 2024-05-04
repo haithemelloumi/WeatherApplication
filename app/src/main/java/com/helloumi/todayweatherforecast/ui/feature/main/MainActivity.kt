@@ -13,7 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.helloumi.todayweatherforecast.ui.feature.navigation.SetupNavGraph
-import com.helloumi.todayweatherforecast.ui.theme.WeatherApplicationTheme
+import com.helloumi.todayweatherforecast.ui.theme.TodayWeatherForecastTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
         collectInternet()
 
         setContent {
-            WeatherApplicationTheme {
+            TodayWeatherForecastTheme {
                 navController = rememberNavController()
                 navController.addOnDestinationChangedListener { _, _, _ ->
                     window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN

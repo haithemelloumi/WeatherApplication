@@ -10,14 +10,14 @@ import com.helloumi.todayweatherforecast.domain.model.CityForSearchDomain
 import com.helloumi.todayweatherforecast.ui.feature.cities.Cities
 import com.helloumi.todayweatherforecast.ui.feature.main.WeatherViewModel
 import com.helloumi.todayweatherforecast.ui.feature.main.MainActivity
-import com.helloumi.todayweatherforecast.ui.feature.weatherforecast.DisplayWeatherAndForecast
+import com.helloumi.todayweatherforecast.ui.feature.weatherforecast.WeatherAndForecast
 
 @Composable
 fun SetupNavGraph(
     context: Context,
     isInternetAvailable: MutableState<Boolean>,
     navController: NavHostController,
-    weatherViewModel: WeatherViewModel,
+    weatherViewModel: WeatherViewModel
 ) {
 
     NavHost(
@@ -33,11 +33,12 @@ fun SetupNavGraph(
                     MainActivity.CITY_KEY
                 )
             if (city != null) {
-                weatherViewModel.getWeather(city.name)
+                weatherViewModel.getWeather(context, city.name)
                 weatherViewModel.getForecast(city.name)
-                DisplayWeatherAndForecast(
+                WeatherAndForecast(
                     navController,
                     weatherViewModel.getUiModel(context, city.name),
+                    weatherViewModel.weatherIcon,
                     weatherViewModel.currentWeatherUiState,
                     weatherViewModel.forecastResponseUiState
                 )

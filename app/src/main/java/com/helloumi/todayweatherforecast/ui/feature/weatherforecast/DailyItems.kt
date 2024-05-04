@@ -19,14 +19,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import com.helloumi.todayweatherforecast.R
+import com.helloumi.todayweatherforecast.domain.model.Clouds
+import com.helloumi.todayweatherforecast.domain.model.Coord
+import com.helloumi.todayweatherforecast.domain.model.Main
+import com.helloumi.todayweatherforecast.domain.model.Sys
+import com.helloumi.todayweatherforecast.domain.model.WeatherItem
+import com.helloumi.todayweatherforecast.domain.model.Wind
+import com.helloumi.todayweatherforecast.domain.model.response.CurrentWeatherResponse
 import com.helloumi.todayweatherforecast.domain.model.result.CurrentWeatherResult
 import com.helloumi.todayweatherforecast.ui.feature.weatherforecast.model.WeatherForecastUiModel
 import com.helloumi.todayweatherforecast.ui.theme.Dimens
 
 @Composable
-fun DisplayDailyItems(
-    uiModel: WeatherForecastUiModel, currentWeatherValue: CurrentWeatherResult.Success
+fun DailyItems(
+    uiModel: WeatherForecastUiModel,
+    currentWeatherValue: CurrentWeatherResult.Success
 ) {
     Column(modifier = Modifier.horizontalScroll(rememberScrollState())) {
         Row(
@@ -108,4 +117,61 @@ fun DailyItem(icDay: Int, data: String, stringText: String) {
         )
 
     }
+}
+
+
+@Preview
+@Composable
+fun DailyItemsPreview() {
+    val uiModel = WeatherForecastUiModel(
+        cityName = "cityName",
+        currentDate = "currentDate",
+        screenTitle = "screenTitle",
+        forecastLabel = "forecastLabel",
+        feelsLikeLabel = "feelsLikeLabel",
+        visibilityLabel = "visibilityLabel",
+        humidityLabel = "humidityLabel",
+        windSpeed = "windSpeed",
+        airPressureLabel = "airPressureLabel",
+        noDataLabel = "airPressureLabel",
+        serverUnreachableLabel = "serverUnreachableLabel",
+        serverErrorLabel = "serverErrorLabel"
+    )
+
+    val currentWeather: CurrentWeatherResult.Success = CurrentWeatherResult.Success(
+        CurrentWeatherResponse(
+            visibility = 100,
+            timezone = 99,
+            main = Main(
+                temp = 1000.0,
+                tempMin = 1000.0,
+                grndLevel = 1000.0,
+                tempKf = 1000.0,
+                feelsLike = 1000.0,
+                humidity = 100,
+                pressure = 100.0,
+                seaLevel = 100.0,
+                tempMax = 100.0
+            ),
+            clouds = Clouds(all = 100),
+            sys = Sys("ff"),
+            dt = 1000,
+            coord = Coord(100.0, 33.0),
+            weather = listOf(
+                WeatherItem(
+                    icon = "01d.png",
+                    description = "rainy",
+                    main = "",
+                    id = 5
+                )
+            ),
+            name = "name",
+            cod = 23,
+            id = 11,
+            base = "gg",
+            wind = Wind(2.0, 4.0)
+        )
+    )
+
+    DailyItems(uiModel, currentWeather)
 }
