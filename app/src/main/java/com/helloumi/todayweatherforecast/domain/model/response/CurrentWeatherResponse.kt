@@ -99,4 +99,9 @@ data class CurrentWeatherResponse(
             else -> SUPERNOVA
         }
     }
+
+    fun getDescription() =
+        if (weather?.isNotEmpty() == true) {
+            weather[0]?.description
+        } else null
 }

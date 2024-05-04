@@ -80,11 +80,12 @@ class WeatherViewModelTest {
     }
 
     @Test
-    fun `WHEN call getUiModel THEN verify useCase`() {
+    fun `WHEN call getUiModel THEN verify useCase`() = runTest {
         // GIVEN
         val uiModel = WeatherForecastUiModel(
             cityName = "cityName",
             currentDate = "currentDate",
+            screenTitle = "screenTitle",
             forecastLabel = "forecastLabel",
             feelsLikeLabel = "feelsLikeLabel",
             visibilityLabel = "visibilityLabel",
@@ -125,7 +126,7 @@ class WeatherViewModelTest {
                 .thenReturn(flowOf(expected))
 
             // WHEN
-            weatherViewModel.getWeather("cityName")
+            weatherViewModel.getWeather(context, "cityName")
 
             // THEN
             verify(getCurrentWeatherUseCase).execute("cityName")
@@ -139,7 +140,7 @@ class WeatherViewModelTest {
         Mockito.`when`(getCurrentWeatherUseCase.execute("cityName")).thenReturn(flowOf(expected))
 
         // WHEN
-        weatherViewModel.getWeather("cityName")
+        weatherViewModel.getWeather(context, "cityName")
 
         // THEN
         verify(getCurrentWeatherUseCase).execute("cityName")
@@ -147,7 +148,7 @@ class WeatherViewModelTest {
     }
 
     @Test
-    fun `WHEN call getWeather with Success THEN assert result and verify useCase`() = runTest {
+    fun `WHEN call getWeather with Success THEN assert result and verify useCase`() {
         // GIVEN
         val response = CurrentWeatherResponse(
             visibility = 100,
@@ -178,7 +179,7 @@ class WeatherViewModelTest {
         Mockito.`when`(getCurrentWeatherUseCase.execute("cityName")).thenReturn(flowOf(expected))
 
         // WHEN
-        weatherViewModel.getWeather("cityName")
+        weatherViewModel.getWeather(context, "cityName")
 
         // THEN
         verify(getCurrentWeatherUseCase).execute("cityName")

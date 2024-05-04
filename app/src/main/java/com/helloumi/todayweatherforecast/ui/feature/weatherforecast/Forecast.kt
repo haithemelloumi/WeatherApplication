@@ -1,8 +1,6 @@
 package com.helloumi.todayweatherforecast.ui.feature.weatherforecast
 
 import android.content.Context
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,7 +8,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -19,45 +18,50 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.helloumi.todayweatherforecast.R
+import com.helloumi.todayweatherforecast.domain.model.City
 import com.helloumi.todayweatherforecast.domain.model.ListItem
+import com.helloumi.todayweatherforecast.domain.model.Rain
+import com.helloumi.todayweatherforecast.domain.model.Snow
+import com.helloumi.todayweatherforecast.domain.model.WeatherItem
+import com.helloumi.todayweatherforecast.domain.model.response.ForecastResponse
 import com.helloumi.todayweatherforecast.domain.model.result.ForecastResult
 import com.helloumi.todayweatherforecast.ui.theme.Dimens
 import com.helloumi.todayweatherforecast.utils.extensions.resIdByName
 
 @Composable
-fun DisplayForecast(
-    context: Context,
+fun Forecast(
     forecastResultValue: ForecastResult.Success,
     noDataLabel: String
 ) {
     if (forecastResultValue.forecastResponse.list?.isNotEmpty() == true) {
-        Column(modifier = Modifier.horizontalScroll(rememberScrollState())) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = Dimens.INLINE_SM, end = Dimens.INLINE_SM)
-            ) {
-                for (listItem in forecastResultValue.forecastResponse.list) {
-                    ForecastItem(context, listItem)
-                    Spacer(modifier = Modifier.size(Dimens.STACK_SM))
-                }
+        LazyRow(
+            Modifier
+                .fillMaxWidth()
+                .padding(start = Dimens.INLINE_SM, end = Dimens.INLINE_SM)
+        ) {
+            items(forecastResultValue.forecastResponse.list) {
+                ForecastItem(it)
+                Spacer(modifier = Modifier.size(Dimens.STACK_SM))
             }
         }
     } else {
-        DisplayErrorMessage(noDataLabel)
+        ErrorMessage(noDataLabel)
     }
 }
 
 @Composable
-fun ForecastItem(context: Context, listItem: ListItem) {
+fun ForecastItem(listItem: ListItem) {
+    val context: Context = LocalContext.current
     Card(
         modifier = Modifier
             .height(Dimens.FORECAST_ITEM_HEIGHT)
@@ -136,4 +140,70 @@ fun ForecastItem(context: Context, listItem: ListItem) {
             )
         }
     }
+}
+
+@Preview
+@Composable
+fun ForecastPreview() {
+    val response = ForecastResponse(
+        city = City(
+            country = null,
+            coord = null,
+            name = "name",
+            id = 2
+        ),
+        cnt = 3,
+        cod = "df",
+        message = 23.9,
+        list = listOf(
+            ListItem(
+                dt = 124455L,
+                rain = Rain(22.0),
+                dtTxt = "dtTxt",
+                snow = Snow(22.0),
+                weather = listOf(
+                    WeatherItem(
+                        icon = "01d",
+                        description = "description",
+                        main = "main",
+                        id = 12
+                    )
+                ),
+                main = null,
+                clouds = null,
+                sys = null,
+                wind = null
+            )
+        )
+    )
+
+    Forecast(
+        forecastResultValue = ForecastResult.Success(response),
+        noDataLabel = "nodata"
+    )
+}
+
+@Preview
+@Composable
+fun ForecastItemPreview() {
+    ForecastItem(
+        listItem = ListItem(
+            dt = 124455L,
+            rain = Rain(22.0),
+            dtTxt = "dtTxt",
+            snow = Snow(22.0),
+            weather = listOf(
+                WeatherItem(
+                    icon = "01d",
+                    description = "description",
+                    main = "main",
+                    id = 12
+                )
+            ),
+            main = null,
+            clouds = null,
+            sys = null,
+            wind = null
+        )
+    )
 }

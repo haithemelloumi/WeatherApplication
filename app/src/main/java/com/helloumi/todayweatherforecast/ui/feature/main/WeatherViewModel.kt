@@ -1,6 +1,7 @@
 package com.helloumi.todayweatherforecast.ui.feature.main
 
 import android.content.Context
+import androidx.annotation.DrawableRes
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -14,6 +15,7 @@ import com.helloumi.todayweatherforecast.domain.usecases.GetCurrentWeatherUseCas
 import com.helloumi.todayweatherforecast.domain.usecases.GetForecastUseCase
 import com.helloumi.todayweatherforecast.ui.feature.weatherforecast.model.WeatherForecastUiModel
 import com.helloumi.todayweatherforecast.utils.extensions.DateUtils
+import com.helloumi.todayweatherforecast.utils.extensions.resIdByName
 import com.helloumi.todayweatherforecast.utils.network.NetworkMonitor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -44,6 +46,9 @@ class WeatherViewModel @Inject constructor(
         mutableStateOf(ForecastResult.Loading)
     val forecastResponseUiState: MutableState<ForecastResult> get() = _forecastResponseUiState
 
+    @DrawableRes
+    var weatherIcon: Int? = null
+
     fun getCities() {
         viewModelScope.launch(Dispatchers.IO) {
             getCitiesUseCase.execute().collectLatest { cities ->
@@ -55,6 +60,7 @@ class WeatherViewModel @Inject constructor(
     fun getUiModel(context: Context, cityName: String) = WeatherForecastUiModel(
         cityName = cityName,
         currentDate = dateUtils.todayDate(),
+        screenTitle = context.getString(R.string.weather_title),
         forecastLabel = context.getString(R.string.next_5_days),
         feelsLikeLabel = context.getString(R.string.feels_like),
         visibilityLabel = context.getString(R.string.visibility),
@@ -66,7 +72,7 @@ class WeatherViewModel @Inject constructor(
         serverErrorLabel = context.getString(R.string.weather_server_error)
     )
 
-    fun getWeather(cityName: String) {
+    fun getWeather(context: Context, cityName: String) {
 
         viewModelScope.launch {
             getCurrentWeatherUseCase.execute(cityName).collect { result ->
@@ -86,6 +92,7 @@ class WeatherViewModel @Inject constructor(
                     is CurrentWeatherResult.Success -> {
                         _currentWeatherUiState.value =
                             CurrentWeatherResult.Success(result.currentWeatherResponse)
+                        weatherIcon = getWeatherIconResId(context, result)
                     }
                 }
 
@@ -119,4 +126,12 @@ class WeatherViewModel @Inject constructor(
             }
         }
     }
+
+    private fun getWeatherIconResId(
+        context: Context,
+        currentWeatherResult: CurrentWeatherResult.Success
+    ) = context.resIdByName(
+        "icon_${currentWeatherResult.currentWeatherResponse.weather?.get(0)?.icon}",
+        "drawable"
+    )
 }
