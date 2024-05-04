@@ -21,10 +21,12 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingEnd="@dimen/spacing_medium"
             android:text="@string/add_city_title"
-            android:paddingStart="110dp"
+            android:textColor="@color/white"
             android:textSize="@dimen/text_toolbar_size"
-            android:textColor="@color/white" />
+            tools:ignore="RtlSymmetry" />
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.fragment.app.FragmentContainerView
