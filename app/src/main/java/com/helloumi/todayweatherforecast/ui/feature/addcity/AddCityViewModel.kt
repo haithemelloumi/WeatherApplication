@@ -6,6 +6,7 @@ import com.helloumi.todayweatherforecast.domain.model.CityForSearchDomain
 import kotlinx.coroutines.Dispatchers
 import com.helloumi.todayweatherforecast.domain.usecases.AddCityUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,6 +21,9 @@ import javax.inject.Inject
 class AddCityViewModel @Inject constructor(
     private val addCityUseCase: AddCityUseCase
 ) : ViewModel() {
+
+    val placeId: MutableStateFlow<String> = MutableStateFlow("")
+    val placeName: MutableStateFlow<String> = MutableStateFlow("")
 
     fun addCity(cityId: String, cityName: String) {
         viewModelScope.launch(Dispatchers.IO) {

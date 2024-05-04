@@ -15,6 +15,7 @@ val androidMaterialVersion by extra { "1.11.0" }
 val navigationComposeVersion by extra { "2.5.3" }
 val activityCompose by extra { "1.7.2" }
 val viewModelScope by extra { "2.6.2" }
+val hiltComposeVersion by extra { "1.0.0" }
 
 val placesVersion by extra { "3.3.0" }
 

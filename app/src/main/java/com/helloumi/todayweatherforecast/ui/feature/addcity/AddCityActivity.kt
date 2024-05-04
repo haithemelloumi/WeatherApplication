@@ -33,8 +33,6 @@ class AddCityActivity : AppCompatActivity() {
 
     // Initialize the AutocompleteSupportFragment.
     private lateinit var autocompleteFragment: AutocompleteSupportFragment
-    private var placeId = ""
-    private var placeName = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,8 +69,8 @@ class AddCityActivity : AppCompatActivity() {
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
                 Log.i("TAG", "Place: ${place.name}, ${place.id}")
-                placeId = place.id as String
-                placeName = place.name as String
+                addCityViewModel.placeId.value = place.id as String
+                addCityViewModel.placeName.value = place.name as String
                 initClearButton(autocompleteFragment)
             }
 
@@ -95,8 +93,8 @@ class AddCityActivity : AppCompatActivity() {
         val placeEditText = autocompleteFragment.view
             ?.findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input) as EditText
         placeEditText.setText("")
-        placeId = ""
-        placeName = ""
+        addCityViewModel.placeId.value = ""
+        addCityViewModel.placeName.value = ""
     }
 
     private fun hideClearIcon() {
@@ -106,11 +104,17 @@ class AddCityActivity : AppCompatActivity() {
     }
 
     private fun onAddButtonClick() {
-        if (placeId.isEmpty() || placeId.isBlank() || placeName.isEmpty() || placeName.isBlank()) {
+        if (addCityViewModel.placeId.value.isEmpty() || addCityViewModel.placeId.value.isBlank() ||
+            addCityViewModel.placeName.value.isEmpty() || addCityViewModel.placeName.value.isBlank()
+        ) {
             val message = resources.getString(R.string.add_city_country_required)
             Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         } else {
-            addCityViewModel.addCity(placeId, placeName)
+            addCityViewModel.addCity(
+                addCityViewModel.placeId.value,
+                addCityViewModel.placeName.value
+            )
+
             val message = resources.getString(R.string.add_city_success)
             Toast.makeText(this, message, Toast.LENGTH_LONG).show()
             clearSearchText()

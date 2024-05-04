@@ -18,7 +18,7 @@ import com.helloumi.todayweatherforecast.domain.usecases.GetCurrentWeatherUseCas
 import com.helloumi.todayweatherforecast.domain.usecases.GetForecastUseCase
 import com.helloumi.todayweatherforecast.ui.feature.main.WeatherViewModel
 import com.helloumi.todayweatherforecast.ui.theme.Dimens
-import com.helloumi.todayweatherforecast.ui.theme.WeatherApplicationTheme
+import com.helloumi.todayweatherforecast.ui.theme.TodayWeatherForecastTheme
 import com.helloumi.todayweatherforecast.utils.extensions.DateUtils
 import com.helloumi.todayweatherforecast.utils.network.NetworkMonitor
 import io.mockk.MockKAnnotations
@@ -68,7 +68,7 @@ class CitiesKtTest {
     @Test
     fun testCities_with_empty_list() {
         composeTestRule.setContent {
-            WeatherApplicationTheme {
+            TodayWeatherForecastTheme {
                 Cities(
                     isInternetAvailable = mutableStateOf(true),
                     navController = NavHostController(context),
@@ -83,7 +83,7 @@ class CitiesKtTest {
     @Test
     fun testCities_with_city() {
         composeTestRule.setContent {
-            WeatherApplicationTheme {
+            TodayWeatherForecastTheme {
                 Cities(
                     isInternetAvailable = mutableStateOf(true),
                     navController = NavHostController(context),
@@ -100,7 +100,7 @@ class CitiesKtTest {
     fun test_AddCityButton_with_not_clicked() {
         var clicked = false
         composeTestRule.setContent {
-            WeatherApplicationTheme {
+            TodayWeatherForecastTheme {
                 AddCityButton(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -121,7 +121,7 @@ class CitiesKtTest {
     fun test_AddCityButton_with_clicked() {
         var clicked = true
         composeTestRule.setContent {
-            WeatherApplicationTheme {
+            TodayWeatherForecastTheme {
                 AddCityButton(
                     modifier = Modifier
                         .fillMaxWidth()
