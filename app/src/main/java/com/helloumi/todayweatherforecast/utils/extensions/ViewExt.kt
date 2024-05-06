@@ -15,5 +15,5 @@ fun Context.resIdByName(resIdName: String, resType: String): Int {
 }
 
 fun Context.displayToast(@StringRes textToDisplay: Int): Toast {
-    return  Toast.makeText(this, getString(textToDisplay), Toast.LENGTH_SHORT).apply { show() }
+    return Toast.makeText(this, getString(textToDisplay), Toast.LENGTH_SHORT).apply { show() }
 }

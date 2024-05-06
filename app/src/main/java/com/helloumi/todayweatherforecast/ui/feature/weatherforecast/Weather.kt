@@ -1,6 +1,7 @@
 package com.helloumi.todayweatherforecast.ui.feature.weatherforecast
 
 import android.annotation.SuppressLint
+import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -30,12 +32,30 @@ import com.helloumi.todayweatherforecast.domain.model.response.CurrentWeatherRes
 import com.helloumi.todayweatherforecast.domain.model.result.CurrentWeatherResult
 import com.helloumi.todayweatherforecast.ui.theme.Dimens
 import com.helloumi.todayweatherforecast.ui.theme.WHITE
+import com.helloumi.todayweatherforecast.utils.extensions.resIdByName
+
+
+/*
+Added to display preview and ignore currentWeatherResult.currentWeatherResponse.weather[0] problem
+*/
+@Composable
+fun Weather(
+    currentWeatherValue: CurrentWeatherResult.Success,
+    noDataLabel: String,
+) {
+    val weatherIcon = getWeatherIconResId(LocalContext.current, currentWeatherValue)
+    Weather(
+        currentWeatherValue = currentWeatherValue,
+        noDataLabel = noDataLabel,
+        weatherIcon = weatherIcon,
+    )
+}
 
 @Composable
 fun Weather(
     currentWeatherValue: CurrentWeatherResult.Success,
     noDataLabel: String,
-    @DrawableRes weatherIcon: Int?,
+    @DrawableRes weatherIcon: Int,
 ) {
 
     Card(
@@ -53,13 +73,11 @@ fun Weather(
             horizontalArrangement = Arrangement.Center,
         )
         {
-            if (weatherIcon != null) {
-                Image(
-                    modifier = Modifier.size(Dimens.CURRENT_WEATHER_HEIGHT),
-                    painter = painterResource(id = weatherIcon),
-                    contentDescription = null,
-                )
-            }
+            Image(
+                modifier = Modifier.size(Dimens.CURRENT_WEATHER_HEIGHT),
+                painter = painterResource(id = weatherIcon),
+                contentDescription = null,
+            )
 
             Text(
                 text = if (currentWeatherValue.currentWeatherResponse.main != null)
@@ -146,4 +164,20 @@ fun WeatherPreview() {
         "noLabel",
         com.helloumi.todayweatherforecast.R.drawable.icon_01d
     )
+}
+
+
+private fun getWeatherIconResId(
+    context: Context,
+    currentWeatherResult: CurrentWeatherResult.Success
+): Int {
+    return if (!currentWeatherResult.currentWeatherResponse.weather.isNullOrEmpty()
+        && currentWeatherResult.currentWeatherResponse.weather[0] != null
+        && currentWeatherResult.currentWeatherResponse.weather[0]?.icon != null
+    )
+        context.resIdByName(
+            "icon_${currentWeatherResult.currentWeatherResponse.weather[0]?.icon}",
+            "drawable"
+        )
+    else com.helloumi.todayweatherforecast.R.drawable.ic_launcher_background
 }

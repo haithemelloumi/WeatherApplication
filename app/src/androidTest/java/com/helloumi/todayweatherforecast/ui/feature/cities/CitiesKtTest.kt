@@ -12,11 +12,9 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.navigation.NavHostController
-import com.helloumi.todayweatherforecast.domain.model.CityForSearchDomain
 import com.helloumi.todayweatherforecast.domain.usecases.GetCitiesUseCase
 import com.helloumi.todayweatherforecast.domain.usecases.GetCurrentWeatherUseCase
 import com.helloumi.todayweatherforecast.domain.usecases.GetForecastUseCase
-import com.helloumi.todayweatherforecast.ui.feature.main.WeatherViewModel
 import com.helloumi.todayweatherforecast.ui.theme.Dimens
 import com.helloumi.todayweatherforecast.ui.theme.TodayWeatherForecastTheme
 import com.helloumi.todayweatherforecast.utils.extensions.DateUtils
@@ -72,7 +70,7 @@ class CitiesKtTest {
                 Cities(
                     isInternetAvailable = mutableStateOf(true),
                     navController = NavHostController(context),
-                    citiesUiState = listOf()
+                    onClickAddCityButton = { }
                 )
             }
         }
@@ -87,7 +85,7 @@ class CitiesKtTest {
                 Cities(
                     isInternetAvailable = mutableStateOf(true),
                     navController = NavHostController(context),
-                    citiesUiState = listOf(CityForSearchDomain("id", "cityName"))
+                    onClickAddCityButton = { }
                 )
             }
         }
