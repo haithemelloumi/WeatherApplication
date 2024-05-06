@@ -6,16 +6,16 @@ plugins {
     id("com.google.dagger.hilt.android") version "2.47" apply false
 }
 
-val material3Version by extra { "1.1.2" }
+val material3Version by extra { "1.2.1" }
 val composeConstraintLayoutVersion by extra { "1.0.1" }
-val coilVersion by extra { "2.4.0" }
+val coilVersion by extra { "2.5.0" }
 val accompanistVersion by extra { "0.30.1" }
-val composeVersion by extra { "1.4.3" }
-val androidMaterialVersion by extra { "1.11.0" }
-val navigationComposeVersion by extra { "2.5.3" }
-val activityCompose by extra { "1.7.2" }
-val viewModelScope by extra { "2.6.2" }
-val hiltComposeVersion by extra { "1.0.0" }
+val composeVersion by extra { "1.6.7" }
+val androidMaterialVersion by extra { "1.12.0" }
+val navigationComposeVersion by extra { "2.7.7" }
+val activityCompose by extra { "1.9.0" }
+val viewModelScope by extra { "2.7.0" }
+val hiltComposeVersion by extra { "1.2.0" }
 
 val placesVersion by extra { "3.3.0" }
 

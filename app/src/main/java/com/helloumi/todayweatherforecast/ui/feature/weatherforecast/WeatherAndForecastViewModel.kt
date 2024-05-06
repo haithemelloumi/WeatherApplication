@@ -1,42 +1,27 @@
-package com.helloumi.todayweatherforecast.ui.feature.main
+package com.helloumi.todayweatherforecast.ui.feature.weatherforecast
 
 import android.content.Context
-import androidx.annotation.DrawableRes
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.helloumi.todayweatherforecast.R
-import com.helloumi.todayweatherforecast.domain.model.CityForSearchDomain
 import com.helloumi.todayweatherforecast.domain.model.result.CurrentWeatherResult
 import com.helloumi.todayweatherforecast.domain.model.result.ForecastResult
-import com.helloumi.todayweatherforecast.domain.usecases.GetCitiesUseCase
 import com.helloumi.todayweatherforecast.domain.usecases.GetCurrentWeatherUseCase
 import com.helloumi.todayweatherforecast.domain.usecases.GetForecastUseCase
 import com.helloumi.todayweatherforecast.ui.feature.weatherforecast.model.WeatherForecastUiModel
 import com.helloumi.todayweatherforecast.utils.extensions.DateUtils
-import com.helloumi.todayweatherforecast.utils.extensions.resIdByName
-import com.helloumi.todayweatherforecast.utils.network.NetworkMonitor
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WeatherViewModel @Inject constructor(
-    private val getCitiesUseCase: GetCitiesUseCase,
+class WeatherAndForecastViewModel @Inject constructor(
     private val getCurrentWeatherUseCase: GetCurrentWeatherUseCase,
     private val getForecastUseCase: GetForecastUseCase,
-    private val dateUtils: DateUtils,
-    networkMonitor: NetworkMonitor
+    private val dateUtils: DateUtils
 ) : ViewModel() {
-
-    private val _citiesUiState: MutableState<List<CityForSearchDomain>> = mutableStateOf(listOf())
-    val citiesUiState: MutableState<List<CityForSearchDomain>> get() = _citiesUiState
-
-    val isOnline: Flow<Boolean> = networkMonitor.isOnline
 
     private val _currentWeatherUiState: MutableState<CurrentWeatherResult> =
         mutableStateOf(CurrentWeatherResult.Loading)
@@ -45,17 +30,6 @@ class WeatherViewModel @Inject constructor(
     private val _forecastResponseUiState: MutableState<ForecastResult> =
         mutableStateOf(ForecastResult.Loading)
     val forecastResponseUiState: MutableState<ForecastResult> get() = _forecastResponseUiState
-
-    @DrawableRes
-    var weatherIcon: Int? = null
-
-    fun getCities() {
-        viewModelScope.launch(Dispatchers.IO) {
-            getCitiesUseCase.execute().collectLatest { cities ->
-                _citiesUiState.value = cities
-            }
-        }
-    }
 
     fun getUiModel(context: Context, cityName: String) = WeatherForecastUiModel(
         cityName = cityName,
@@ -72,8 +46,7 @@ class WeatherViewModel @Inject constructor(
         serverErrorLabel = context.getString(R.string.weather_server_error)
     )
 
-    fun getWeather(context: Context, cityName: String) {
-
+    fun getWeather(cityName: String) {
         viewModelScope.launch {
             getCurrentWeatherUseCase.execute(cityName).collect { result ->
                 when (result) {
@@ -92,7 +65,6 @@ class WeatherViewModel @Inject constructor(
                     is CurrentWeatherResult.Success -> {
                         _currentWeatherUiState.value =
                             CurrentWeatherResult.Success(result.currentWeatherResponse)
-                        weatherIcon = getWeatherIconResId(context, result)
                     }
                 }
 
@@ -126,12 +98,4 @@ class WeatherViewModel @Inject constructor(
             }
         }
     }
-
-    private fun getWeatherIconResId(
-        context: Context,
-        currentWeatherResult: CurrentWeatherResult.Success
-    ) = context.resIdByName(
-        "icon_${currentWeatherResult.currentWeatherResponse.weather?.get(0)?.icon}",
-        "drawable"
-    )
 }

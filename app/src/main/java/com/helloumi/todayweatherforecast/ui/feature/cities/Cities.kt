@@ -18,12 +18,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -37,15 +37,38 @@ import com.helloumi.todayweatherforecast.ui.theme.Dimens.ITEM_HEIGHT
 import com.helloumi.todayweatherforecast.ui.theme.PURPLE_40
 import com.helloumi.todayweatherforecast.ui.theme.PURPLE_GREY_40
 import com.helloumi.todayweatherforecast.ui.theme.Radius
-import com.helloumi.todayweatherforecast.ui.theme.TodayWeatherForecastTheme
 import com.helloumi.todayweatherforecast.utils.extensions.displayToast
+
+/*
+Added to display preview because The previews system is not capable
+of constructing all of the parameters passed to a ViewModel
+*/
+@Composable
+fun Cities(
+    navController: NavHostController,
+    onClickAddCityButton: () -> Unit
+) {
+    val viewModel = hiltViewModel<CitiesViewModel>()
+    LaunchedEffect(Unit) {
+        viewModel.getCities()
+        viewModel.collectIsOnline()
+    }
+    val cities = viewModel.citiesUiState.value
+    val isInternetAvailable = viewModel.isInternetAvailable.value
+    Cities(
+        cities = cities,
+        isInternetAvailable = isInternetAvailable,
+        navController = navController,
+        onClickAddCityButton = onClickAddCityButton
+    )
+}
 
 @SuppressLint("FrequentlyChangedStateReadInComposition")
 @Composable
 fun Cities(
-    isInternetAvailable: MutableState<Boolean>,
+    cities: List<CityForSearchDomain>,
+    isInternetAvailable: Boolean,
     navController: NavHostController,
-    citiesUiState: List<CityForSearchDomain>,
     onClickAddCityButton: () -> Unit
 ) {
 
@@ -83,7 +106,7 @@ fun Cities(
                 .weight(1f)
                 .padding(horizontal = Dimens.STACK_MD, vertical = Dimens.STACK_SM)
         ) {
-            items(citiesUiState) {
+            items(cities) {
                 Button(
                     onClick = {
                         onClickCity(
@@ -138,11 +161,11 @@ fun AddCityButton(
 
 private fun onClickCity(
     context: Context,
-    isInternetAvailable: MutableState<Boolean>,
+    isInternetAvailable: Boolean,
     navController: NavHostController,
     city: CityForSearchDomain
 ) {
-    if (isInternetAvailable.value) {
+    if (isInternetAvailable) {
         navController.currentBackStackEntry?.savedStateHandle?.set(
             key = CITY_KEY,
             value = city
@@ -157,14 +180,9 @@ private fun onClickCity(
 @Preview(showBackground = true)
 @Composable
 fun CitiesPreview() {
-    val isInternetAvailable: MutableState<Boolean> = mutableStateOf(true)
     val navController = rememberNavController()
     val cities = listOf(
-        CityForSearchDomain("id", "name"),
-        CityForSearchDomain("id2", "name2"),
-        CityForSearchDomain("id3", "name3")
+        CityForSearchDomain("id", "name")
     )
-    TodayWeatherForecastTheme {
-        Cities(isInternetAvailable, navController, cities) {}
-    }
+    Cities(cities, true, navController) {}
 }
