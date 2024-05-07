@@ -1,11 +1,6 @@
-package com.helloumi.todayweatherforecast.ui.feature.cities
+package com.helloumi.todayweatherforecast.ui.feature.weatherforecast
 
 import android.content.Context
-import com.helloumi.todayweatherforecast.domain.usecases.GetCitiesUseCase
-import com.helloumi.todayweatherforecast.domain.usecases.GetCurrentWeatherUseCase
-import com.helloumi.todayweatherforecast.domain.usecases.GetForecastUseCase
-import com.helloumi.todayweatherforecast.ui.feature.main.WeatherViewModel
-import com.helloumi.todayweatherforecast.ui.feature.weatherforecast.model.WeatherForecastUiModel
 import com.helloumi.todayweatherforecast.R
 import com.helloumi.todayweatherforecast.common.TestViewModelScopeRule
 import com.helloumi.todayweatherforecast.domain.model.City
@@ -18,8 +13,10 @@ import com.helloumi.todayweatherforecast.domain.model.response.CurrentWeatherRes
 import com.helloumi.todayweatherforecast.domain.model.response.ForecastResponse
 import com.helloumi.todayweatherforecast.domain.model.result.CurrentWeatherResult
 import com.helloumi.todayweatherforecast.domain.model.result.ForecastResult
+import com.helloumi.todayweatherforecast.domain.usecases.GetCurrentWeatherUseCase
+import com.helloumi.todayweatherforecast.domain.usecases.GetForecastUseCase
+import com.helloumi.todayweatherforecast.ui.feature.weatherforecast.model.WeatherForecastUiModel
 import com.helloumi.todayweatherforecast.utils.extensions.DateUtils
-import com.helloumi.todayweatherforecast.utils.network.NetworkMonitor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -33,16 +30,13 @@ import org.mockito.kotlin.verify
 import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi
-class WeatherViewModelTest {
+class WeatherAndForecastViewModelTest {
 
     @get:Rule
     val dispatcherRule = TestViewModelScopeRule()
 
     @Mock
     private lateinit var context: Context
-
-    @Mock
-    private lateinit var getCitiesUseCase: GetCitiesUseCase
 
     @Mock
     private lateinit var getCurrentWeatherUseCase: GetCurrentWeatherUseCase
@@ -53,30 +47,16 @@ class WeatherViewModelTest {
     @Mock
     private lateinit var dateUtils: DateUtils
 
-    @Mock
-    private lateinit var networkMonitor: NetworkMonitor
-
-    private lateinit var weatherViewModel: WeatherViewModel
+    private lateinit var weatherAndForecastViewModel: WeatherAndForecastViewModel
 
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
-        weatherViewModel = WeatherViewModel(
-            getCitiesUseCase,
+        weatherAndForecastViewModel = WeatherAndForecastViewModel(
             getCurrentWeatherUseCase,
             getForecastUseCase,
-            dateUtils,
-            networkMonitor
+            dateUtils
         )
-    }
-
-    @Test
-    fun `WHEN call getCities THEN verify useCase`() = runTest {
-        // WHEN
-        weatherViewModel.getCities()
-
-        // THEN
-        verify(getCitiesUseCase).execute()
     }
 
     @Test
@@ -98,6 +78,7 @@ class WeatherViewModelTest {
         )
 
         Mockito.`when`(dateUtils.todayDate()).thenReturn("currentDate")
+        Mockito.`when`(context.getString(R.string.weather_title)).thenReturn("screenTitle")
         Mockito.`when`(context.getString(R.string.next_5_days)).thenReturn("forecastLabel")
         Mockito.`when`(context.getString(R.string.feels_like)).thenReturn("feelsLikeLabel")
         Mockito.`when`(context.getString(R.string.visibility)).thenReturn("visibilityLabel")
@@ -111,7 +92,7 @@ class WeatherViewModelTest {
             .thenReturn("serverErrorLabel")
 
         // WHEN
-        val result = weatherViewModel.getUiModel(context, "cityName")
+        val result = weatherAndForecastViewModel.getUiModel(context, "cityName")
 
         // THEN
         assertEquals(uiModel, result)
@@ -126,11 +107,11 @@ class WeatherViewModelTest {
                 .thenReturn(flowOf(expected))
 
             // WHEN
-            weatherViewModel.getWeather(context, "cityName")
+            weatherAndForecastViewModel.getWeather("cityName")
 
             // THEN
             verify(getCurrentWeatherUseCase).execute("cityName")
-            assertEquals(expected, weatherViewModel.currentWeatherUiState.value)
+            assertEquals(expected, weatherAndForecastViewModel.currentWeatherUiState.value)
         }
 
     @Test
@@ -140,11 +121,11 @@ class WeatherViewModelTest {
         Mockito.`when`(getCurrentWeatherUseCase.execute("cityName")).thenReturn(flowOf(expected))
 
         // WHEN
-        weatherViewModel.getWeather(context, "cityName")
+        weatherAndForecastViewModel.getWeather("cityName")
 
         // THEN
         verify(getCurrentWeatherUseCase).execute("cityName")
-        assertEquals(expected, weatherViewModel.currentWeatherUiState.value)
+        assertEquals(expected, weatherAndForecastViewModel.currentWeatherUiState.value)
     }
 
     @Test
@@ -179,13 +160,13 @@ class WeatherViewModelTest {
         Mockito.`when`(getCurrentWeatherUseCase.execute("cityName")).thenReturn(flowOf(expected))
 
         // WHEN
-        weatherViewModel.getWeather(context, "cityName")
+        weatherAndForecastViewModel.getWeather("cityName")
 
         // THEN
         verify(getCurrentWeatherUseCase).execute("cityName")
         assertEquals(
             expected.currentWeatherResponse,
-            (weatherViewModel.currentWeatherUiState.value as CurrentWeatherResult.Success).currentWeatherResponse
+            (weatherAndForecastViewModel.currentWeatherUiState.value as CurrentWeatherResult.Success).currentWeatherResponse
         )
     }
 
@@ -198,11 +179,11 @@ class WeatherViewModelTest {
                 .thenReturn(flowOf(expected))
 
             // WHEN
-            weatherViewModel.getForecast("cityName")
+            weatherAndForecastViewModel.getForecast("cityName")
 
             // THEN
             verify(getForecastUseCase).execute("cityName")
-            assertEquals(expected, weatherViewModel.forecastResponseUiState.value)
+            assertEquals(expected, weatherAndForecastViewModel.forecastResponseUiState.value)
         }
 
     @Test
@@ -212,11 +193,11 @@ class WeatherViewModelTest {
         Mockito.`when`(getForecastUseCase.execute("cityName")).thenReturn(flowOf(expected))
 
         // WHEN
-        weatherViewModel.getForecast("cityName")
+        weatherAndForecastViewModel.getForecast("cityName")
 
         // THEN
         verify(getForecastUseCase).execute("cityName")
-        assertEquals(expected, weatherViewModel.forecastResponseUiState.value)
+        assertEquals(expected, weatherAndForecastViewModel.forecastResponseUiState.value)
     }
 
     @Test
@@ -238,13 +219,13 @@ class WeatherViewModelTest {
         Mockito.`when`(getForecastUseCase.execute("cityName")).thenReturn(flowOf(expected))
 
         // WHEN
-        weatherViewModel.getForecast("cityName")
+        weatherAndForecastViewModel.getForecast("cityName")
 
         // THEN
         verify(getForecastUseCase).execute("cityName")
         assertEquals(
             expected.forecastResponse,
-            (weatherViewModel.forecastResponseUiState.value as ForecastResult.Success).forecastResponse
+            (weatherAndForecastViewModel.forecastResponseUiState.value as ForecastResult.Success).forecastResponse
         )
     }
 }
