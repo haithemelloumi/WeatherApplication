@@ -29,12 +29,10 @@ import com.helloumi.todayweatherforecast.domain.model.WeatherItem
 import com.helloumi.todayweatherforecast.domain.model.Wind
 import com.helloumi.todayweatherforecast.domain.model.response.CurrentWeatherResponse
 import com.helloumi.todayweatherforecast.domain.model.result.CurrentWeatherResult
-import com.helloumi.todayweatherforecast.ui.feature.weatherforecast.model.WeatherForecastUiModel
 import com.helloumi.todayweatherforecast.ui.theme.Dimens
 
 @Composable
 fun DailyItems(
-    uiModel: WeatherForecastUiModel,
     currentWeatherValue: CurrentWeatherResult.Success
 ) {
     Column(modifier = Modifier.horizontalScroll(rememberScrollState())) {
@@ -46,32 +44,32 @@ fun DailyItems(
             DailyItem(
                 R.drawable.temperature,
                 if (currentWeatherValue.currentWeatherResponse.main != null) currentWeatherValue.currentWeatherResponse.main.feelsLike.toString()
-                else uiModel.noDataLabel,
-                uiModel.feelsLikeLabel
+                else stringResource(id = R.string.no_data),
+                stringResource(id = R.string.feels_like)
             )
             Spacer(modifier = Modifier.size(Dimens.STACK_SM))
 
             DailyItem(
                 R.drawable.visibility,
                 if (currentWeatherValue.currentWeatherResponse.visibility != null) currentWeatherValue.currentWeatherResponse.visibility.toString()
-                else uiModel.noDataLabel,
-                uiModel.visibilityLabel
+                else stringResource(id = R.string.no_data),
+                stringResource(id = R.string.visibility)
             )
             Spacer(modifier = Modifier.size(Dimens.STACK_SM))
 
             DailyItem(
                 R.drawable.humidity,
                 currentWeatherValue.currentWeatherResponse.main?.getHumidityString()
-                    ?: uiModel.noDataLabel,
-                uiModel.humidityLabel
+                    ?: stringResource(id = R.string.no_data),
+                stringResource(id = R.string.humidity)
             )
             Spacer(modifier = Modifier.size(Dimens.STACK_SM))
 
             DailyItem(
                 R.drawable.win_speed,
                 currentWeatherValue.currentWeatherResponse.wind?.speed?.toString()
-                    ?: uiModel.noDataLabel,
-                uiModel.windSpeed
+                    ?: stringResource(id = R.string.no_data),
+                stringResource(id = R.string.wind_speed)
             )
             Spacer(modifier = Modifier.size(Dimens.STACK_SM))
 
@@ -79,8 +77,8 @@ fun DailyItems(
                 R.drawable.air_pressure,
                 if (currentWeatherValue.currentWeatherResponse.main != null)
                     currentWeatherValue.currentWeatherResponse.main.pressure.toString()
-                else uiModel.noDataLabel,
-                uiModel.airPressureLabel
+                else stringResource(id = R.string.no_data),
+                stringResource(id = R.string.air_pressure)
             )
         }
 
@@ -123,20 +121,6 @@ fun DailyItem(icDay: Int, data: String, stringText: String) {
 @Preview
 @Composable
 fun DailyItemsPreview() {
-    val uiModel = WeatherForecastUiModel(
-        cityName = "cityName",
-        currentDate = "currentDate",
-        screenTitle = "screenTitle",
-        forecastLabel = "forecastLabel",
-        feelsLikeLabel = "feelsLikeLabel",
-        visibilityLabel = "visibilityLabel",
-        humidityLabel = "humidityLabel",
-        windSpeed = "windSpeed",
-        airPressureLabel = "airPressureLabel",
-        noDataLabel = "airPressureLabel",
-        serverUnreachableLabel = "serverUnreachableLabel",
-        serverErrorLabel = "serverErrorLabel"
-    )
 
     val currentWeather: CurrentWeatherResult.Success = CurrentWeatherResult.Success(
         CurrentWeatherResponse(
@@ -173,5 +157,5 @@ fun DailyItemsPreview() {
         )
     )
 
-    DailyItems(uiModel, currentWeather)
+    DailyItems(currentWeather)
 }

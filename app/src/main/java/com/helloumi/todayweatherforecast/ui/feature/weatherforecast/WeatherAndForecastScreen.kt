@@ -1,7 +1,6 @@
 package com.helloumi.todayweatherforecast.ui.feature.weatherforecast
 
 import android.annotation.SuppressLint
-import android.content.Context
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,11 +15,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.helloumi.todayweatherforecast.R
 import com.helloumi.todayweatherforecast.domain.model.City
 import com.helloumi.todayweatherforecast.domain.model.Clouds
 import com.helloumi.todayweatherforecast.domain.model.Coord
@@ -32,7 +32,6 @@ import com.helloumi.todayweatherforecast.domain.model.response.ForecastResponse
 import com.helloumi.todayweatherforecast.domain.model.result.CurrentWeatherResult
 import com.helloumi.todayweatherforecast.domain.model.result.ForecastResult
 import com.helloumi.todayweatherforecast.ui.feature.common.CircularProgressIndicatorLoader
-import com.helloumi.todayweatherforecast.ui.feature.weatherforecast.model.WeatherForecastUiModel
 import com.helloumi.todayweatherforecast.ui.theme.Dimens.INLINE_SM
 import com.helloumi.todayweatherforecast.ui.theme.Dimens.STACK_MD
 import com.helloumi.todayweatherforecast.ui.theme.Dimens.STACK_SM
@@ -41,6 +40,7 @@ import com.helloumi.todayweatherforecast.ui.theme.Dimens.STACK_XXL
 import com.helloumi.todayweatherforecast.ui.theme.Dimens.TEXT_SIZE_TITLE
 import com.helloumi.todayweatherforecast.ui.theme.Dimens.TEXT_SIZE_VERY_BIG
 import com.helloumi.todayweatherforecast.ui.theme.PURPLE_40
+import com.helloumi.todayweatherforecast.utils.extensions.todayDate
 
 /*
 Added to display preview because The previews system is not capable
@@ -52,19 +52,16 @@ fun WeatherAndForecastScreen(
     viewModel: WeatherAndForecastViewModel
 ) {
 
-    val context: Context = LocalContext.current
-
     LaunchedEffect(Unit) {
         viewModel.getWeather(cityName)
         viewModel.getForecast(cityName)
     }
-    val uiModel = viewModel.getUiModel(context, cityName)
 
     val weatherState = viewModel.currentWeatherUiState
     val forecastState = viewModel.forecastResponseUiState
 
     WeatherAndForecastContent(
-        uiModel,
+        cityName,
         weatherState,
         forecastState
     )
@@ -73,7 +70,7 @@ fun WeatherAndForecastScreen(
 @SuppressLint("FrequentlyChangedStateReadInComposition")
 @Composable
 fun WeatherAndForecastContent(
-    uiModel: WeatherForecastUiModel,
+    cityName: String,
     currentWeather: MutableState<CurrentWeatherResult>,
     forecastResult: MutableState<ForecastResult>
 ) {
@@ -98,7 +95,7 @@ fun WeatherAndForecastContent(
 
         Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
             Text(
-                text = uiModel.cityName,
+                text = cityName,
                 modifier = Modifier
                     .padding(start = INLINE_SM, top = STACK_MD),
                 style = TextStyle(
@@ -107,7 +104,7 @@ fun WeatherAndForecastContent(
                 )
             )
             Text(
-                text = uiModel.currentDate,
+                text = todayDate(),
                 modifier = Modifier.padding(start = INLINE_SM, top = STACK_MD),
                 style = TextStyle(fontSize = TEXT_SIZE_TITLE)
             )
@@ -118,17 +115,17 @@ fun WeatherAndForecastContent(
 
                     Weather(
                         currentWeatherValue,
-                        uiModel.noDataLabel
+                        stringResource(id = R.string.no_data)
                     )
 
                     Spacer(modifier = Modifier.size(STACK_SM))
 
-                    DailyItems(uiModel, currentWeatherValue)
+                    DailyItems(currentWeatherValue)
 
                     Spacer(modifier = Modifier.size(STACK_XXL))
 
                     Text(
-                        text = uiModel.forecastLabel,
+                        text = stringResource(id = R.string.next_5_days),
                         modifier = Modifier.padding(start = STACK_SM),
                         style = TextStyle(fontSize = TEXT_SIZE_TITLE)
                     )
@@ -139,11 +136,11 @@ fun WeatherAndForecastContent(
                 }
 
                 is CurrentWeatherResult.ServerError -> {
-                    ErrorMessage(uiModel.serverErrorLabel)
+                    ErrorMessage(stringResource(id = R.string.weather_server_error))
                 }
 
                 is CurrentWeatherResult.ServerUnavailable -> {
-                    ErrorMessage(uiModel.serverUnreachableLabel)
+                    ErrorMessage(stringResource(id = R.string.weather_server_unreachable))
                 }
             }
             /////////////////////// END WEATHER ///////////////////////
@@ -153,7 +150,7 @@ fun WeatherAndForecastContent(
             Spacer(modifier = Modifier.size(STACK_SM))
             when (val forecastResultValue = forecastResult.value) {
                 is ForecastResult.Success -> {
-                    Forecast(forecastResultValue, uiModel.noDataLabel)
+                    Forecast(forecastResultValue)
                 }
 
                 is ForecastResult.Loading -> {
@@ -161,11 +158,11 @@ fun WeatherAndForecastContent(
                 }
 
                 is ForecastResult.ServerError -> {
-                    ErrorMessage(uiModel.serverErrorLabel)
+                    ErrorMessage(stringResource(id = R.string.weather_server_error))
                 }
 
                 is ForecastResult.ServerUnavailable -> {
-                    ErrorMessage(uiModel.serverUnreachableLabel)
+                    ErrorMessage(stringResource(id = R.string.weather_server_unreachable))
                 }
             }
             Spacer(modifier = Modifier.size(STACK_SM))
@@ -189,20 +186,6 @@ fun ErrorMessage(message: String) {
 @Preview
 @Composable
 fun WeatherAndForecastPreview() {
-    val uiModel = WeatherForecastUiModel(
-        cityName = "cityName",
-        currentDate = "currentDate",
-        screenTitle = "screenTitle",
-        forecastLabel = "forecastLabel",
-        feelsLikeLabel = "feelsLikeLabel",
-        visibilityLabel = "visibilityLabel",
-        humidityLabel = "humidityLabel",
-        windSpeed = "windSpeed",
-        airPressureLabel = "airPressureLabel",
-        noDataLabel = "airPressureLabel",
-        serverUnreachableLabel = "serverUnreachableLabel",
-        serverErrorLabel = "serverErrorLabel"
-    )
     val currentWeather: MutableState<CurrentWeatherResult> = mutableStateOf(
         CurrentWeatherResult.Success(
             CurrentWeatherResponse(
@@ -251,7 +234,7 @@ fun WeatherAndForecastPreview() {
     )
 
     WeatherAndForecastContent(
-        uiModel = uiModel,
+        cityName = "cityName",
         currentWeather = currentWeather,
         forecastResult = forecastResult
     )
