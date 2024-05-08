@@ -1,8 +1,11 @@
 package com.helloumi.todayweatherforecast.data.database
 
 import androidx.room.TypeConverter
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.helloumi.todayweatherforecast.domain.model.ListItem
 import com.helloumi.todayweatherforecast.domain.model.WeatherItem
+import com.helloumi.todayweatherforecast.domain.model.WeatherItemList
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 
@@ -32,23 +35,20 @@ object Converters {
 
     @TypeConverter
     @JvmStatic
-    fun weatherStringToList(data: String?): List<WeatherItem>? {
+    fun weatherStringToList(data: String?): WeatherItemList? {
         if (data == null) {
-            return emptyList()
+            return null
         }
-
-        val moshi = Moshi.Builder().build()
-        val type = Types.newParameterizedType(List::class.java, WeatherItem::class.java)
-        val adapter = moshi.adapter<List<WeatherItem>>(type)
-        return adapter.fromJson(data)
+        val gson = Gson()
+        val type = object : TypeToken<WeatherItemList>() {}.type
+        return gson.fromJson(data, type)
     }
 
     @TypeConverter
     @JvmStatic
-    fun weatherListToString(objects: List<WeatherItem>): String {
-        val moshi = Moshi.Builder().build()
-        val type = Types.newParameterizedType(List::class.java, WeatherItem::class.java)
-        val adapter = moshi.adapter<List<WeatherItem>>(type)
-        return adapter.toJson(objects)
+    fun weatherListToString(objects: WeatherItemList): String {
+        val gson = Gson()
+        val type = object : TypeToken<List<WeatherItem>>() {}.type
+        return gson.toJson(objects, type)
     }
 }
