@@ -5,7 +5,6 @@ import android.content.Context
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -21,7 +20,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.helloumi.todayweatherforecast.domain.model.City
 import com.helloumi.todayweatherforecast.domain.model.Clouds
@@ -34,7 +32,6 @@ import com.helloumi.todayweatherforecast.domain.model.response.ForecastResponse
 import com.helloumi.todayweatherforecast.domain.model.result.CurrentWeatherResult
 import com.helloumi.todayweatherforecast.domain.model.result.ForecastResult
 import com.helloumi.todayweatherforecast.ui.feature.common.CircularProgressIndicatorLoader
-import com.helloumi.todayweatherforecast.ui.feature.common.WeatherToolbar
 import com.helloumi.todayweatherforecast.ui.feature.weatherforecast.model.WeatherForecastUiModel
 import com.helloumi.todayweatherforecast.ui.theme.Dimens.INLINE_SM
 import com.helloumi.todayweatherforecast.ui.theme.Dimens.STACK_MD
@@ -50,13 +47,12 @@ Added to display preview because The previews system is not capable
 of constructing all of the parameters passed to a ViewModel
 */
 @Composable
-fun WeatherAndForecast(
+fun WeatherAndForecastScreen(
     cityName: String,
-    onClickBack: () -> Unit
+    viewModel: WeatherAndForecastViewModel
 ) {
 
     val context: Context = LocalContext.current
-    val viewModel = hiltViewModel<WeatherAndForecastViewModel>()
 
     LaunchedEffect(Unit) {
         viewModel.getWeather(cityName)
@@ -67,8 +63,7 @@ fun WeatherAndForecast(
     val weatherState = viewModel.currentWeatherUiState
     val forecastState = viewModel.forecastResponseUiState
 
-    WeatherAndForecast(
-        onClickBack,
+    WeatherAndForecastContent(
         uiModel,
         weatherState,
         forecastState
@@ -77,8 +72,7 @@ fun WeatherAndForecast(
 
 @SuppressLint("FrequentlyChangedStateReadInComposition")
 @Composable
-fun WeatherAndForecast(
-    onClickBack: () -> Unit,
+fun WeatherAndForecastContent(
     uiModel: WeatherForecastUiModel,
     currentWeather: MutableState<CurrentWeatherResult>,
     forecastResult: MutableState<ForecastResult>
@@ -99,14 +93,6 @@ fun WeatherAndForecast(
     )
 
     Column {
-
-        WeatherToolbar(
-            toolbarText = uiModel.screenTitle,
-            scrollState.firstVisibleItemScrollOffset,
-            onBackClick = onClickBack,
-            isArrowBackVisible = true,
-            modifier = Modifier.fillMaxWidth()
-        )
 
         Spacer(modifier = Modifier.size(STACK_XS))
 
@@ -264,8 +250,7 @@ fun WeatherAndForecastPreview() {
         )
     )
 
-    WeatherAndForecast(
-        onClickBack = {},
+    WeatherAndForecastContent(
         uiModel = uiModel,
         currentWeather = currentWeather,
         forecastResult = forecastResult
