@@ -8,26 +8,20 @@ plugins {
     id("com.google.devtools.ksp") version "1.9.10-1.0.13" apply false
 }
 
-val material3Version by extra { "1.2.1" }
+val bomVersion by extra { "2024.04.00" }
+val accompanistVersion by extra { "0.30.1" }
+val hiltComposeVersion by extra { "1.2.0" }
 val composeConstraintLayoutVersion by extra { "1.0.1" }
 val coilVersion by extra { "2.5.0" }
-val accompanistVersion by extra { "0.30.1" }
-val composeVersion by extra { "1.6.7" }
+
 val androidMaterialVersion by extra { "1.12.0" }
-val navigationComposeVersion by extra { "2.7.7" }
-val activityCompose by extra { "1.9.0" }
-val viewModelScope by extra { "2.7.0" }
-val hiltComposeVersion by extra { "1.2.0" }
+val annotationVersion by extra { "1.7.1" }
 
 val placesVersion by extra { "3.4.0" }
-
 val hiltVersion by extra { "2.47" }
-
 val roomVersion by extra { "2.6.1" }
-
 val moshiVersion by extra { "1.15.0" }
 val retrofitVersion by extra { "2.9.0" }
-
 val threeTenAbpVersion by extra { "1.3.1" }
 
 val junitKtxVersion by extra { "1.1.5" }
