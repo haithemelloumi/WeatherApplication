@@ -1,7 +1,5 @@
 package com.helloumi.todayweatherforecast.ui.feature.weatherforecast
 
-import android.content.Context
-import com.helloumi.todayweatherforecast.R
 import com.helloumi.todayweatherforecast.common.TestViewModelScopeRule
 import com.helloumi.todayweatherforecast.domain.model.City
 import com.helloumi.todayweatherforecast.domain.model.Clouds
@@ -15,8 +13,6 @@ import com.helloumi.todayweatherforecast.domain.model.result.CurrentWeatherResul
 import com.helloumi.todayweatherforecast.domain.model.result.ForecastResult
 import com.helloumi.todayweatherforecast.domain.usecases.GetCurrentWeatherUseCase
 import com.helloumi.todayweatherforecast.domain.usecases.GetForecastUseCase
-import com.helloumi.todayweatherforecast.ui.feature.weatherforecast.model.WeatherForecastUiModel
-import com.helloumi.todayweatherforecast.utils.extensions.DateUtils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -36,16 +32,10 @@ class WeatherAndForecastViewModelTest {
     val dispatcherRule = TestViewModelScopeRule()
 
     @Mock
-    private lateinit var context: Context
-
-    @Mock
     private lateinit var getCurrentWeatherUseCase: GetCurrentWeatherUseCase
 
     @Mock
     private lateinit var getForecastUseCase: GetForecastUseCase
-
-    @Mock
-    private lateinit var dateUtils: DateUtils
 
     private lateinit var weatherAndForecastViewModel: WeatherAndForecastViewModel
 
@@ -54,48 +44,8 @@ class WeatherAndForecastViewModelTest {
         MockitoAnnotations.openMocks(this)
         weatherAndForecastViewModel = WeatherAndForecastViewModel(
             getCurrentWeatherUseCase,
-            getForecastUseCase,
-            dateUtils
+            getForecastUseCase
         )
-    }
-
-    @Test
-    fun `WHEN call getUiModel THEN verify useCase`() = runTest {
-        // GIVEN
-        val uiModel = WeatherForecastUiModel(
-            cityName = "cityName",
-            currentDate = "currentDate",
-            screenTitle = "screenTitle",
-            forecastLabel = "forecastLabel",
-            feelsLikeLabel = "feelsLikeLabel",
-            visibilityLabel = "visibilityLabel",
-            humidityLabel = "humidityLabel",
-            windSpeed = "windSpeed",
-            airPressureLabel = "airPressureLabel",
-            noDataLabel = "noDataLabel",
-            serverUnreachableLabel = "serverUnreachableLabel",
-            serverErrorLabel = "serverErrorLabel"
-        )
-
-        Mockito.`when`(dateUtils.todayDate()).thenReturn("currentDate")
-        Mockito.`when`(context.getString(R.string.weather_title)).thenReturn("screenTitle")
-        Mockito.`when`(context.getString(R.string.next_5_days)).thenReturn("forecastLabel")
-        Mockito.`when`(context.getString(R.string.feels_like)).thenReturn("feelsLikeLabel")
-        Mockito.`when`(context.getString(R.string.visibility)).thenReturn("visibilityLabel")
-        Mockito.`when`(context.getString(R.string.humidity)).thenReturn("humidityLabel")
-        Mockito.`when`(context.getString(R.string.wind_speed)).thenReturn("windSpeed")
-        Mockito.`when`(context.getString(R.string.air_pressure)).thenReturn("airPressureLabel")
-        Mockito.`when`(context.getString(R.string.no_data)).thenReturn("noDataLabel")
-        Mockito.`when`(context.getString(R.string.weather_server_unreachable))
-            .thenReturn("serverUnreachableLabel")
-        Mockito.`when`(context.getString(R.string.weather_server_error))
-            .thenReturn("serverErrorLabel")
-
-        // WHEN
-        val result = weatherAndForecastViewModel.getUiModel(context, "cityName")
-
-        // THEN
-        assertEquals(uiModel, result)
     }
 
     @Test

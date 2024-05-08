@@ -1,17 +1,13 @@
 package com.helloumi.todayweatherforecast.ui.feature.weatherforecast
 
-import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.helloumi.todayweatherforecast.R
 import com.helloumi.todayweatherforecast.domain.model.result.CurrentWeatherResult
 import com.helloumi.todayweatherforecast.domain.model.result.ForecastResult
 import com.helloumi.todayweatherforecast.domain.usecases.GetCurrentWeatherUseCase
 import com.helloumi.todayweatherforecast.domain.usecases.GetForecastUseCase
-import com.helloumi.todayweatherforecast.ui.feature.weatherforecast.model.WeatherForecastUiModel
-import com.helloumi.todayweatherforecast.utils.extensions.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,8 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class WeatherAndForecastViewModel @Inject constructor(
     private val getCurrentWeatherUseCase: GetCurrentWeatherUseCase,
-    private val getForecastUseCase: GetForecastUseCase,
-    private val dateUtils: DateUtils
+    private val getForecastUseCase: GetForecastUseCase
 ) : ViewModel() {
 
     private val _currentWeatherUiState: MutableState<CurrentWeatherResult> =
@@ -30,21 +25,6 @@ class WeatherAndForecastViewModel @Inject constructor(
     private val _forecastResponseUiState: MutableState<ForecastResult> =
         mutableStateOf(ForecastResult.Loading)
     val forecastResponseUiState: MutableState<ForecastResult> get() = _forecastResponseUiState
-
-    fun getUiModel(context: Context, cityName: String) = WeatherForecastUiModel(
-        cityName = cityName,
-        currentDate = dateUtils.todayDate(),
-        screenTitle = context.getString(R.string.weather_title),
-        forecastLabel = context.getString(R.string.next_5_days),
-        feelsLikeLabel = context.getString(R.string.feels_like),
-        visibilityLabel = context.getString(R.string.visibility),
-        humidityLabel = context.getString(R.string.humidity),
-        windSpeed = context.getString(R.string.wind_speed),
-        airPressureLabel = context.getString(R.string.air_pressure),
-        noDataLabel = context.getString(R.string.no_data),
-        serverUnreachableLabel = context.getString(R.string.weather_server_unreachable),
-        serverErrorLabel = context.getString(R.string.weather_server_error)
-    )
 
     fun getWeather(cityName: String) {
         viewModelScope.launch {

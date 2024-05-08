@@ -40,8 +40,7 @@ import com.helloumi.todayweatherforecast.utils.extensions.resIdByName
 
 @Composable
 fun Forecast(
-    forecastResultValue: ForecastResult.Success,
-    noDataLabel: String
+    forecastResultValue: ForecastResult.Success
 ) {
     if (forecastResultValue.forecastResponse.list?.isNotEmpty() == true) {
         LazyRow(
@@ -55,7 +54,7 @@ fun Forecast(
             }
         }
     } else {
-        ErrorMessage(noDataLabel)
+        ErrorMessage(stringResource(id = R.string.no_data))
     }
 }
 
@@ -178,8 +177,7 @@ fun ForecastPreview() {
     )
 
     Forecast(
-        forecastResultValue = ForecastResult.Success(response),
-        noDataLabel = "nodata"
+        forecastResultValue = ForecastResult.Success(response)
     )
 }
 
