@@ -71,16 +71,15 @@ android {
     buildFeatures.viewBinding = true
 }
 
-val material3Version: String by rootProject.extra
+val bomVersion: String by rootProject.extra
+val accompanistVersion: String by rootProject.extra
+val hiltComposeVersion: String by rootProject.extra
 val composeConstraintLayoutVersion: String by rootProject.extra
 val coilVersion: String by rootProject.extra
-val accompanistVersion: String by rootProject.extra
-val composeVersion: String by rootProject.extra
+
 val androidMaterialVersion: String by rootProject.extra
-val navigationComposeVersion: String by rootProject.extra
-val activityCompose: String by rootProject.extra
-val viewModelScope: String by rootProject.extra
-val hiltComposeVersion: String by rootProject.extra
+val annotationVersion: String by rootProject.extra
+
 val placesVersion: String by rootProject.extra
 val hiltVersion: String by rootProject.extra
 val roomVersion: String by rootProject.extra
@@ -100,9 +99,43 @@ val mockkAndroidVersion: String by rootProject.extra
 dependencies {
 
     //------------------------------------- Jetpack Compose -------------------------------------//
+    ///////////////////////////////////////////// BOM /////////////////////////////////////////////
+    implementation(platform("androidx.compose:compose-bom:$bomVersion"))
+
+    // Ui
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.activity:activity-compose")
+
+    // Navigation
+    implementation("androidx.navigation:navigation-compose")
+
+    // ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose")
 
     // Material Design 3
-    implementation("androidx.compose.material3:material3:$material3Version")
+    implementation("androidx.compose.material3:material3")
+
+    // Compose ViewBinding
+    implementation("androidx.compose.ui:ui-viewbinding")
+
+    // Tooling
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+
+    // UI Tests
+    androidTestImplementation(platform("androidx.compose:compose-bom:$bomVersion"))
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    ///////////////////////////////////////////// BOM /////////////////////////////////////////////
+
+    // Accompanist
+    implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
+    implementation("com.google.accompanist:accompanist-placeholder:$accompanistVersion")
+    implementation("com.google.accompanist:accompanist-placeholder-material:$accompanistVersion")
+
+    // Hilt compose
+    implementation("androidx.hilt:hilt-navigation-compose:$hiltComposeVersion")
 
     // ConstraintLayout for Compose
     implementation("androidx.constraintlayout:constraintlayout-compose:$composeConstraintLayoutVersion")
@@ -110,34 +143,11 @@ dependencies {
     // Coil (Compose extension lib --> AsyncImage = load image from url)
     implementation("io.coil-kt:coil-compose:$coilVersion")
 
-    // Accompanist
-    implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
-
-    // Compose ViewBinding
-    implementation("androidx.compose.ui:ui-viewbinding:$composeVersion")
+    //------------------------------------- Jetpack Compose -------------------------------------//
 
     // Android Studio Preview support
-    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
     implementation("com.google.android.material:material:$androidMaterialVersion")
-    implementation("androidx.annotation:annotation:1.7.1")
-    debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
-
-    // UI Tests
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
-
-    // Add placeholder support
-    implementation("com.google.accompanist:accompanist-placeholder:$accompanistVersion")
-    implementation("com.google.accompanist:accompanist-placeholder-material:$accompanistVersion")
-
-    // Compose
-    implementation("androidx.compose.ui:ui:$composeVersion")
-    implementation("androidx.navigation:navigation-compose:$navigationComposeVersion")
-    implementation("androidx.activity:activity-compose:$activityCompose")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$viewModelScope")
-    implementation("androidx.hilt:hilt-navigation-compose:$hiltComposeVersion")
-
-    //-------------------------------------------------------------------------------------------//
+    implementation("androidx.annotation:annotation:$annotationVersion")
 
     // Places
     implementation("com.google.android.libraries.places:places:$placesVersion")
