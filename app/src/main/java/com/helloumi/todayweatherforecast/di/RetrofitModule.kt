@@ -28,7 +28,6 @@ object RetrofitModule {
     fun provideRetrofit(moshi: Moshi): Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(MoshiConverterFactory.create(moshi))
-            //.addCallAdapterFactory(NetworkResponseAdapterFactory())
             .baseUrl(BASE_URL)
             .build()
     }
