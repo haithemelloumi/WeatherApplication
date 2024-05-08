@@ -2,9 +2,10 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     // dagger hilt
-    id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
     id("kotlin-parcelize")
+    // ksp
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -14,8 +15,7 @@ android {
     defaultConfig {
         applicationId = "com.helloumi.todayweatherforecast"
         minSdk = 24
-        //noinspection OldTargetApi
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -50,7 +50,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.5.13"
     }
     packaging {
         resources {
@@ -58,7 +58,7 @@ android {
         }
     }
 
-    // ADDED FOR USE MOCKK IN UI TEST AND MUST REMOVE LATER
+    // ADDED FOR USE MOCKK IN UI TEST
     testOptions {
         packagingOptions {
             jniLibs {
@@ -101,27 +101,28 @@ dependencies {
 
     //------------------------------------- Jetpack Compose -------------------------------------//
 
-    //Material Design 3
+    // Material Design 3
     implementation("androidx.compose.material3:material3:$material3Version")
 
-    //ConstraintLayout for Compose
+    // ConstraintLayout for Compose
     implementation("androidx.constraintlayout:constraintlayout-compose:$composeConstraintLayoutVersion")
 
-    //Coil (Compose extension lib --> AsyncImage = load image from url)
+    // Coil (Compose extension lib --> AsyncImage = load image from url)
     implementation("io.coil-kt:coil-compose:$coilVersion")
 
-    //Accompanist
+    // Accompanist
     implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
 
-    //Compose ViewBinding
+    // Compose ViewBinding
     implementation("androidx.compose.ui:ui-viewbinding:$composeVersion")
 
-    //Android Studio Preview support
+    // Android Studio Preview support
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
     implementation("com.google.android.material:material:$androidMaterialVersion")
+    implementation("androidx.annotation:annotation:1.7.1")
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
 
-    //UI Tests
+    // UI Tests
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
     debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
 
@@ -129,7 +130,7 @@ dependencies {
     implementation("com.google.accompanist:accompanist-placeholder:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-placeholder-material:$accompanistVersion")
 
-    //compose
+    // Compose
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.navigation:navigation-compose:$navigationComposeVersion")
     implementation("androidx.activity:activity-compose:$activityCompose")
@@ -138,35 +139,32 @@ dependencies {
 
     //-------------------------------------------------------------------------------------------//
 
-    //places
+    // Places
     implementation("com.google.android.libraries.places:places:$placesVersion")
 
-    // dagger Hilt
+    // Dagger Hilt
     implementation("com.google.dagger:hilt-android:$hiltVersion")
-    kapt("com.google.dagger:hilt-compiler:$hiltVersion")
+    ksp("com.google.dagger:hilt-compiler:$hiltVersion")
 
-    //Room
+    // Room
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-rxjava2:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
     androidTestImplementation("androidx.room:room-testing:$roomVersion")
 
-    //json
+    // Json
     implementation("com.squareup.moshi:moshi:$moshiVersion")
     implementation("com.squareup.moshi:moshi-adapters:$moshiVersion")
     implementation("com.squareup.moshi:moshi-kotlin:$moshiVersion")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
+    ksp("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
     implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
-
 
     // ThreeTenAbp
     implementation("com.jakewharton.threetenabp:threetenabp:$threeTenAbpVersion")
 
-    //testing
-    //testImplementation("junit:junit:4.13")
-    //androidTestImplementation("androidx.test.ext:junit:1.1.3")
+    // Testing
     implementation("androidx.test.ext:junit-ktx:$junitKtxVersion")
     androidTestImplementation("androidx.test.ext:junit-ktx:$junitKtxVersion")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutineTestVersion")
@@ -179,13 +177,7 @@ dependencies {
         exclude(group = "com.android.support")
         exclude(module = "support-annotations")
     }
-    //and/or
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinTestJunitVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
     androidTestImplementation("io.mockk:mockk-android:$mockkAndroidVersion")
-}
-
-// Allow references to generated code
-kapt {
-    correctErrorTypes = true
 }

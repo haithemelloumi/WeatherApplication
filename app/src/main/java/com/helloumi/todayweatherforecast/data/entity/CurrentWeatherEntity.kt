@@ -2,6 +2,7 @@ package com.helloumi.todayweatherforecast.data.entity
 
 import androidx.room.*
 import com.helloumi.todayweatherforecast.domain.model.WeatherItem
+import com.helloumi.todayweatherforecast.domain.model.WeatherItemList
 
 @Entity(tableName = "CurrentWeather")
 data class CurrentWeatherEntity(
@@ -16,7 +17,7 @@ data class CurrentWeatherEntity(
     @ColumnInfo(name = "dt")
     var dt: Long?,
     @ColumnInfo(name = "weather")
-    val weather: List<WeatherItem?>? = null,
+    val weather: WeatherItemList? = null,
     @ColumnInfo(name = "name")
     val name: String?,
     @PrimaryKey(autoGenerate = true)
