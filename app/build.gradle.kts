@@ -28,6 +28,7 @@ android {
     buildTypes {
         debug {
             buildConfigField("String", "API_KEY", "\"CHANGEME\"")
+            buildConfigField("String", "BASE_URL", "\"http://api.openweathermap.org/data/2.5/\"")
         }
 
         release {
@@ -36,6 +37,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "BASE_URL", "\"http://api.openweathermap.org/data/2.5/\"")
             buildConfigField("String", "API_KEY", "\"AIzaSyD5q5UN4OGdXW2TUkCBYYiXArV1SmSSK9Y\"")
         }
     }

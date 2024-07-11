@@ -1,6 +1,6 @@
 package com.helloumi.todayweatherforecast.di
 
-import com.helloumi.todayweatherforecast.common.Constants.NetworkService.BASE_URL
+import com.helloumi.todayweatherforecast.BuildConfig.BASE_URL
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
