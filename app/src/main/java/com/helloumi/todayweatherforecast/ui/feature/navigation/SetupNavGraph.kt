@@ -1,5 +1,6 @@
 package com.helloumi.todayweatherforecast.ui.feature.navigation
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.layout.padding
@@ -34,6 +35,7 @@ import com.helloumi.todayweatherforecast.ui.theme.PURPLE_40
 import com.helloumi.todayweatherforecast.ui.theme.WHITE
 import com.helloumi.todayweatherforecast.utils.extensions.displayToast
 
+@SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SetupNavGraph(
