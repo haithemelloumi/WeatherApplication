@@ -31,7 +31,7 @@ import com.helloumi.todayweatherforecast.domain.model.response.CurrentWeatherRes
 import com.helloumi.todayweatherforecast.domain.model.response.ForecastResponse
 import com.helloumi.todayweatherforecast.domain.model.result.CurrentWeatherResult
 import com.helloumi.todayweatherforecast.domain.model.result.ForecastResult
-import com.helloumi.todayweatherforecast.ui.feature.common.CircularProgressIndicatorLoader
+import com.helloumi.todayweatherforecast.ui.common.CircularProgressIndicatorLoader
 import com.helloumi.todayweatherforecast.ui.theme.Dimens.INLINE_SM
 import com.helloumi.todayweatherforecast.ui.theme.Dimens.STACK_MD
 import com.helloumi.todayweatherforecast.ui.theme.Dimens.STACK_SM
