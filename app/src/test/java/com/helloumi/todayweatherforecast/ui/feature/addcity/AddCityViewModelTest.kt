@@ -1,15 +1,21 @@
 package com.helloumi.todayweatherforecast.ui.feature.addcity
 
+import com.helloumi.todayweatherforecast.common.CoroutinesTestRule
 import com.helloumi.todayweatherforecast.domain.model.CityForSearchDomain
 import com.helloumi.todayweatherforecast.domain.usecases.AddCityUseCase
+import com.helloumi.todayweatherforecast.ui.dispatchers.DispatcherProviderImpl
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.verify
 
 class AddCityViewModelTest {
+
+    @get:Rule
+    var coroutinesTestRule = CoroutinesTestRule()
 
     @Mock
     private lateinit var addCityUseCase: AddCityUseCase
@@ -19,7 +25,13 @@ class AddCityViewModelTest {
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
-        addCityViewModel = AddCityViewModel(addCityUseCase)
+        addCityViewModel = AddCityViewModel(
+            dispatcherProvider = DispatcherProviderImpl(
+                main = coroutinesTestRule.testDispatcher,
+                io = coroutinesTestRule.testDispatcher,
+            ),
+            addCityUseCase = addCityUseCase
+        )
     }
 
     @Test

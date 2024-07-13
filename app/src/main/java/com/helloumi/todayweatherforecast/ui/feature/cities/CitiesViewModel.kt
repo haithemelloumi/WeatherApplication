@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.helloumi.todayweatherforecast.domain.model.CityForSearchDomain
 import com.helloumi.todayweatherforecast.domain.usecases.GetCitiesUseCase
+import com.helloumi.todayweatherforecast.ui.dispatchers.DispatcherProvider
 import com.helloumi.todayweatherforecast.utils.network.NetworkMonitor
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -16,6 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CitiesViewModel @Inject constructor(
+    private val dispatcherProvider: DispatcherProvider,
     private val getCitiesUseCase: GetCitiesUseCase,
     networkMonitor: NetworkMonitor
 ) : ViewModel() {
@@ -29,7 +30,7 @@ class CitiesViewModel @Inject constructor(
     val isInternetAvailable: MutableState<Boolean> get() = _isInternetAvailable
 
     fun getCities() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcherProvider.io) {
             getCitiesUseCase.execute().collectLatest { cities ->
                 _citiesUiState.value = cities
             }
@@ -37,7 +38,7 @@ class CitiesViewModel @Inject constructor(
     }
 
     fun collectIsOnline() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcherProvider.io) {
             isOnline.collectLatest {
                _isInternetAvailable.value = it
             }

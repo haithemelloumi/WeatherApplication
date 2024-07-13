@@ -3,8 +3,8 @@ package com.helloumi.todayweatherforecast.ui.feature.addcity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.helloumi.todayweatherforecast.domain.model.CityForSearchDomain
-import kotlinx.coroutines.Dispatchers
 import com.helloumi.todayweatherforecast.domain.usecases.AddCityUseCase
+import com.helloumi.todayweatherforecast.ui.dispatchers.DispatcherProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -19,6 +19,7 @@ import javax.inject.Inject
 // dependencies to view model class
 @HiltViewModel
 class AddCityViewModel @Inject constructor(
+    private val dispatcherProvider: DispatcherProvider,
     private val addCityUseCase: AddCityUseCase
 ) : ViewModel() {
 
@@ -26,7 +27,7 @@ class AddCityViewModel @Inject constructor(
     val placeName: MutableStateFlow<String> = MutableStateFlow("")
 
     fun addCity(cityId: String, cityName: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcherProvider.io) {
             addCityUseCase.execute(
                 CityForSearchDomain(
                     id = cityId,

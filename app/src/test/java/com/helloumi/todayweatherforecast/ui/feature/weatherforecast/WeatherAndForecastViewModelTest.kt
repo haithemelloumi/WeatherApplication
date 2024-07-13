@@ -1,6 +1,6 @@
 package com.helloumi.todayweatherforecast.ui.feature.weatherforecast
 
-import com.helloumi.todayweatherforecast.common.TestViewModelScopeRule
+import com.helloumi.todayweatherforecast.common.CoroutinesTestRule
 import com.helloumi.todayweatherforecast.domain.model.City
 import com.helloumi.todayweatherforecast.domain.model.Clouds
 import com.helloumi.todayweatherforecast.domain.model.Coord
@@ -13,7 +13,7 @@ import com.helloumi.todayweatherforecast.domain.model.result.CurrentWeatherResul
 import com.helloumi.todayweatherforecast.domain.model.result.ForecastResult
 import com.helloumi.todayweatherforecast.domain.usecases.GetCurrentWeatherUseCase
 import com.helloumi.todayweatherforecast.domain.usecases.GetForecastUseCase
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.helloumi.todayweatherforecast.ui.dispatchers.DispatcherProviderImpl
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -25,11 +25,10 @@ import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.verify
 import kotlin.test.assertEquals
 
-@ExperimentalCoroutinesApi
 class WeatherAndForecastViewModelTest {
 
     @get:Rule
-    val dispatcherRule = TestViewModelScopeRule()
+    var coroutinesTestRule = CoroutinesTestRule()
 
     @Mock
     private lateinit var getCurrentWeatherUseCase: GetCurrentWeatherUseCase
@@ -43,8 +42,12 @@ class WeatherAndForecastViewModelTest {
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         weatherAndForecastViewModel = WeatherAndForecastViewModel(
-            getCurrentWeatherUseCase,
-            getForecastUseCase
+            dispatcherProvider = DispatcherProviderImpl(
+                main = coroutinesTestRule.testDispatcher,
+                io = coroutinesTestRule.testDispatcher,
+            ),
+            getCurrentWeatherUseCase = getCurrentWeatherUseCase,
+            getForecastUseCase = getForecastUseCase
         )
     }
 
