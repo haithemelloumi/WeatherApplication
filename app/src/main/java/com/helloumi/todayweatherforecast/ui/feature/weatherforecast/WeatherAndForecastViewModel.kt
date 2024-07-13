@@ -8,12 +8,14 @@ import com.helloumi.todayweatherforecast.domain.model.result.CurrentWeatherResul
 import com.helloumi.todayweatherforecast.domain.model.result.ForecastResult
 import com.helloumi.todayweatherforecast.domain.usecases.GetCurrentWeatherUseCase
 import com.helloumi.todayweatherforecast.domain.usecases.GetForecastUseCase
+import com.helloumi.todayweatherforecast.ui.dispatchers.DispatcherProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class WeatherAndForecastViewModel @Inject constructor(
+    private val dispatcherProvider: DispatcherProvider,
     private val getCurrentWeatherUseCase: GetCurrentWeatherUseCase,
     private val getForecastUseCase: GetForecastUseCase
 ) : ViewModel() {
@@ -27,7 +29,7 @@ class WeatherAndForecastViewModel @Inject constructor(
     val forecastResponseUiState: MutableState<ForecastResult> get() = _forecastResponseUiState
 
     fun getWeather(cityName: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcherProvider.io) {
             getCurrentWeatherUseCase.execute(cityName).collect { result ->
                 when (result) {
                     is CurrentWeatherResult.Loading -> {
@@ -54,7 +56,7 @@ class WeatherAndForecastViewModel @Inject constructor(
 
     fun getForecast(cityName: String) {
 
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcherProvider.io) {
             getForecastUseCase.execute(cityName).collect { result ->
                 when (result) {
                     is ForecastResult.Loading -> {

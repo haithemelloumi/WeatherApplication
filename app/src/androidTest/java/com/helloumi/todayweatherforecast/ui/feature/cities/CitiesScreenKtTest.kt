@@ -13,6 +13,8 @@ import com.helloumi.todayweatherforecast.domain.model.CityForSearchDomain
 import com.helloumi.todayweatherforecast.domain.usecases.GetCitiesUseCase
 import com.helloumi.todayweatherforecast.ui.theme.Dimens
 import com.helloumi.todayweatherforecast.ui.theme.TodayWeatherForecastTheme
+import com.helloumi.todayweatherforecast.utils.CoroutinesTestRule
+import com.helloumi.todayweatherforecast.ui.dispatchers.DispatcherProviderImpl
 import com.helloumi.todayweatherforecast.utils.network.NetworkMonitor
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.RelaxedMockK
@@ -25,6 +27,9 @@ class CitiesScreenKtTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
+    @get:Rule
+    var coroutinesTestRule = CoroutinesTestRule()
+
     @RelaxedMockK
     private lateinit var getCitiesUseCase: GetCitiesUseCase
 
@@ -36,7 +41,14 @@ class CitiesScreenKtTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this, relaxUnitFun = true)
-        citiesViewModel = CitiesViewModel(getCitiesUseCase, networkMonitor)
+        citiesViewModel = CitiesViewModel(
+            dispatcherProvider = DispatcherProviderImpl(
+                main = coroutinesTestRule.testDispatcher,
+                io = coroutinesTestRule.testDispatcher,
+            ),
+            getCitiesUseCase,
+            networkMonitor
+        )
     }
 
     @Test
@@ -56,6 +68,7 @@ class CitiesScreenKtTest {
 
     @Test
     fun testCities_with_city() {
+        citiesViewModel.citiesUiState.value = listOf(CityForSearchDomain("id", "cityName"))
         composeTestRule.setContent {
             TodayWeatherForecastTheme {
                 CitiesScreen(
@@ -66,7 +79,6 @@ class CitiesScreenKtTest {
                 )
             }
         }
-        citiesViewModel.citiesUiState.value = listOf(CityForSearchDomain("id", "cityName"))
 
         composeTestRule.onNodeWithText("Add city").assertIsDisplayed()
         composeTestRule.onNodeWithText("cityName").assertIsDisplayed()

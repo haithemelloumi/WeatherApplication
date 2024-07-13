@@ -8,7 +8,7 @@ plugins {
     id("com.google.devtools.ksp") version "1.9.10-1.0.13" apply false
 }
 
-val bomVersion by extra { "2024.04.00" }
+val bomVersion by extra { "2024.06.00" }
 val accompanistVersion by extra { "0.30.1" }
 val hiltComposeVersion by extra { "1.2.0" }
 val composeConstraintLayoutVersion by extra { "1.0.1" }
