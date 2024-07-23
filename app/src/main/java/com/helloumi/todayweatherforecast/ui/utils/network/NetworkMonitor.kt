@@ -1,4 +1,4 @@
-package com.helloumi.todayweatherforecast.utils.network
+package com.helloumi.todayweatherforecast.ui.utils.network
 
 import kotlinx.coroutines.flow.Flow
 

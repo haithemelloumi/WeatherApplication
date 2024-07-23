@@ -1,4 +1,4 @@
-package com.helloumi.todayweatherforecast.di
+package com.helloumi.todayweatherforecast.data.di
 
 import android.content.Context
 import com.helloumi.todayweatherforecast.data.database.WeatherDatabase

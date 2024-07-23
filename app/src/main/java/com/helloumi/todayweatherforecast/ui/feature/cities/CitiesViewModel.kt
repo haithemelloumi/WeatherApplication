@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.helloumi.todayweatherforecast.domain.model.CityForSearchDomain
 import com.helloumi.todayweatherforecast.domain.usecases.GetCitiesUseCase
-import com.helloumi.todayweatherforecast.ui.dispatchers.DispatcherProvider
-import com.helloumi.todayweatherforecast.utils.network.NetworkMonitor
+import com.helloumi.todayweatherforecast.ui.utils.dispatchers.DispatcherProvider
+import com.helloumi.todayweatherforecast.ui.utils.network.NetworkMonitor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest

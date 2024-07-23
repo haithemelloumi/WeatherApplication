@@ -1,4 +1,4 @@
-package com.helloumi.todayweatherforecast.ui.common
+package com.helloumi.todayweatherforecast.ui.feature.circularprogress
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

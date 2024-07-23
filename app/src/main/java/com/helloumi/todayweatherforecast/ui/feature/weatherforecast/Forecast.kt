@@ -36,7 +36,7 @@ import com.helloumi.todayweatherforecast.domain.model.WeatherItem
 import com.helloumi.todayweatherforecast.domain.model.response.ForecastResponse
 import com.helloumi.todayweatherforecast.domain.model.result.ForecastResult
 import com.helloumi.todayweatherforecast.ui.theme.Dimens
-import com.helloumi.todayweatherforecast.utils.extensions.resIdByName
+import com.helloumi.todayweatherforecast.ui.utils.extensions.resIdByName
 
 @Composable
 fun Forecast(

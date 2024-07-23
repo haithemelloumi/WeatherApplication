@@ -1,8 +1,8 @@
-package com.helloumi.todayweatherforecast.di
+package com.helloumi.todayweatherforecast.ui.di
 
 import android.content.Context
-import com.helloumi.todayweatherforecast.utils.network.ConnectivityManagerNetworkMonitor
-import com.helloumi.todayweatherforecast.utils.network.NetworkMonitor
+import com.helloumi.todayweatherforecast.ui.utils.network.ConnectivityManagerNetworkMonitor
+import com.helloumi.todayweatherforecast.ui.utils.network.NetworkMonitor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

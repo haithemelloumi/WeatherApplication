@@ -32,8 +32,7 @@ import com.helloumi.todayweatherforecast.domain.model.response.CurrentWeatherRes
 import com.helloumi.todayweatherforecast.domain.model.result.CurrentWeatherResult
 import com.helloumi.todayweatherforecast.ui.theme.Dimens
 import com.helloumi.todayweatherforecast.ui.theme.WHITE
-import com.helloumi.todayweatherforecast.utils.extensions.resIdByName
-
+import com.helloumi.todayweatherforecast.ui.utils.extensions.resIdByName
 
 /*
 Added to display preview and ignore currentWeatherResult.currentWeatherResponse.weather[0] problem

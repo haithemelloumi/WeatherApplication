@@ -55,7 +55,7 @@ class AddCityActivity : AppCompatActivity() {
 
     private fun setupAutoCompletePlace() {
         if (!Places.isInitialized()) {
-            Places.initialize(this, BuildConfig.API_KEY)
+            Places.initialize(this, BuildConfig.PLACES_API_KEY)
         }
 
         // Initialize the AutocompleteSupportFragment.
@@ -90,8 +90,9 @@ class AddCityActivity : AppCompatActivity() {
     }
 
     private fun clearSearchText() {
-        val placeEditText = autocompleteFragment.view
-            ?.findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input) as EditText
+        val placeEditText = autocompleteFragment.view?.findViewById(
+            com.google.android.libraries.places.R.id.places_autocomplete_search_input
+        ) as EditText
         placeEditText.setText("")
         addCityViewModel.placeId.value = ""
         addCityViewModel.placeName.value = ""

@@ -1,7 +1,6 @@
 package com.helloumi.todayweatherforecast.data.repository
 
-import com.helloumi.todayweatherforecast.common.Constants.NetworkService.API_KEY_VALUE
-import com.helloumi.todayweatherforecast.common.Constants.Unit.UNITS
+import com.helloumi.todayweatherforecast.BuildConfig.WEATHER_API_KEY
 import com.helloumi.todayweatherforecast.domain.model.response.CurrentWeatherResponse
 import com.helloumi.todayweatherforecast.domain.model.response.ForecastResponse
 import com.helloumi.todayweatherforecast.domain.model.result.CurrentWeatherResult
@@ -15,10 +14,12 @@ import javax.inject.Inject
 
 class ApcRepositoryImpl @Inject constructor(private val apcAPI: ApcAPI) : ApcRepository {
 
+    private val units = "metric"
+
     override fun getCurrentWeatherByCityName(cityName: String) = flow {
         emit(
             when (val response = processCallCurrentWeather(
-                apcAPI.getCurrentWeatherByCityName(cityName, UNITS, API_KEY_VALUE)
+                apcAPI.getCurrentWeatherByCityName(cityName, units, WEATHER_API_KEY)
             )) {
                 is CurrentWeatherResponse -> CurrentWeatherResult.Success(response)
                 is Int -> CurrentWeatherResult.ServerError
@@ -30,7 +31,7 @@ class ApcRepositoryImpl @Inject constructor(private val apcAPI: ApcAPI) : ApcRep
     override fun getForecastByCityName(cityName: String) = flow {
         emit(
             when (val response = processCallForecast(
-                apcAPI.getForecastByCityName(cityName, UNITS, API_KEY_VALUE)
+                apcAPI.getForecastByCityName(cityName, units, WEATHER_API_KEY)
             )) {
                 is ForecastResponse -> ForecastResult.Success(response)
                 is Int -> ForecastResult.ServerError

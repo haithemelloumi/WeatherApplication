@@ -31,7 +31,7 @@ import com.helloumi.todayweatherforecast.domain.model.response.CurrentWeatherRes
 import com.helloumi.todayweatherforecast.domain.model.response.ForecastResponse
 import com.helloumi.todayweatherforecast.domain.model.result.CurrentWeatherResult
 import com.helloumi.todayweatherforecast.domain.model.result.ForecastResult
-import com.helloumi.todayweatherforecast.ui.common.CircularProgressIndicatorLoader
+import com.helloumi.todayweatherforecast.ui.feature.circularprogress.CircularProgressIndicatorLoader
 import com.helloumi.todayweatherforecast.ui.theme.Dimens.INLINE_SM
 import com.helloumi.todayweatherforecast.ui.theme.Dimens.STACK_MD
 import com.helloumi.todayweatherforecast.ui.theme.Dimens.STACK_SM
@@ -40,7 +40,7 @@ import com.helloumi.todayweatherforecast.ui.theme.Dimens.STACK_XXL
 import com.helloumi.todayweatherforecast.ui.theme.Dimens.TEXT_SIZE_TITLE
 import com.helloumi.todayweatherforecast.ui.theme.Dimens.TEXT_SIZE_VERY_BIG
 import com.helloumi.todayweatherforecast.ui.theme.PURPLE_40
-import com.helloumi.todayweatherforecast.utils.extensions.todayDate
+import com.helloumi.todayweatherforecast.ui.utils.extensions.todayDate
 
 /*
 Added to display preview because The previews system is not capable

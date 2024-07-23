@@ -3,7 +3,7 @@ package com.helloumi.todayweatherforecast.ui.feature.addcity
 import com.helloumi.todayweatherforecast.common.CoroutinesTestRule
 import com.helloumi.todayweatherforecast.domain.model.CityForSearchDomain
 import com.helloumi.todayweatherforecast.domain.usecases.AddCityUseCase
-import com.helloumi.todayweatherforecast.ui.dispatchers.DispatcherProviderImpl
+import com.helloumi.todayweatherforecast.ui.utils.dispatchers.DispatcherProviderImpl
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
