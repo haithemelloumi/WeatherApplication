@@ -2,8 +2,8 @@ package com.helloumi.todayweatherforecast.ui.feature.cities
 
 import com.helloumi.todayweatherforecast.common.CoroutinesTestRule
 import com.helloumi.todayweatherforecast.domain.usecases.GetCitiesUseCase
-import com.helloumi.todayweatherforecast.ui.dispatchers.DispatcherProviderImpl
-import com.helloumi.todayweatherforecast.utils.network.NetworkMonitor
+import com.helloumi.todayweatherforecast.ui.utils.dispatchers.DispatcherProviderImpl
+import com.helloumi.todayweatherforecast.ui.utils.network.NetworkMonitor
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.Before

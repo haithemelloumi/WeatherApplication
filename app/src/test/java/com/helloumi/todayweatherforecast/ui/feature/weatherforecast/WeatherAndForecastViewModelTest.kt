@@ -13,7 +13,7 @@ import com.helloumi.todayweatherforecast.domain.model.result.CurrentWeatherResul
 import com.helloumi.todayweatherforecast.domain.model.result.ForecastResult
 import com.helloumi.todayweatherforecast.domain.usecases.GetCurrentWeatherUseCase
 import com.helloumi.todayweatherforecast.domain.usecases.GetForecastUseCase
-import com.helloumi.todayweatherforecast.ui.dispatchers.DispatcherProviderImpl
+import com.helloumi.todayweatherforecast.ui.utils.dispatchers.DispatcherProviderImpl
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Before

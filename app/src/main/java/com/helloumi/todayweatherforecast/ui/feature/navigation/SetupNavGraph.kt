@@ -33,7 +33,7 @@ import com.helloumi.todayweatherforecast.ui.feature.weatherforecast.WeatherAndFo
 import com.helloumi.todayweatherforecast.ui.theme.Dimens
 import com.helloumi.todayweatherforecast.ui.theme.PURPLE_40
 import com.helloumi.todayweatherforecast.ui.theme.WHITE
-import com.helloumi.todayweatherforecast.utils.extensions.displayToast
+import com.helloumi.todayweatherforecast.ui.utils.extensions.displayToast
 
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
