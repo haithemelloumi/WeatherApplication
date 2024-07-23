@@ -1,4 +1,4 @@
-package com.helloumi.todayweatherforecast.utils.extensions
+package com.helloumi.todayweatherforecast.ui.utils.extensions
 
 import android.content.Context
 import android.content.res.Resources
@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 
+@Suppress("UNREACHABLE_CODE")
 @DrawableRes
 fun Context.resIdByName(resIdName: String, resType: String): Int {
     resIdName.let {

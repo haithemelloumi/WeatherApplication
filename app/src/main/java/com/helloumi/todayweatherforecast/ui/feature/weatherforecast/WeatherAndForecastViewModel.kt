@@ -8,7 +8,7 @@ import com.helloumi.todayweatherforecast.domain.model.result.CurrentWeatherResul
 import com.helloumi.todayweatherforecast.domain.model.result.ForecastResult
 import com.helloumi.todayweatherforecast.domain.usecases.GetCurrentWeatherUseCase
 import com.helloumi.todayweatherforecast.domain.usecases.GetForecastUseCase
-import com.helloumi.todayweatherforecast.ui.dispatchers.DispatcherProvider
+import com.helloumi.todayweatherforecast.ui.utils.dispatchers.DispatcherProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

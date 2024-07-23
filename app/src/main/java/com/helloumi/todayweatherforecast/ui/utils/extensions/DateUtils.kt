@@ -1,4 +1,4 @@
-package com.helloumi.todayweatherforecast.utils.extensions
+package com.helloumi.todayweatherforecast.ui.utils.extensions
 
 import java.text.SimpleDateFormat
 import java.util.Calendar

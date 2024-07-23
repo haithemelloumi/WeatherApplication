@@ -1,4 +1,4 @@
-package com.helloumi.todayweatherforecast.di
+package com.helloumi.todayweatherforecast.data.di
 
 import com.helloumi.todayweatherforecast.data.database.WeatherDatabase
 import com.helloumi.todayweatherforecast.data.datasource.CitiesForSearchDao

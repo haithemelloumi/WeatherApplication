@@ -1,7 +1,7 @@
 package com.helloumi.todayweatherforecast.ui.di
 
-import com.helloumi.todayweatherforecast.ui.dispatchers.DispatcherProvider
-import com.helloumi.todayweatherforecast.ui.dispatchers.DispatcherProviderImpl
+import com.helloumi.todayweatherforecast.ui.utils.dispatchers.DispatcherProvider
+import com.helloumi.todayweatherforecast.ui.utils.dispatchers.DispatcherProviderImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

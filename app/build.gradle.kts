@@ -15,6 +15,7 @@ android {
     defaultConfig {
         applicationId = "com.helloumi.todayweatherforecast"
         minSdk = 24
+        //noinspection OldTargetApi
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -27,8 +28,10 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "API_KEY", "\"CHANGEME\"")
             buildConfigField("String", "BASE_URL", "\"http://api.openweathermap.org/data/2.5/\"")
+            buildConfigField("String", "WEATHER_API_KEY", "\"f84037daa9de07e50719fa0542b9213d\"")
+
+            buildConfigField("String", "PLACES_API_KEY", "\"CHANGE_ME\"")
         }
 
         release {
@@ -38,7 +41,9 @@ android {
                 "proguard-rules.pro"
             )
             buildConfigField("String", "BASE_URL", "\"http://api.openweathermap.org/data/2.5/\"")
-            buildConfigField("String", "API_KEY", "\"AIzaSyD5q5UN4OGdXW2TUkCBYYiXArV1SmSSK9Y\"")
+            buildConfigField("String", "WEATHER_API_KEY", "\"f84037daa9de07e50719fa0542b9213d\"")
+
+            buildConfigField("String", "PLACES_API_KEY", "\"AIzaSyD5q5UN4OGdXW2TUkCBYYiXArV1SmSSK9Y\"")
         }
     }
     compileOptions {
@@ -73,123 +78,98 @@ android {
     buildFeatures.viewBinding = true
 }
 
-val bomVersion: String by rootProject.extra
-val accompanistVersion: String by rootProject.extra
-val hiltComposeVersion: String by rootProject.extra
-val composeConstraintLayoutVersion: String by rootProject.extra
-val coilVersion: String by rootProject.extra
-
-val androidMaterialVersion: String by rootProject.extra
-val annotationVersion: String by rootProject.extra
-
-val placesVersion: String by rootProject.extra
-val hiltVersion: String by rootProject.extra
-val roomVersion: String by rootProject.extra
-val moshiVersion: String by rootProject.extra
-val retrofitVersion: String by rootProject.extra
-val threeTenAbpVersion: String by rootProject.extra
-
-val junitKtxVersion: String by rootProject.extra
-val kotlinCoroutineTestVersion: String by rootProject.extra
-val mockitoVersion: String by rootProject.extra
-val mockitoCoreVersion: String by rootProject.extra
-val espressoVersion: String by rootProject.extra
-val kotlinTestJunitVersion: String by rootProject.extra
-val mockkVersion: String by rootProject.extra
-val mockkAndroidVersion: String by rootProject.extra
 
 dependencies {
 
     //------------------------------------- Jetpack Compose -------------------------------------//
     ///////////////////////////////////////////// BOM /////////////////////////////////////////////
-    implementation(platform("androidx.compose:compose-bom:$bomVersion"))
+    val composeBom = platform(libs.compose.bom)
+
+    implementation(platform(composeBom))
+    androidTestImplementation(platform(composeBom))
 
     // Ui
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.activity:activity-compose")
+    implementation(libs.compose.ui)
+    implementation(libs.activity.compose)
 
     // Navigation
-    implementation("androidx.navigation:navigation-compose")
+    implementation(libs.navigation.compose)
 
     // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose")
+    implementation(libs.lifecycle.viewmodel.compose)
 
     // Material Design 3
-    implementation("androidx.compose.material3:material3")
+    implementation(libs.material3)
 
     // Compose ViewBinding
-    implementation("androidx.compose.ui:ui-viewbinding")
+    implementation(libs.ui.viewbinding)
 
     // Tooling
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation(libs.ui.tooling.preview)
+    debugImplementation(libs.ui.tooling)
 
     // UI Tests
-    androidTestImplementation(platform("androidx.compose:compose-bom:$bomVersion"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    androidTestImplementation(libs.ui.test.junit4)
+    debugImplementation(libs.ui.test.manifest)
 
     ///////////////////////////////////////////// BOM /////////////////////////////////////////////
 
     // Accompanist
-    implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
-    implementation("com.google.accompanist:accompanist-placeholder:$accompanistVersion")
-    implementation("com.google.accompanist:accompanist-placeholder-material:$accompanistVersion")
+    implementation(libs.accompanist.systemuicontroller)
+    implementation(libs.accompanist.placeholder)
+    implementation(libs.accompanist.placeholder.material)
 
     // Hilt compose
-    implementation("androidx.hilt:hilt-navigation-compose:$hiltComposeVersion")
+    implementation(libs.hilt.navigation.compose)
 
     // ConstraintLayout for Compose
-    implementation("androidx.constraintlayout:constraintlayout-compose:$composeConstraintLayoutVersion")
+    implementation(libs.constraintlayout.compose)
 
     // Coil (Compose extension lib --> AsyncImage = load image from url)
-    implementation("io.coil-kt:coil-compose:$coilVersion")
+    implementation(libs.coil.compose)
 
     //------------------------------------- Jetpack Compose -------------------------------------//
 
     // Android Studio Preview support
-    implementation("com.google.android.material:material:$androidMaterialVersion")
-    implementation("androidx.annotation:annotation:$annotationVersion")
+    implementation(libs.material)
+    implementation(libs.annotation)
 
     // Places
-    implementation("com.google.android.libraries.places:places:$placesVersion")
+    implementation(libs.places)
 
     // Dagger Hilt
-    implementation("com.google.dagger:hilt-android:$hiltVersion")
-    ksp("com.google.dagger:hilt-compiler:$hiltVersion")
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
 
     // Room
-    implementation("androidx.room:room-runtime:$roomVersion")
-    implementation("androidx.room:room-rxjava2:$roomVersion")
-    implementation("androidx.room:room-ktx:$roomVersion")
-    ksp("androidx.room:room-compiler:$roomVersion")
-    annotationProcessor("androidx.room:room-compiler:$roomVersion")
-    androidTestImplementation("androidx.room:room-testing:$roomVersion")
+    implementation(libs.room.runtime)
+    implementation(libs.room.rxjava2)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
+    annotationProcessor(libs.room.compiler)
+    androidTestImplementation(libs.room.testing)
 
     // Json
-    implementation("com.squareup.moshi:moshi:$moshiVersion")
-    implementation("com.squareup.moshi:moshi-adapters:$moshiVersion")
-    implementation("com.squareup.moshi:moshi-kotlin:$moshiVersion")
-    ksp("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
-    implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
+    implementation(libs.moshi)
+    implementation(libs.moshi.adapters)
+    implementation(libs.moshi.kotlin)
+    ksp(libs.moshi.kotlin.codegen)
+    implementation(libs.converter.moshi)
 
     // ThreeTenAbp
-    implementation("com.jakewharton.threetenabp:threetenabp:$threeTenAbpVersion")
+    implementation(libs.threetenabp)
 
     // Testing
-    implementation("androidx.test.ext:junit-ktx:$junitKtxVersion")
-    androidTestImplementation("androidx.test.ext:junit-ktx:$junitKtxVersion")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutineTestVersion")
-    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutineTestVersion")
-    testImplementation("org.mockito:mockito-inline:$mockitoVersion")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoVersion")
-    androidTestImplementation("org.mockito:mockito-android:$mockitoVersion")
-    androidTestImplementation("org.mockito:mockito-core:$mockitoCoreVersion")
-    androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion") {
-        exclude(group = "com.android.support")
-        exclude(module = "support-annotations")
-    }
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinTestJunitVersion")
-    testImplementation("io.mockk:mockk:$mockkVersion")
-    androidTestImplementation("io.mockk:mockk-android:$mockkAndroidVersion")
+    implementation(libs.junit.ktx)
+    androidTestImplementation(libs.junit.ktx)
+    testImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockito.inline)
+    testImplementation(libs.mockito.kotlin)
+    androidTestImplementation(libs.mockito.android)
+    androidTestImplementation(libs.mockito.core)
+    androidTestImplementation(libs.espresso.core)
+    testImplementation(libs.kotlin.test.junit)
+    testImplementation(libs.mockk)
+    androidTestImplementation(libs.mockk.android)
 }

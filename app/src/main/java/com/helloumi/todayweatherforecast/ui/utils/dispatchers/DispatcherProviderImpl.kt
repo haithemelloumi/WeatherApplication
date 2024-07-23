@@ -1,4 +1,4 @@
-package com.helloumi.todayweatherforecast.ui.dispatchers
+package com.helloumi.todayweatherforecast.ui.utils.dispatchers
 
 import kotlinx.coroutines.CoroutineDispatcher
 

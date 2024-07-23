@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.helloumi.todayweatherforecast.domain.model.CityForSearchDomain
 import com.helloumi.todayweatherforecast.domain.usecases.AddCityUseCase
-import com.helloumi.todayweatherforecast.ui.dispatchers.DispatcherProvider
+import com.helloumi.todayweatherforecast.ui.utils.dispatchers.DispatcherProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
