@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -41,7 +40,7 @@ import com.helloumi.todayweatherforecast.ui.utils.extensions.displayToast
 fun SetupNavGraph(
     context: Context
 ) {
-    val title = mutableStateOf("")
+    val title = mutableStateOf(stringResource(R.string.cities_title))
     val navController: NavHostController = rememberNavController()
 
     LaunchedEffect(navController.currentBackStackEntryFlow) {
@@ -71,8 +70,6 @@ fun SetupNavGraph(
                                 contentDescription = ""
                             )
                         }
-                    } else {
-                        // Render top bar without back navigation button
                     }
                 },
                 ///// ADDED TO RETURN BACK //////
@@ -95,7 +92,6 @@ fun SetupNavGraph(
                 composable(WeatherNavigation.Cities.destination) {
                     CitiesScreen(
                         modifier = Modifier.padding(innerPadding),
-                        viewModel = hiltViewModel(),
                         onClickAddCityButton = { onClickAddCityButton(context = context) }
                     ) { city, isInternetAvailable ->
                         onClickCity(city, isInternetAvailable, navController, context)
@@ -108,8 +104,7 @@ fun SetupNavGraph(
                         )
                     if (city != null) {
                         WeatherAndForecastScreen(
-                            cityName = city.name,
-                            viewModel = hiltViewModel()
+                            cityName = city.name
                         )
                     }
                 }
@@ -120,20 +115,19 @@ fun SetupNavGraph(
 }
 
 @Composable
-private fun getTitleForRoute(route: String): String {
-    return when (route) {
+private fun getTitleForRoute(route: String) =
+    when (route) {
         WeatherNavigation.Cities.destination -> stringResource(R.string.cities_title)
         WeatherNavigation.WeatherAndForecast.destination -> stringResource(R.string.weather_title)
         else -> ""
     }
-}
 
-fun onClickAddCityButton(context: Context) {
+private fun onClickAddCityButton(context: Context) {
     val myIntent = Intent(context, AddCityActivity::class.java)
     context.startActivity(myIntent)
 }
 
-fun onClickCity(
+private fun onClickCity(
     city: CityForSearchDomain,
     isInternetAvailable: Boolean,
     navController: NavHostController,
