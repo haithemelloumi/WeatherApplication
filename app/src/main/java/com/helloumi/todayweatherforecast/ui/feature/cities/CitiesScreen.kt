@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.helloumi.todayweatherforecast.R
 import com.helloumi.todayweatherforecast.domain.model.CityForSearchDomain
@@ -39,10 +40,11 @@ of constructing all of the parameters passed to a ViewModel
 @Composable
 fun CitiesScreen(
     modifier: Modifier,
-    viewModel: CitiesViewModel,
+    viewModel: CitiesViewModel = hiltViewModel(),
     onClickAddCityButton: () -> Unit,
     onClickCity: (city: CityForSearchDomain, isInternetAvailable: Boolean) -> Unit
 ) {
+
     LaunchedEffect(Unit) {
         viewModel.getCities()
         viewModel.collectIsOnline()

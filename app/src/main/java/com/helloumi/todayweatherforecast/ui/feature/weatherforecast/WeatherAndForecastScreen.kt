@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.helloumi.todayweatherforecast.R
 import com.helloumi.todayweatherforecast.domain.model.City
@@ -49,7 +50,7 @@ of constructing all of the parameters passed to a ViewModel
 @Composable
 fun WeatherAndForecastScreen(
     cityName: String,
-    viewModel: WeatherAndForecastViewModel
+    viewModel: WeatherAndForecastViewModel = hiltViewModel()
 ) {
 
     LaunchedEffect(Unit) {
