@@ -1,0 +1,25 @@
+package com.helloumi.domain.model.response
+
+import com.helloumi.domain.model.City
+import com.helloumi.domain.model.ListItem
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
+data class ForecastResponse(
+
+    @Json(name = "city")
+    val city: City?,
+
+    @Json(name = "cnt")
+    val cnt: Int?,
+
+    @Json(name = "cod")
+    val cod: String?,
+
+    @Json(name = "message")
+    val message: Double?,
+
+    @Json(name = "list")
+    val list: List<ListItem>?
+)
