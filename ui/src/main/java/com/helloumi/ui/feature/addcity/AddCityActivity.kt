@@ -99,10 +99,10 @@ class AddCityActivity : AppCompatActivity() {
     }
 
     private fun clearSearchText() {
-        val placeEditText = autocompleteFragment.view?.findViewById(
+        val placeEditText = autocompleteFragment.view?.findViewById<EditText>(
             com.google.android.libraries.places.R.id.places_autocomplete_search_input
-        ) as EditText
-        placeEditText.setText("")
+        )
+        placeEditText?.setText(null)
         addCityViewModel.placeId.value = ""
         addCityViewModel.placeName.value = ""
     }
