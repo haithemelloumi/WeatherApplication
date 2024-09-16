@@ -17,6 +17,12 @@ android {
 
     buildTypes {
         debug {
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+
             buildConfigField("String", "BASE_URL", "\"http://api.openweathermap.org/data/2.5/\"")
             buildConfigField("String", "WEATHER_API_KEY", "\"f84037daa9de07e50719fa0542b9213d\"")
         }
@@ -24,14 +30,14 @@ android {
 
     buildTypes {
         release {
-            buildConfigField("String", "BASE_URL", "\"http://api.openweathermap.org/data/2.5/\"")
-            buildConfigField("String", "WEATHER_API_KEY", "\"f84037daa9de07e50719fa0542b9213d\"")
-
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            buildConfigField("String", "BASE_URL", "\"http://api.openweathermap.org/data/2.5/\"")
+            buildConfigField("String", "WEATHER_API_KEY", "\"f84037daa9de07e50719fa0542b9213d\"")
         }
     }
     compileOptions {
