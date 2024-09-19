@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".feature.addcity.AddCityActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -36,12 +37,15 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/addCityButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_medium"
+        android:layout_marginHorizontal="@dimen/spacing_medium"
+        android:layout_marginVertical="@dimen/spacing_small"
+        android:background="@drawable/rounded_shape"
         android:text="@string/add_city_button"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

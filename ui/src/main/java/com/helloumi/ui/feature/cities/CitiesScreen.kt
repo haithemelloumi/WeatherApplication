@@ -29,9 +29,11 @@ import com.helloumi.ui.R
 import com.helloumi.domain.model.CityForSearchDomain
 import com.helloumi.ui.theme.Dimens
 import com.helloumi.ui.theme.Dimens.ITEM_HEIGHT
+import com.helloumi.ui.theme.Dimens.ROUNDED_SHAPE_SMALL
 import com.helloumi.ui.theme.PURPLE_40
 import com.helloumi.ui.theme.PURPLE_GREY_40
 import com.helloumi.ui.theme.Radius
+import com.helloumi.ui.theme.WHITE
 
 /*
 Added to display preview because The previews system is not capable
@@ -111,6 +113,7 @@ fun CitiesContent(
                             .height(ITEM_HEIGHT)
                             // Center Text Vertically
                             .wrapContentHeight(align = Alignment.CenterVertically),
+                        color = WHITE
                     )
                 }
                 Spacer(modifier = Modifier.height(Dimens.STACK_XS))
@@ -120,6 +123,7 @@ fun CitiesContent(
         AddCityButton(
             Modifier
                 .fillMaxWidth()
+                .height(Dimens.ADD_CITY_BUTTON_HEIGHT)
                 .padding(horizontal = Dimens.STACK_MD, vertical = Dimens.STACK_SM),
             context
         ) {
@@ -138,9 +142,13 @@ fun AddCityButton(
     Button(
         modifier = modifier,
         colors = ButtonDefaults.buttonColors(containerColor = PURPLE_40),
+        shape = RoundedCornerShape(ROUNDED_SHAPE_SMALL),
         onClick = onClick
     ) {
-        Text(text = context.getString(R.string.add_city_button))
+        Text(
+            text = context.getString(R.string.add_city_button),
+            color = WHITE
+        )
     }
 }
 

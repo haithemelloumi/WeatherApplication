@@ -39,6 +39,9 @@ object Dimens {
     val TEXT_SIZE_EXTREMELY_BIG = 72.sp
     val TEXT_SIZE_HEADLINE = 17.sp
 
+    val ADD_CITY_BUTTON_HEIGHT = 80.dp
+
+    val ROUNDED_SHAPE_SMALL = 8.dp
     val ROUNDED_SHAPE_MEDIUM = 16.dp
 
     val DAILY_ITEM_SIZE = 120.dp
