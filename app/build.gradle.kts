@@ -16,7 +16,7 @@ android {
         minSdk = 24
         //noinspection OldTargetApi
         targetSdk = 34
-        versionCode = 1
+        versionCode = 16
         versionName = "1.0"
 
         vectorDrawables {
