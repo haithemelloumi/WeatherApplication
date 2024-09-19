@@ -1,9 +1,8 @@
-package com.helloumi.todayweatherforecast.data.repository
+package com.helloumi.data.repository
 
 import com.helloumi.data.datasource.CitiesForSearchDao
 import com.helloumi.data.entity.CityForSearchEntity
 import com.helloumi.data.mapper.CityForSearchDomainMapper
-import com.helloumi.data.repository.CitiesForSearchRepositoryImpl
 import com.helloumi.domain.model.CityForSearchDomain
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
