@@ -27,23 +27,30 @@ class AddCityUseCaseTest {
 
     @Test
     fun `WHEN execute useCase THEN verify repository and assert result`() {
-        runTest {
-            // GIVEN
-            val cityDomain = CityForSearchDomain(
-                id = "cityId",
-                name = "cityName"
-            )
-            val resultInsert: Long = 5
 
+        // GIVEN
+        val cityDomain = CityForSearchDomain(
+            id = "cityId",
+            name = "cityName"
+        )
+        val resultInsert: Long = 5
+
+        runTest {
             Mockito.`when`(citiesForSearchRepository.insertCity(cityDomain))
                 .thenReturn(resultInsert)
+        }
 
-            // WHEN
+
+        // WHEN
+        runTest {
             val result = addCityUseCase(cityDomain)
-
             // THEN
-            verify(citiesForSearchRepository).insertCity(cityDomain)
             assertEquals(resultInsert, result)
+        }
+
+        // THEN
+        runTest {
+            verify(citiesForSearchRepository).insertCity(cityDomain)
         }
     }
 }

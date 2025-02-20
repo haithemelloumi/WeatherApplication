@@ -1,14 +1,14 @@
 [versions]
-composeBomVersion = "2024.08.00"
+composeBomVersion = "2025.01.01"
 accompanistVersion = "0.30.1"
 hiltComposeVersion = "1.2.0"
-composeConstraintLayoutVersion = "1.0.1"
+composeConstraintLayoutVersion = "1.1.0"
 coilVersion = "2.6.0"
 
 androidMaterialVersion = "1.12.0"
-annotationVersion = "1.8.2"
+annotationVersion = "1.9.1"
 
-placesVersion = "3.5.0"
+placesVersion = "4.1.0"
 hiltVersion = "2.51.1"
 roomVersion = "2.6.1"
 moshiVersion = "1.15.0"
@@ -30,7 +30,7 @@ mockkAndroidVersion = "1.12.3"
 androidApplicationVersion = "8.1.4"
 kotlinAndroidVersion = "1.9.23"
 daggerHiltVersion = "2.51.1"
-devtoolsKspVersion = "1.9.10-1.0.13"
+devtoolsKspVersion = "1.9.22-1.0.17"
 jetbrainsKotlinJvmVersion = "1.9.23"
 
 

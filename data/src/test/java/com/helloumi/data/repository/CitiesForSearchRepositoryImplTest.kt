@@ -33,29 +33,34 @@ class CitiesForSearchRepositoryImplTest {
 
     @Test
     fun `WHEN call insertCity THEN verify mapper and dao and assert result`() {
+        // GIVEN
+        val cityEntity = CityForSearchEntity(
+            cityId = "cityId",
+            cityName = "cityName"
+        )
+        val cityDomain = CityForSearchDomain(
+            id = "cityId",
+            name = "cityName"
+        )
+        val resultInsert: Long = 7
+
+        Mockito.`when`(cityForSearchDomainMapper.toCityEntity(cityDomain))
+            .thenReturn(cityEntity)
         runTest {
-            // GIVEN
-            val cityEntity = CityForSearchEntity(
-                cityId = "cityId",
-                cityName = "cityName"
-            )
-            val cityDomain = CityForSearchDomain(
-                id = "cityId",
-                name = "cityName"
-            )
-            val resultInsert: Long = 7
-
-            Mockito.`when`(cityForSearchDomainMapper.toCityEntity(cityDomain))
-                .thenReturn(cityEntity)
             Mockito.`when`(citiesForSearchDao.insertElement(cityEntity)).thenReturn(resultInsert)
+        }
 
-            // WHEN
+        // WHEN
+        runTest {
             val result = citiesForSearchRepositoryImpl.insertCity(cityDomain)
-
             // THEN
-            verify(cityForSearchDomainMapper).toCityEntity(cityDomain)
-            verify(citiesForSearchDao).insertElement(cityEntity)
             assertEquals(resultInsert, result)
+        }
+
+        // THEN
+        verify(cityForSearchDomainMapper).toCityEntity(cityDomain)
+        runTest {
+            verify(citiesForSearchDao).insertElement(cityEntity)
         }
     }
 }

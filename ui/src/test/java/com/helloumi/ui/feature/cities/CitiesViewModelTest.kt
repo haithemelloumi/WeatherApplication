@@ -5,7 +5,6 @@ import com.helloumi.domain.usecases.GetCitiesUseCase
 import com.helloumi.ui.utils.dispatchers.DispatcherProviderImpl
 import com.helloumi.ui.utils.network.NetworkMonitor
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -42,19 +41,17 @@ class CitiesViewModelTest {
 
     @Test
     fun `WHEN call getCities THEN verify useCase`() {
-        runTest {
-            // WHEN
-            Mockito.`when`(getCitiesUseCase.invoke()).thenReturn(
-                flow {
-                    emit(listOf())
-                }
-            )
+        // WHEN
+        Mockito.`when`(getCitiesUseCase.invoke()).thenReturn(
+            flow {
+                emit(listOf())
+            }
+        )
 
-            citiesViewModel.getCities()
+        citiesViewModel.getCities()
 
-            // THEN
-            verify(getCitiesUseCase).invoke()
-        }
+        // THEN
+        verify(getCitiesUseCase).invoke()
     }
 
     @Test

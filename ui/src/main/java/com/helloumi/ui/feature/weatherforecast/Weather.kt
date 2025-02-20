@@ -31,7 +31,6 @@ import com.helloumi.domain.model.Wind
 import com.helloumi.domain.model.response.CurrentWeatherResponse
 import com.helloumi.domain.model.result.CurrentWeatherResult
 import com.helloumi.ui.theme.Dimens
-import com.helloumi.ui.theme.PINK_40
 import com.helloumi.ui.theme.WHITE
 import com.helloumi.ui.utils.extensions.resIdByName
 import com.helloumi.ui.R
@@ -47,7 +46,7 @@ fun Weather(
     noDataLabel: String,
 ) {
     val weatherIcon = getWeatherIconResId(LocalContext.current, currentWeatherValue)
-    Weather(
+    WeatherContent(
         currentWeatherValue = currentWeatherValue,
         noDataLabel = noDataLabel,
         weatherIcon = weatherIcon,
@@ -55,7 +54,7 @@ fun Weather(
 }
 
 @Composable
-fun Weather(
+fun WeatherContent(
     currentWeatherValue: CurrentWeatherResult.Success,
     noDataLabel: String,
     @DrawableRes weatherIcon: Int,
@@ -167,7 +166,7 @@ fun WeatherPreview() {
         )
     )
 
-    Weather(
+    WeatherContent(
         currentWeather,
         "noLabel",
         R.drawable.icon_01d

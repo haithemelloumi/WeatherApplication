@@ -1,39 +1,27 @@
 package com.helloumi.ui.feature.cities
 
 import android.annotation.SuppressLint
-import android.content.Context
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.helloumi.ui.R
 import com.helloumi.domain.model.CityForSearchDomain
+import com.helloumi.ui.features.home.CityItem
 import com.helloumi.ui.theme.Dimens
-import com.helloumi.ui.theme.Dimens.ITEM_HEIGHT
-import com.helloumi.ui.theme.Dimens.ROUNDED_SHAPE_SMALL
 import com.helloumi.ui.theme.PURPLE_40
-import com.helloumi.ui.theme.PURPLE_GREY_40
-import com.helloumi.ui.theme.Radius
-import com.helloumi.ui.theme.WHITE
 
 /*
 Added to display preview because The previews system is not capable
@@ -51,8 +39,8 @@ fun CitiesScreen(
         viewModel.getCities()
         viewModel.collectIsOnline()
     }
-    val cities = viewModel.citiesUiState.value
-    val isInternetAvailable = viewModel.isInternetAvailable.value
+    val cities = viewModel.citiesUiState.collectAsStateWithLifecycle()
+    val isInternetAvailable = viewModel.isInternetAvailable.collectAsStateWithLifecycle()
     CitiesContent(
         modifier = modifier,
         cities = cities,
@@ -66,10 +54,10 @@ fun CitiesScreen(
 @Composable
 fun CitiesContent(
     modifier: Modifier,
-    cities: List<CityForSearchDomain>,
-    isInternetAvailable: Boolean,
+    cities: State<List<CityForSearchDomain>>,
+    isInternetAvailable: State<Boolean>,
     onClickAddCityButton: () -> Unit,
-    onClickCity: (city: CityForSearchDomain, isInternetAvailable: Boolean) -> Unit,
+    onClickCity: (CityForSearchDomain, Boolean) -> Unit
 ) {
 
     //LazyList scroll position
@@ -86,8 +74,6 @@ fun CitiesContent(
         else scrollState.firstVisibleItemScrollOffset != 0
     )
 
-    val context: Context = LocalContext.current
-
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
@@ -98,58 +84,17 @@ fun CitiesContent(
                 .weight(1f)
                 .padding(horizontal = Dimens.STACK_MD, vertical = Dimens.STACK_SM)
         ) {
-            items(cities) {
-                Button(
-                    onClick = {
-                        onClickCity(it, isInternetAvailable)
-                    },
-                    shape = RoundedCornerShape(Radius.EXTRA_LARGE),
-                    colors = ButtonDefaults.buttonColors(containerColor = PURPLE_GREY_40)
-                ) {
-                    Text(
-                        text = it.name,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(ITEM_HEIGHT)
-                            // Center Text Vertically
-                            .wrapContentHeight(align = Alignment.CenterVertically),
-                        color = WHITE
-                    )
-                }
+            val cityList: List<CityForSearchDomain> = cities.value
+            val isOnline = isInternetAvailable.value
+            items(cityList.size) { city ->
+                CityItem(cityList[city]) { onClickCity(cityList[city], isOnline) }
                 Spacer(modifier = Modifier.height(Dimens.STACK_XS))
             }
         }
 
-        AddCityButton(
-            Modifier
-                .fillMaxWidth()
-                .height(Dimens.ADD_CITY_BUTTON_HEIGHT)
-                .padding(horizontal = Dimens.STACK_MD, vertical = Dimens.STACK_SM),
-            context
-        ) {
-            onClickAddCityButton()
-        }
+        AddCityButton { onClickAddCityButton() }
     }
 
-}
-
-@Composable
-fun AddCityButton(
-    modifier: Modifier,
-    context: Context,
-    onClick: () -> Unit
-) {
-    Button(
-        modifier = modifier,
-        colors = ButtonDefaults.buttonColors(containerColor = PURPLE_40),
-        shape = RoundedCornerShape(ROUNDED_SHAPE_SMALL),
-        onClick = onClick
-    ) {
-        Text(
-            text = context.getString(R.string.add_city_button),
-            color = WHITE
-        )
-    }
 }
 
 @SuppressLint("UnrememberedMutableState")
@@ -159,5 +104,5 @@ fun CitiesPreview() {
     val cities = listOf(
         CityForSearchDomain("id", "name")
     )
-    CitiesContent(Modifier, cities, true, {}) { _, _ -> }
+    CitiesContent(Modifier, mutableStateOf(cities), mutableStateOf(true), {}) { _, _ -> }
 }

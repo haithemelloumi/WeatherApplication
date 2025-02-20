@@ -15,7 +15,6 @@ import com.helloumi.domain.usecases.GetCurrentWeatherUseCase
 import com.helloumi.domain.usecases.GetForecastUseCase
 import com.helloumi.ui.utils.dispatchers.DispatcherProviderImpl
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -53,36 +52,32 @@ class WeatherAndForecastViewModelTest {
 
     @Test
     fun `WHEN call getWeather with ServerUnavailable THEN assert result and verify useCase`() {
-        runTest {
-            // GIVEN
-            val expected = CurrentWeatherResult.ServerUnavailable
-            Mockito.`when`(getCurrentWeatherUseCase.execute("cityName"))
-                .thenReturn(flowOf(expected))
+        // GIVEN
+        val expected = CurrentWeatherResult.ServerUnavailable
+        Mockito.`when`(getCurrentWeatherUseCase.execute("cityName"))
+            .thenReturn(flowOf(expected))
 
-            // WHEN
-            weatherAndForecastViewModel.getWeather("cityName")
+        // WHEN
+        weatherAndForecastViewModel.getWeather("cityName")
 
-            // THEN
-            verify(getCurrentWeatherUseCase).execute("cityName")
-            assertEquals(expected, weatherAndForecastViewModel.currentWeatherUiState.value)
-        }
+        // THEN
+        verify(getCurrentWeatherUseCase).execute("cityName")
+        assertEquals(expected, weatherAndForecastViewModel.currentWeatherUiState.value)
     }
 
     @Test
     fun `WHEN call getWeather with ServerError THEN assert result and verify useCase`() {
-        runTest {
-            // GIVEN
-            val expected = CurrentWeatherResult.ServerError
-            Mockito.`when`(getCurrentWeatherUseCase.execute("cityName"))
-                .thenReturn(flowOf(expected))
+        // GIVEN
+        val expected = CurrentWeatherResult.ServerError
+        Mockito.`when`(getCurrentWeatherUseCase.execute("cityName"))
+            .thenReturn(flowOf(expected))
 
-            // WHEN
-            weatherAndForecastViewModel.getWeather("cityName")
+        // WHEN
+        weatherAndForecastViewModel.getWeather("cityName")
 
-            // THEN
-            verify(getCurrentWeatherUseCase).execute("cityName")
-            assertEquals(expected, weatherAndForecastViewModel.currentWeatherUiState.value)
-        }
+        // THEN
+        verify(getCurrentWeatherUseCase).execute("cityName")
+        assertEquals(expected, weatherAndForecastViewModel.currentWeatherUiState.value)
     }
 
     @Test
@@ -129,66 +124,60 @@ class WeatherAndForecastViewModelTest {
 
     @Test
     fun `WHEN call getForecast with ServerUnavailable THEN assert result and verify useCase`() {
-        runTest {
-            // GIVEN
-            val expected = ForecastResult.ServerUnavailable
-            Mockito.`when`(getForecastUseCase.execute("cityName"))
-                .thenReturn(flowOf(expected))
+        // GIVEN
+        val expected = ForecastResult.ServerUnavailable
+        Mockito.`when`(getForecastUseCase.execute("cityName"))
+            .thenReturn(flowOf(expected))
 
-            // WHEN
-            weatherAndForecastViewModel.getForecast("cityName")
+        // WHEN
+        weatherAndForecastViewModel.getForecast("cityName")
 
-            // THEN
-            verify(getForecastUseCase).execute("cityName")
-            assertEquals(expected, weatherAndForecastViewModel.forecastResponseUiState.value)
-        }
+        // THEN
+        verify(getForecastUseCase).execute("cityName")
+        assertEquals(expected, weatherAndForecastViewModel.forecastResponseUiState.value)
     }
 
 
     @Test
     fun `WHEN call getForecast with ServerError THEN assert result and verify useCase`() {
-        runTest {
-            // GIVEN
-            val expected = ForecastResult.ServerError
-            Mockito.`when`(getForecastUseCase.execute("cityName")).thenReturn(flowOf(expected))
+        // GIVEN
+        val expected = ForecastResult.ServerError
+        Mockito.`when`(getForecastUseCase.execute("cityName")).thenReturn(flowOf(expected))
 
-            // WHEN
-            weatherAndForecastViewModel.getForecast("cityName")
+        // WHEN
+        weatherAndForecastViewModel.getForecast("cityName")
 
-            // THEN
-            verify(getForecastUseCase).execute("cityName")
-            assertEquals(expected, weatherAndForecastViewModel.forecastResponseUiState.value)
-        }
+        // THEN
+        verify(getForecastUseCase).execute("cityName")
+        assertEquals(expected, weatherAndForecastViewModel.forecastResponseUiState.value)
     }
 
     @Test
     fun `WHEN call getForecast with Success THEN assert result and verify useCase`() {
-        runTest {
-            // GIVEN
-            val response = ForecastResponse(
-                city = City(
-                    country = null,
-                    coord = null,
-                    name = "name",
-                    id = 2
-                ),
-                cnt = 3,
-                cod = "df",
-                message = 23.9,
-                list = listOf()
-            )
-            val expected = ForecastResult.Success(response)
-            Mockito.`when`(getForecastUseCase.execute("cityName")).thenReturn(flowOf(expected))
+        // GIVEN
+        val response = ForecastResponse(
+            city = City(
+                country = null,
+                coord = null,
+                name = "name",
+                id = 2
+            ),
+            cnt = 3,
+            cod = "df",
+            message = 23.9,
+            list = listOf()
+        )
+        val expected = ForecastResult.Success(response)
+        Mockito.`when`(getForecastUseCase.execute("cityName")).thenReturn(flowOf(expected))
 
-            // WHEN
-            weatherAndForecastViewModel.getForecast("cityName")
+        // WHEN
+        weatherAndForecastViewModel.getForecast("cityName")
 
-            // THEN
-            verify(getForecastUseCase).execute("cityName")
-            assertEquals(
-                expected.forecastResponse,
-                (weatherAndForecastViewModel.forecastResponseUiState.value as ForecastResult.Success).forecastResponse
-            )
-        }
+        // THEN
+        verify(getForecastUseCase).execute("cityName")
+        assertEquals(
+            expected.forecastResponse,
+            (weatherAndForecastViewModel.forecastResponseUiState.value as ForecastResult.Success).forecastResponse
+        )
     }
 }

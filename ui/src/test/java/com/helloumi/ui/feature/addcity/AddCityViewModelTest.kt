@@ -36,19 +36,21 @@ class AddCityViewModelTest {
 
     @Test
     fun `WHEN call addCity THEN verify useCase`() {
+
+        // GIVEN
+        val cityId = "cityId"
+        val cityName = "cityName"
+        val cityDomain = CityForSearchDomain(
+            id = cityId,
+            name = cityName
+        )
+
+        // WHEN
+        addCityViewModel.addCity(cityId, cityName)
+
+
+        // THEN
         runTest {
-            // GIVEN
-            val cityId = "cityId"
-            val cityName = "cityName"
-            val cityDomain = CityForSearchDomain(
-                id = cityId,
-                name = cityName
-            )
-
-            // WHEN
-            addCityViewModel.addCity(cityId, cityName)
-
-            // THEN
             verify(addCityUseCase)(cityDomain)
         }
     }

@@ -1,9 +1,6 @@
 package com.helloumi.ui.feature
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
@@ -14,7 +11,6 @@ import com.helloumi.domain.usecases.GetCitiesUseCase
 import com.helloumi.ui.feature.cities.AddCityButton
 import com.helloumi.ui.feature.cities.CitiesScreen
 import com.helloumi.ui.feature.cities.CitiesViewModel
-import com.helloumi.ui.theme.Dimens
 import com.helloumi.ui.theme.TodayWeatherForecastTheme
 import com.helloumi.ui.utils.dispatchers.DispatcherProviderImpl
 import com.helloumi.ui.utils.network.NetworkMonitor
@@ -93,10 +89,6 @@ class CitiesScreenKtTest {
         composeTestRule.setContent {
             TodayWeatherForecastTheme {
                 AddCityButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = Dimens.STACK_MD, vertical = Dimens.STACK_MD),
-                    LocalContext.current,
                     onClick = { clicked = true }
                 )
             }
@@ -114,10 +106,6 @@ class CitiesScreenKtTest {
         composeTestRule.setContent {
             TodayWeatherForecastTheme {
                 AddCityButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = Dimens.STACK_MD, vertical = Dimens.STACK_MD),
-                    LocalContext.current,
                     onClick = { clicked = false }
                 )
             }
