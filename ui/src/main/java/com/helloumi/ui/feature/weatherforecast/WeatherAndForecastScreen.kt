@@ -12,14 +12,14 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.helloumi.ui.R
 import com.helloumi.domain.model.City
@@ -58,8 +58,8 @@ fun WeatherAndForecastScreen(
         viewModel.getForecast(cityName)
     }
 
-    val weatherState = viewModel.currentWeatherUiState
-    val forecastState = viewModel.forecastResponseUiState
+    val weatherState by viewModel.currentWeatherUiState.collectAsStateWithLifecycle()
+    val forecastState by viewModel.forecastResponseUiState.collectAsStateWithLifecycle()
 
     WeatherAndForecastContent(
         cityName,
@@ -72,8 +72,8 @@ fun WeatherAndForecastScreen(
 @Composable
 fun WeatherAndForecastContent(
     cityName: String,
-    currentWeather: MutableState<CurrentWeatherResult>,
-    forecastResult: MutableState<ForecastResult>
+    currentWeather: CurrentWeatherResult,
+    forecastResult: ForecastResult
 ) {
 
     //LazyList scroll position
@@ -111,7 +111,7 @@ fun WeatherAndForecastContent(
             )
 
             /////////////////////// WEATHER ///////////////////////
-            when (val currentWeatherValue = currentWeather.value) {
+            when (val currentWeatherValue = currentWeather) {
                 is CurrentWeatherResult.Success -> {
 
                     Weather(
@@ -149,7 +149,7 @@ fun WeatherAndForecastContent(
 
             /////////////////////// FORECAST /////////////////////////
             Spacer(modifier = Modifier.size(STACK_SM))
-            when (val forecastResultValue = forecastResult.value) {
+            when (val forecastResultValue = forecastResult) {
                 is ForecastResult.Success -> {
                     Forecast(forecastResultValue)
                 }
@@ -187,50 +187,46 @@ fun ErrorMessage(message: String) {
 @Preview
 @Composable
 fun WeatherAndForecastPreview() {
-    val currentWeather: MutableState<CurrentWeatherResult> = mutableStateOf(
-        CurrentWeatherResult.Success(
-            CurrentWeatherResponse(
-                visibility = 100,
-                timezone = 99,
-                main = Main(
-                    temp = 1000.0,
-                    tempMin = 1000.0,
-                    grndLevel = 1000.0,
-                    tempKf = 1000.0,
-                    feelsLike = 1000.0,
-                    humidity = 100,
-                    pressure = 100.0,
-                    seaLevel = 100.0,
-                    tempMax = 100.0
-                ),
-                clouds = Clouds(all = 100),
-                sys = Sys("ff"),
-                dt = 1000,
-                coord = Coord(100.0, 33.0),
-                weather = listOf(),
-                name = "name",
-                cod = 23,
-                id = 11,
-                base = "gg",
-                wind = Wind(2.0, 4.0)
-            )
+    val currentWeather = CurrentWeatherResult.Success(
+        CurrentWeatherResponse(
+            visibility = 100,
+            timezone = 99,
+            main = Main(
+                temp = 1000.0,
+                tempMin = 1000.0,
+                grndLevel = 1000.0,
+                tempKf = 1000.0,
+                feelsLike = 1000.0,
+                humidity = 100,
+                pressure = 100.0,
+                seaLevel = 100.0,
+                tempMax = 100.0
+            ),
+            clouds = Clouds(all = 100),
+            sys = Sys("ff"),
+            dt = 1000,
+            coord = Coord(100.0, 33.0),
+            weather = listOf(),
+            name = "name",
+            cod = 23,
+            id = 11,
+            base = "gg",
+            wind = Wind(2.0, 4.0)
         )
     )
 
-    val forecastResult: MutableState<ForecastResult> = mutableStateOf(
-        ForecastResult.Success(
-            ForecastResponse(
-                city = City(
-                    country = null,
-                    coord = null,
-                    name = "name",
-                    id = 2
-                ),
-                cnt = 3,
-                cod = "df",
-                message = 23.9,
-                list = listOf()
-            )
+    val forecastResult = ForecastResult.Success(
+        ForecastResponse(
+            city = City(
+                country = null,
+                coord = null,
+                name = "name",
+                id = 2
+            ),
+            cnt = 3,
+            cod = "df",
+            message = 23.9,
+            list = listOf()
         )
     )
 

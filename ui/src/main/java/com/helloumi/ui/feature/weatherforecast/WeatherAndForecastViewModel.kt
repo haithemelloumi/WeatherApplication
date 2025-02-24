@@ -10,6 +10,8 @@ import com.helloumi.domain.usecases.GetCurrentWeatherUseCase
 import com.helloumi.domain.usecases.GetForecastUseCase
 import com.helloumi.ui.utils.dispatchers.DispatcherProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,13 +22,13 @@ class WeatherAndForecastViewModel @Inject constructor(
     private val getForecastUseCase: GetForecastUseCase
 ) : ViewModel() {
 
-    private val _currentWeatherUiState: MutableState<CurrentWeatherResult> =
-        mutableStateOf(CurrentWeatherResult.Loading)
-    val currentWeatherUiState: MutableState<CurrentWeatherResult> get() = _currentWeatherUiState
+    private val _currentWeatherUiState: MutableStateFlow<CurrentWeatherResult> =
+        MutableStateFlow(CurrentWeatherResult.Loading)
+    val currentWeatherUiState = _currentWeatherUiState.asStateFlow()
 
-    private val _forecastResponseUiState: MutableState<ForecastResult> =
-        mutableStateOf(ForecastResult.Loading)
-    val forecastResponseUiState: MutableState<ForecastResult> get() = _forecastResponseUiState
+    private val _forecastResponseUiState: MutableStateFlow<ForecastResult> =
+        MutableStateFlow(ForecastResult.Loading)
+    val forecastResponseUiState = _forecastResponseUiState.asStateFlow()
 
     fun getWeather(cityName: String) {
         viewModelScope.launch(dispatcherProvider.io) {

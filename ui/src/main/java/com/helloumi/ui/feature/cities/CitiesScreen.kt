@@ -9,10 +9,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -39,14 +39,15 @@ fun CitiesScreen(
         viewModel.getCities()
         viewModel.collectIsOnline()
     }
-    val cities = viewModel.citiesUiState.collectAsStateWithLifecycle()
-    val isInternetAvailable = viewModel.isInternetAvailable.collectAsStateWithLifecycle()
+    val cities by viewModel.citiesUiState.collectAsStateWithLifecycle()
+    val isInternetAvailable by viewModel.isInternetAvailable.collectAsStateWithLifecycle()
     CitiesContent(
         modifier = modifier,
         cities = cities,
         isInternetAvailable = isInternetAvailable,
         onClickAddCityButton = onClickAddCityButton,
-        onClickCity = onClickCity
+        onClickCity = onClickCity,
+        onDeleteCity = { city -> viewModel.deleteCity(city) }
     )
 }
 
@@ -54,10 +55,11 @@ fun CitiesScreen(
 @Composable
 fun CitiesContent(
     modifier: Modifier,
-    cities: State<List<CityForSearchDomain>>,
-    isInternetAvailable: State<Boolean>,
+    cities: List<CityForSearchDomain>,
+    isInternetAvailable: Boolean,
     onClickAddCityButton: () -> Unit,
-    onClickCity: (CityForSearchDomain, Boolean) -> Unit
+    onClickCity: (CityForSearchDomain, Boolean) -> Unit,
+    onDeleteCity: (CityForSearchDomain) -> Unit
 ) {
 
     //LazyList scroll position
@@ -84,10 +86,13 @@ fun CitiesContent(
                 .weight(1f)
                 .padding(horizontal = Dimens.STACK_MD, vertical = Dimens.STACK_SM)
         ) {
-            val cityList: List<CityForSearchDomain> = cities.value
-            val isOnline = isInternetAvailable.value
-            items(cityList.size) { city ->
-                CityItem(cityList[city]) { onClickCity(cityList[city], isOnline) }
+            items(cities) { city ->
+                CityItem(
+                    city,
+                    { onClickCity(city, isInternetAvailable) }
+                ) {
+                    onDeleteCity(city)
+                }
                 Spacer(modifier = Modifier.height(Dimens.STACK_XS))
             }
         }
@@ -104,5 +109,5 @@ fun CitiesPreview() {
     val cities = listOf(
         CityForSearchDomain("id", "name")
     )
-    CitiesContent(Modifier, mutableStateOf(cities), mutableStateOf(true), {}) { _, _ -> }
+    CitiesContent(Modifier, cities, true, {}, { _, _ -> }) { _ -> }
 }

@@ -6,8 +6,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,7 +29,8 @@ import com.helloumi.ui.theme.PURPLE_GREY_40
 @Composable
 fun CityItem(
     city: CityForSearchDomain,
-    onClickCity: (CityForSearchDomain) -> Unit
+    onClickCity: (CityForSearchDomain) -> Unit,
+    onDeleteCity: (CityForSearchDomain) -> Unit
 ) {
 
     Card(
@@ -44,6 +49,7 @@ fun CityItem(
             Text(
                 modifier = Modifier
                     .height(ITEM_HEIGHT)
+                    .weight(0.8f)
                     // Center Text Vertically
                     .wrapContentHeight(align = Alignment.CenterVertically),
                 text = city.name,
@@ -54,6 +60,16 @@ fun CityItem(
                     fontWeight = FontWeight.Bold
                 )
             )
+
+            IconButton(
+                onClick = { onDeleteCity(city) }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = null,
+                    tint = Color.Black
+                )
+            }
         }
     }
 }
@@ -62,5 +78,5 @@ fun CityItem(
 @Composable
 fun CityItemPreview() {
     val city = CityForSearchDomain("1", "city")
-    CityItem(city) {}
+    CityItem(city, {}) {}
 }
