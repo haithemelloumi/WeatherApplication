@@ -2,6 +2,7 @@ package com.helloumi.ui.feature.cities
 
 import com.helloumi.common.CoroutinesTestRule
 import com.helloumi.domain.usecases.GetCitiesUseCase
+import com.helloumi.domain.usecases.RemoveCityUseCase
 import com.helloumi.ui.utils.dispatchers.DispatcherProviderImpl
 import com.helloumi.ui.utils.network.NetworkMonitor
 import kotlinx.coroutines.flow.flow
@@ -22,6 +23,9 @@ class CitiesViewModelTest {
     private lateinit var getCitiesUseCase: GetCitiesUseCase
 
     @Mock
+    private lateinit var removeCityUseCase: RemoveCityUseCase
+
+    @Mock
     private lateinit var networkMonitor: NetworkMonitor
 
     private lateinit var citiesViewModel: CitiesViewModel
@@ -34,8 +38,9 @@ class CitiesViewModelTest {
                 main = coroutinesTestRule.testDispatcher,
                 io = coroutinesTestRule.testDispatcher,
             ),
-            getCitiesUseCase,
-            networkMonitor
+            getCitiesUseCase = getCitiesUseCase,
+            removeCityUseCase = removeCityUseCase,
+            networkMonitor = networkMonitor
         )
     }
 
