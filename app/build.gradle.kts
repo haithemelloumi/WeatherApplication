@@ -9,13 +9,12 @@ plugins {
 
 android {
     namespace = "com.helloumi.todayweatherforecast"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.helloumi.todayweatherforecast"
         minSdk = 24
-        //noinspection OldTargetApi
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 16
         versionName = "1.0"
 
