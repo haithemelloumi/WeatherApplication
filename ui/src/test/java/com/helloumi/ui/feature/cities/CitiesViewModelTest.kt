@@ -6,13 +6,11 @@ import com.helloumi.domain.usecases.GetCitiesUseCase
 import com.helloumi.domain.usecases.RemoveCityUseCase
 import com.helloumi.ui.utils.dispatchers.DispatcherProviderImpl
 import com.helloumi.ui.utils.network.NetworkMonitor
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.verify
 
@@ -49,12 +47,6 @@ class CitiesViewModelTest {
     @Test
     fun `WHEN call loadCities THEN verify useCase`() = runTest {
         // WHEN
-        Mockito.`when`(getCitiesUseCase.invoke()).thenReturn(
-            flow {
-                emit(listOf())
-            }
-        )
-
         citiesViewModel.loadCities()
 
         // THEN
