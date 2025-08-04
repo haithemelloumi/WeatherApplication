@@ -1,16 +1,16 @@
 package com.helloumi.ui.feature.cities
 
 import com.helloumi.common.CoroutinesTestRule
+import com.helloumi.domain.model.CityForSearchDomain
 import com.helloumi.domain.usecases.GetCitiesUseCase
 import com.helloumi.domain.usecases.RemoveCityUseCase
 import com.helloumi.ui.utils.dispatchers.DispatcherProviderImpl
 import com.helloumi.ui.utils.network.NetworkMonitor
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.verify
 
@@ -45,22 +45,24 @@ class CitiesViewModelTest {
     }
 
     @Test
-    fun `WHEN call getCities THEN verify useCase`() {
+    fun `WHEN call loadCities THEN verify useCase`() = runTest {
         // WHEN
-        Mockito.`when`(getCitiesUseCase.invoke()).thenReturn(
-            flow {
-                emit(listOf())
-            }
-        )
-
-        citiesViewModel.getCities()
+        citiesViewModel.loadCities()
 
         // THEN
         verify(getCitiesUseCase).invoke()
     }
 
     @Test
-    fun `WHEN call viewModel THEN verify networkMonitor`() {
+    fun `WHEN call observeInternetStatus THEN verify networkMonitor`() {
+        citiesViewModel.observeInternetStatus()
         verify(networkMonitor).isOnline
+    }
+
+    @Test
+    fun `WHEN call deleteCityInternal THEN verify networkMonitor`() {
+        val city = CityForSearchDomain("id1", "Paris")
+        citiesViewModel.deleteCityInternal(city)
+        verify(removeCityUseCase).invoke(city)
     }
 }
