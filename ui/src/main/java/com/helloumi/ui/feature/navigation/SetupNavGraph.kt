@@ -92,7 +92,7 @@ fun SetupNavGraph(
                 composable(WeatherNavigation.Cities.destination) {
                     CitiesScreen(
                         modifier = Modifier.padding(innerPadding),
-                        onClickAddCityButton = { onClickAddCityButton(context = context) }
+                        navigateToAddCity = { onClickAddCityButton(context = context) }
                     ) { city, isInternetAvailable ->
                         onClickCity(city, isInternetAvailable, navController, context)
                     }

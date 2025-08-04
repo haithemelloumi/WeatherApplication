@@ -1,4 +1,4 @@
-package com.helloumi.ui.features.home
+package com.helloumi.ui.feature.cities
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth

@@ -2,26 +2,31 @@ package com.helloumi.ui.feature.cities
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.helloumi.domain.model.CityForSearchDomain
-import com.helloumi.ui.features.home.CityItem
 import com.helloumi.ui.theme.Dimens
 import com.helloumi.ui.theme.PURPLE_40
+import kotlinx.coroutines.flow.collectLatest
 
 /*
 Added to display preview because The previews system is not capable
@@ -29,25 +34,40 @@ of constructing all of the parameters passed to a ViewModel
 */
 @Composable
 fun CitiesScreen(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     viewModel: CitiesViewModel = hiltViewModel(),
-    onClickAddCityButton: () -> Unit,
-    onClickCity: (city: CityForSearchDomain, isInternetAvailable: Boolean) -> Unit
+    navigateToAddCity: () -> Unit,
+    navigateToCityDetails: (city: CityForSearchDomain, isInternetAvailable: Boolean) -> Unit
 ) {
+    // Collect State
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        viewModel.getCities()
-        viewModel.collectIsOnline()
+    // Manage effects (navigation)
+    LaunchedEffect(key1 = Unit) { // key1 = Unit pour que ça s'exécute une seule fois à la composition initiale
+        viewModel.effect.collectLatest { effect ->
+            when (effect) {
+                is CitiesEffect.NavigateToCityDetails -> {
+                    navigateToCityDetails(effect.city, effect.isInternetAvailable)
+                }
+
+                is CitiesEffect.NavigateToAddCity -> {
+                    navigateToAddCity()
+                }
+            }
+        }
     }
-    val cities by viewModel.citiesUiState.collectAsStateWithLifecycle()
-    val isInternetAvailable by viewModel.isInternetAvailable.collectAsStateWithLifecycle()
+
+    // Send initial intent to load data
+    LaunchedEffect(key1 = Unit) {
+        viewModel.processIntent(CitiesIntent.LoadInitialData)
+    }
+
     CitiesContent(
         modifier = modifier,
-        cities = cities,
-        isInternetAvailable = isInternetAvailable,
-        onClickAddCityButton = onClickAddCityButton,
-        onClickCity = onClickCity,
-        onDeleteCity = { city -> viewModel.deleteCity(city) }
+        uiState = uiState,
+        onDeleteCity = { city -> viewModel.processIntent(CitiesIntent.DeleteCity(city)) },
+        onClickCity = { city -> viewModel.processIntent(CitiesIntent.CityTapped(city)) },
+        onClickAddCityButton = { viewModel.processIntent(CitiesIntent.AddCityButtonTapped) }
     )
 }
 
@@ -55,59 +75,80 @@ fun CitiesScreen(
 @Composable
 fun CitiesContent(
     modifier: Modifier,
-    cities: List<CityForSearchDomain>,
-    isInternetAvailable: Boolean,
+    uiState: CitiesScreenState,
     onClickAddCityButton: () -> Unit,
-    onClickCity: (CityForSearchDomain, Boolean) -> Unit,
+    onClickCity: (CityForSearchDomain) -> Unit,
     onDeleteCity: (CityForSearchDomain) -> Unit
 ) {
-
-    //LazyList scroll position
     val scrollState = rememberLazyListState()
-
-    //System UI state
     val systemUiController = rememberSystemUiController()
-
     val isDarkTheme = isSystemInDarkTheme()
+
     systemUiController.setStatusBarColor(
         color = PURPLE_40,
-        darkIcons =
-        if (isDarkTheme) false
-        else scrollState.firstVisibleItemScrollOffset != 0
+        darkIcons = if (isDarkTheme) false else scrollState.firstVisibleItemScrollOffset != 0
     )
 
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
-
-        LazyColumn(
-            modifier = Modifier
-                // fill screen
-                .weight(1f)
-                .padding(horizontal = Dimens.STACK_MD, vertical = Dimens.STACK_SM)
-        ) {
-            items(cities) { city ->
-                CityItem(
-                    city,
-                    { onClickCity(city, isInternetAvailable) }
-                ) {
-                    onDeleteCity(city)
+        // Display Loading State
+        if (uiState.isLoadingCities && uiState.cities.isEmpty()) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
+        } else {
+            LazyColumn(
+                state = scrollState, // send scroll state
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = Dimens.STACK_MD, vertical = Dimens.STACK_SM)
+            ) {
+                items(
+                    uiState.cities,
+                    key = { city -> city.id }) { city -> // Ajouter une clé pour de meilleures performances
+                    CityItem(
+                        city = city,
+                        onClickCity = { onClickCity(city) },
+                        onDeleteCity = { onDeleteCity(city) }
+                    )
+                    Spacer(modifier = Modifier.height(Dimens.STACK_XS))
                 }
-                Spacer(modifier = Modifier.height(Dimens.STACK_XS))
+            }
+            // Display message when no cities are available
+            if (uiState.cities.isEmpty() && !uiState.isLoadingCities) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("No cities to display.")
+                }
             }
         }
 
-        AddCityButton { onClickAddCityButton() }
+        AddCityButton(onClick = onClickAddCityButton)
     }
-
 }
 
-@SuppressLint("UnrememberedMutableState")
+
 @Preview(showBackground = true)
 @Composable
 fun CitiesPreview() {
-    val cities = listOf(
-        CityForSearchDomain("id", "name")
+    val sampleState = CitiesScreenState(
+        isLoadingCities = false,
+        cities = listOf(
+            CityForSearchDomain("id1", "Paris"),
+            CityForSearchDomain("id2", "London")
+        ),
+        isInternetAvailable = true
     )
-    CitiesContent(Modifier, cities, true, {}, { _, _ -> }) { _ -> }
+    CitiesContent(
+        modifier = Modifier,
+        uiState = sampleState,
+        onClickAddCityButton = {},
+        onClickCity = { _ -> },
+        onDeleteCity = { _ -> }
+    )
 }
