@@ -64,7 +64,7 @@ class CitiesViewModel @Inject constructor(
         }
     }
 
-    private suspend fun loadCities() {
+    suspend fun loadCities() {
         _uiState.update { it.copy(isLoadingCities = true) }
         getCitiesUseCase().collectLatest { citiesResult ->
             _uiState.update {
@@ -76,7 +76,7 @@ class CitiesViewModel @Inject constructor(
         }
     }
 
-    private fun observeInternetStatus() {
+    fun observeInternetStatus() {
         viewModelScope.launch(dispatcherProvider.io) {
             networkMonitor.isOnline.collectLatest { isOnline ->
                 _uiState.update { it.copy(isInternetAvailable = isOnline) }
@@ -84,7 +84,7 @@ class CitiesViewModel @Inject constructor(
         }
     }
 
-    private suspend fun deleteCityInternal(city: CityForSearchDomain) {
+    fun deleteCityInternal(city: CityForSearchDomain) {
         removeCityUseCase(city)
     }
 }

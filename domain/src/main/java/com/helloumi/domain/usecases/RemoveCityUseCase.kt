@@ -12,6 +12,6 @@ class RemoveCityUseCase @Inject constructor(private val citiesForSearchRepositor
     /**
      * Executes use case.
      */
-    suspend operator fun invoke(cityForSearchDomain: CityForSearchDomain) =
+    operator fun invoke(cityForSearchDomain: CityForSearchDomain) =
         citiesForSearchRepository.delete(cityForSearchDomain)
 }
