@@ -36,7 +36,6 @@ import com.helloumi.ui.feature.circularprogress.CircularProgressIndicatorLoader
 import com.helloumi.ui.theme.Dimens.INLINE_SM
 import com.helloumi.ui.theme.Dimens.STACK_MD
 import com.helloumi.ui.theme.Dimens.STACK_SM
-import com.helloumi.ui.theme.Dimens.STACK_XS
 import com.helloumi.ui.theme.Dimens.STACK_XXL
 import com.helloumi.ui.theme.Dimens.TEXT_SIZE_TITLE
 import com.helloumi.ui.theme.Dimens.TEXT_SIZE_VERY_BIG
@@ -49,6 +48,7 @@ of constructing all of the parameters passed to a ViewModel
 */
 @Composable
 fun WeatherAndForecastScreen(
+    modifier: Modifier = Modifier,
     cityName: String,
     viewModel: WeatherAndForecastViewModel = hiltViewModel()
 ) {
@@ -62,6 +62,7 @@ fun WeatherAndForecastScreen(
     val forecastState by viewModel.forecastResponseUiState.collectAsStateWithLifecycle()
 
     WeatherAndForecastContent(
+        modifier,
         cityName,
         weatherState,
         forecastState
@@ -71,6 +72,7 @@ fun WeatherAndForecastScreen(
 @SuppressLint("FrequentlyChangedStateReadInComposition")
 @Composable
 fun WeatherAndForecastContent(
+    modifier: Modifier,
     cityName: String,
     currentWeather: CurrentWeatherResult,
     forecastResult: ForecastResult
@@ -92,9 +94,7 @@ fun WeatherAndForecastContent(
 
     Column {
 
-        Spacer(modifier = Modifier.size(STACK_XS))
-
-        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+        Column(modifier = modifier.verticalScroll(rememberScrollState())) {
             Text(
                 text = cityName,
                 modifier = Modifier
@@ -231,6 +231,7 @@ fun WeatherAndForecastPreview() {
     )
 
     WeatherAndForecastContent(
+        modifier = Modifier,
         cityName = "cityName",
         currentWeather = currentWeather,
         forecastResult = forecastResult

@@ -115,6 +115,9 @@ dependencies {
 
     // Places
     implementation(libs.places)
+    
+    // Google Play Services Location
+    implementation("com.google.android.gms:play-services-location:21.2.0")
 
     // Dagger Hilt
     implementation(libs.hilt.android)

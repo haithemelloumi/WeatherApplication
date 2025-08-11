@@ -104,6 +104,7 @@ fun SetupNavGraph(
                         )
                     if (cityName != null) {
                         WeatherAndForecastScreen(
+                            modifier = Modifier.padding(innerPadding),
                             cityName = cityName
                         )
                     }
