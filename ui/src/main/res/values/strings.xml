@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Cities-->
     <string name="cities_title">CITIES LIST</string>
@@ -6,6 +6,15 @@
 
     <!-- Add city-->
     <string name="add_city_title" formatted="false">ADD CITY</string>
+    <string name="locate_me_button" formatted="false">Locate me</string>
+    <string name="locating_in_progress" tools:ignore="TypographyEllipsis">Localization in progress...</string>
+    <string name="locating_permission_required">Location permission is required to add current location</string>
+    <string name="unable_to_get_current_location">Unable to get current location</string>
+    <string name="location_error">Location error</string>
+    <string name="current_location">Current location</string>
+    <string name="location_found">Location found</string>
+    <string name="search_city_hint">Search city</string>
+    <string name="search_city_location_hint">Search city or long press for current location</string>
     <string name="add_city_country_required" formatted="false">Search city is required.</string>
     <string name="add_city_success" formatted="false">City Added with success.</string>
 

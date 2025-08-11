@@ -10,7 +10,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:background="@color/purple_40"
         android:padding="@dimen/settings_toolbar_padding"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,6 +37,27 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
+    <ProgressBar
+        android:id="@+id/locationProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/spacing_small"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/locationButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/locationButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_medium"
+        android:layout_marginVertical="@dimen/spacing_small"
+        android:background="@drawable/rounded_shape"
+        android:text="@string/locate_me_button"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/addCityButton" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/addCityButton"
         android:layout_width="match_parent"
@@ -47,5 +68,5 @@
         android:text="@string/add_city_button"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent" />
-
+    
 </androidx.constraintlayout.widget.ConstraintLayout>

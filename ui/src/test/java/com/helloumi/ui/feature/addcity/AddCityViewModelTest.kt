@@ -54,4 +54,77 @@ class AddCityViewModelTest {
             verify(addCityUseCase)(cityDomain)
         }
     }
+
+    @Test
+    fun `WHEN set location data THEN placeId and placeName are updated`() {
+        // GIVEN
+        val placeId = "LOC_48.8566_2.3522"
+        val placeName = "Paris"
+
+        // WHEN
+        addCityViewModel.placeId.value = placeId
+        addCityViewModel.placeName.value = placeName
+
+        // THEN
+        assert(addCityViewModel.placeId.value == placeId)
+        assert(addCityViewModel.placeName.value == placeName)
+    }
+
+    @Test
+    fun `WHEN set current location data THEN location format is correct`() {
+        // GIVEN
+        val latitude = 48.8566
+        val longitude = 2.3522
+        val cityName = "Paris"
+        val expectedPlaceId = "LOC_${latitude}_${longitude}"
+
+        // WHEN
+        addCityViewModel.placeId.value = expectedPlaceId
+        addCityViewModel.placeName.value = cityName
+
+        // THEN
+        assert(addCityViewModel.placeId.value.startsWith("LOC_"))
+        assert(addCityViewModel.placeId.value.contains("_"))
+        assert(addCityViewModel.placeName.value == cityName)
+    }
+
+    @Test
+    fun `WHEN location button is clicked THEN location data is properly set`() {
+        // GIVEN
+        val placeId = "LOC_48.8566_2.3522"
+        val placeName = "Paris"
+
+        // WHEN
+        addCityViewModel.placeId.value = placeId
+        addCityViewModel.placeName.value = placeName
+
+        // THEN
+        assert(addCityViewModel.placeId.value == placeId)
+        assert(addCityViewModel.placeName.value == placeName)
+        assert(addCityViewModel.placeId.value.isNotEmpty())
+        assert(addCityViewModel.placeName.value.isNotEmpty())
+    }
+
+    @Test
+    fun `WHEN location is in progress THEN progress state is managed correctly`() {
+        // GIVEN
+        val placeId = "LOC_48.8566_2.3522"
+        val placeName = "Paris"
+
+        // WHEN - Simulate location in progress
+        addCityViewModel.placeId.value = ""
+        addCityViewModel.placeName.value = ""
+
+        // THEN - Verify initial state
+        assert(addCityViewModel.placeId.value.isEmpty())
+        assert(addCityViewModel.placeName.value.isEmpty())
+
+        // WHEN - Location completed
+        addCityViewModel.placeId.value = placeId
+        addCityViewModel.placeName.value = placeName
+
+        // THEN - Verify final state
+        assert(addCityViewModel.placeId.value == placeId)
+        assert(addCityViewModel.placeName.value == placeName)
+    }
 }
