@@ -24,7 +24,7 @@ android {
             )
 
             buildConfigField("String", "BASE_URL", "\"http://api.openweathermap.org/data/2.5/\"")
-            buildConfigField("String", "WEATHER_API_KEY", "\"f84037daa9de07e50719fa0542b9213d\"")
+            buildConfigField("String", "WEATHER_API_KEY", "\"CHANGE_ME\"")
         }
     }
 
@@ -46,6 +46,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = "17"
+    }
+    buildFeatures {
+        buildConfig = true
     }
 }
 
